@@ -8,44 +8,34 @@
 </head>
 <body class="bg-gray-900 text-white">
     <header class="container mx-auto text-center p-6">
-        <img src="brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-32 mb-4"> <!-- Adjust the path and size as needed -->
+        <img src="/path-to-your-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-32 mb-4"> <!-- Adjust the path and size as needed -->
         <h1 class="text-4xl font-bold">Welcome to Brenon.Cloud</h1>
-        <p class="mt-3">Exploring the Horizons of Open Source Services</p>
+        <p class="mt-3 text-lg">Your Affordable Gateway to Personal Home Labs</p>
     </header>
     
     <main class="container mx-auto p-6">
+        <section id="about" class="mb-6">
+            <h2 class="text-2xl font-bold">About Brenon.cloud</h2>
+            <p class="text-md mt-2">
+                Brenon.cloud stands as an affordable, private, and reliable alternative to costly centralized cloud services. With just 2 mini computers, we demonstrate that technological freedom is within reach. Join us in embracing the revolution of decentralized, fast, and dependable personal cloud services. 
+            </p>
+        </section>
+
         <section id="goals" class="mb-6">
             <h2 class="text-2xl font-bold">Our Goals</h2>
-            <p>At brenon.cloud, our primary goal is to serve and support the community with open-source services directly from our personal home lab infrastructure. Dive into a world where technology meets creativity and innovation.</p>
+            <p class="text-md mt-2">
+                We're pioneering the journey of personal home labs, making it affordable and accessible for everyone. It's a place for professionals and hobbyists alike to innovate, learn, and control their digital world. Welcome to the community-driven future of IT with brenon.cloud.
+            </p>
         </section>
-        
+
         <section id="services" class="mb-6">
             <h2 class="text-2xl font-bold">Open Source Services</h2>
             <div class="flex flex-wrap justify-center">
+                <!-- Services dynamically added here -->
                 <!-- n8n Service -->
-                <a href="https://n8n.brenon.cloud" target="_blank" class="w-1/2 md:w-1/4 p-4">
-                    <div class="bg-gray-800 p-6 rounded-lg">
-                        <img src="https://avatars.githubusercontent.com/u/45487711?s=280&v=4" alt="n8n" class="mx-auto">
-                        <h3 class="text-xl mt-4">n8n</h3>
-                        <p class="mt-2">Workflow Automation Tool</p>
-                    </div>
-                </a>
                 <!-- Uptime Kuma Service -->
-                <a href="https://uptime.brenon.cloud" target="_blank" class="w-1/2 md:w-1/4 p-4">
-                    <div class="bg-gray-800 p-6 rounded-lg">
-                        <img src="https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png" alt="Uptime Kuma" class="mx-auto">
-                        <h3 class="text-xl mt-4">Uptime Kuma</h3>
-                        <p class="mt-2">Monitoring and Uptime Checks</p>
-                    </div>
-                </a>
                 <!-- Grafana Service -->
-                <a href="https://grafana.brenon.cloud" target="_blank" class="w-1/2 md:w-1/4 p-4">
-                    <div class="bg-gray-800 p-6 rounded-lg">
-                        <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/grafana_logo_icon_171048.png" alt="Grafana" class="mx-auto">
-                        <h3 class="text-xl mt-4">Grafana</h3>
-                        <p class="mt-2">Analytics and Monitoring Platform</p>
-                    </div>
-                </a>
+                <!-- Placeholder for additional services -->
             </div>
         </section>
     </main>
@@ -53,5 +43,19 @@
     <footer class="bg-gray-800 text-center p-6 mt-6">
         <p>&copy; 2024 Brenon.Cloud - All rights reserved.</p>
     </footer>
+
+    <!-- Responsive design script -->
+    <script>
+        // Script to adjust the size of services dynamically based on the viewport width
+        function adjustServiceSize() {
+            const services = document.querySelectorAll('#services > div');
+            const isMobile = window.innerWidth < 768; // TailwindCSS mobile breakpoint
+            services.forEach(service => {
+                service.className = isMobile ? 'w-full p-2' : 'w-1/2 md:w-1/4 p-4';
+            });
+        }
+        window.addEventListener('resize', adjustServiceSize);
+        window.addEventListener('DOMContentLoaded', adjustServiceSize);
+    </script>
 </body>
 </html>
