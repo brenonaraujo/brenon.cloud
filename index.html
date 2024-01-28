@@ -63,18 +63,5 @@
         <p>&copy; 2024 Brenon.Cloud - All rights reserved.</p>
     </footer>
 
-    <script>
-        // Script to adjust the size of services dynamically based on the viewport width
-        function adjustServiceSize() {
-            const services = document.querySelectorAll('#services > div');
-            const isMobile = window.innerWidth < 768; // TailwindCSS mobile breakpoint
-            services.forEach(service => {
-                service.className = isMobile ? 'w-full p-2' : 'w-1/2 md:w-1/4 p-4';
-            });
-        }
-        window.addEventListener('resize', adjustServiceSize);
-        window.addEventListener('DOMContentLoaded', adjustServiceSize);
-    </script>
-
 </body>
 </html>
