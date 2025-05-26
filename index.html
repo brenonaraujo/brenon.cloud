@@ -7,77 +7,109 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 text-white">
- <nav class="bg-gray-800">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="https://brenon.cloud" class="font-bold text-2xl lg:text-4xl">
+ <nav class="bg-transparent">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="https://brenon.cloud" class="font-bold text-3xl lg:text-5xl text-white">
                 Brenon.Cloud
             </a>
             <div class="flex items-center">
-                <a href="https://brenon.cloud" class="p-3">Home</a>
-                <a href="https://uptime.brenon.cloud/status/services" class="p-3">Status</a>
+                <a href="https://brenon.cloud" class="px-4 py-2 text-white hover:text-gray-300">Home</a>
+                <a href="https://uptime.brenon.cloud/status/services" class="px-4 py-2 text-white hover:text-gray-300">Status</a>
                 <a href="https://github.com/brenonaraujo/brenon.cloud" target="_blank" class="p-3">
-                    <img src="https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png" alt="GitHub" class="h-6 w-6" /> <!-- Update path accordingly -->
+                    <img src="https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png" alt="GitHub" class="h-8 w-8 filter invert hover:opacity-75" />
                 </a>
-                <a href="https://www.linkedin.com/in/brenonaraujo" target="_blank" class="p-3">
-                    <img src="https://cdn-icons-png.flaticon.com/256/174/174857.png" alt="LinkedIn" class="h-6 w-6" /> <!-- Update path accordingly -->
+                <a href="https://www.linkedin.com/in/brenonaraujo" target="_blank" class="px-4 py-2">
+                    <img src="https://cdn-icons-png.flaticon.com/256/174/174857.png" alt="LinkedIn" class="h-8 w-8 filter invert hover:opacity-75" />
                 </a>
             </div>
         </div>
     </nav>
-    <header class="container mx-auto text-center p-6">
-        <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-32 mb-4"> <!-- Adjust the path and size as needed -->
-        <h1 class="text-4xl font-bold">Welcome to Brenon.Cloud</h1>
-        <p class="mt-3 text-lg">Your Affordable Gateway to Personal Home cloud</p>
+    <header class="container mx-auto text-center py-16 px-6">
+        <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-40 mb-6"> <!-- Adjust the path and size as needed -->
+        <h1 class="text-5xl font-bold text-white">Welcome to Brenon.Cloud</h1>
+        <p class="mt-4 text-xl text-gray-300">Your Gateway to a Secure and Integrated Personal Cloud</p>
     </header>
     
     <main class="container mx-auto p-6">
-        <section id="about" class="mb-6">
-            <h2 class="text-2xl font-bold">About Brenon.cloud</h2>
-            <p class="text-md mt-2">
-                Brenon.cloud stands as an affordable, private, and reliable alternative to costly centralized cloud services. With just 2 mini computers, we demonstrate that technological freedom is within reach. Join us in embracing the revolution of decentralized, fast, and dependable personal cloud services. 
+        <section id="about" class="my-12">
+            <h2 class="text-3xl font-bold text-center mb-6">About Brenon.Cloud</h2>
+            <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">
+                Brenon.Cloud is your launchpad for building a powerful, private, and reliable personal cloud. What started with a vision of affordable technological freedom on just two mini computers is now evolving. We're expanding to include robust services like identity management with Authentik and API orchestration with Kong, empowering you to create a truly integrated and secure digital ecosystem. Join us in shaping the future of decentralized, fast, and dependable personal cloud solutions.
             </p>
         </section>
 
-        <section id="goals" class="mb-6">
-            <h2 class="text-2xl font-bold">Our Goals</h2>
-            <p class="text-md mt-2">
-                We're pioneering the journey of personal home labs, making it affordable and accessible for everyone. It's a place for professionals and hobbyists alike to innovate, learn, and control their digital world. Welcome to the community-driven future of IT.
+        <section id="goals" class="my-12">
+            <h2 class="text-3xl font-bold text-center mb-6">Our Goals</h2>
+            <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">
+                Our mission is to make sophisticated personal cloud technology accessible to everyone. We aim to empower professionals and hobbyists alike to innovate, learn, and take full control of their digital world. By integrating essential services for automation, monitoring, identity management (Authentik), and API orchestration (Kong API), we're building a comprehensive platform for you to explore, create, and manage your own secure and interconnected home lab. Welcome to the forefront of community-driven IT.
             </p>
         </section>
 
-        <section id="services" class="mb-6">
-            <h2 class="text-2xl font-bold">Open Source Services</h2>
-            <div class="flex justify-center flex-wrap">
+        <section id="services" class="my-12">
+            <h2 class="text-3xl font-bold text-center mb-10">Open Source Services</h2>
+            <div class="grid md:grid-cols-3 gap-8">
                 <!-- n8n Service -->
-                <a href="https://n8n.brenon.cloud" target="_blank" class="w-1/3 p-4">
-                    <div class="bg-gray-800 p-6 rounded-lg text-center">
-                        <img src="https://avatars.githubusercontent.com/u/45487711?s=280&v=4" alt="n8n" class="mx-6">
-                        <h3 class="text-xl mt-4">n8n</h3>
-                        <p class="mt-2">Workflow Automation Tool</p>
+                <a href="https://n8n.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="text-center">
+                        <img src="https://avatars.githubusercontent.com/u/45487711?s=280&v=4" alt="n8n" class="h-24 w-24 mx-auto rounded-full mb-4">
+                        <h3 class="text-2xl font-semibold text-white">n8n</h3>
+                        <p class="mt-2 text-gray-400">Workflow Automation Tool</p>
                     </div>
                 </a>
                 <!-- Uptime Kuma Service -->
-                <a href="https://uptime.brenon.cloud" target="_blank" class="w-1/3 p-4">
-                    <div class="bg-gray-800 p-6 rounded-lg text-center">
-                        <img src="https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png" alt="Uptime Kuma" class="mx-6">
-                        <h3 class="text-xl mt-4">Uptime Kuma</h3>
-                        <p class="mt-2">Monitoring and Uptime Checks</p>
+                <a href="https://uptime.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="text-center">
+                        <img src="https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png" alt="Uptime Kuma" class="h-24 w-24 mx-auto rounded-full mb-4 filter invert">
+                        <h3 class="text-2xl font-semibold text-white">Uptime Kuma</h3>
+                        <p class="mt-2 text-gray-400">Monitoring and Uptime Checks</p>
                     </div>
                 </a>
                 <!-- Grafana Service -->
-                <a href="https://grafana.brenon.cloud" target="_blank" class="w-1/3 p-4">
-                    <div class="bg-gray-800 p-6 rounded-lg text-center">
-                        <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/grafana_logo_icon_171048.png" alt="Grafana" class="mx-6">
-                        <h3 class="text-xl mt-4">Grafana</h3>
-                        <p class="mt-2">Analytics and Monitoring Platform</p>
+                <a href="https://grafana.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="text-center">
+                        <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/grafana_logo_icon_171048.png" alt="Grafana" class="h-24 w-24 mx-auto rounded-full mb-4 filter invert">
+                        <h3 class="text-2xl font-semibold text-white">Grafana</h3>
+                        <p class="mt-2 text-gray-400">Analytics and Monitoring Platform</p>
                     </div>
                 </a>
             </div>
         </section>
+
+        <section id="new-services" class="my-12">
+            <h2 class="text-3xl font-bold text-center mb-10">New Services</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Authentik Service Card -->
+                <div class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="text-center">
+                        <svg class="h-24 w-24 mx-auto mb-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-white">Authentik</h3>
+                        <p class="mt-1 text-sm text-gray-400">Identity Provider (IDP)</p>
+                        <p class="mt-3 text-gray-300 text-sm leading-relaxed">
+                            Centralized identity and access management. Enables Single Sign-On (SSO) for various applications, enhancing security and user experience.
+                        </p>
+                    </div>
+                </div>
+                <!-- Kong API Gateway Service Card -->
+                <div class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="text-center">
+                        <svg class="h-24 w-24 mx-auto mb-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!-- Simple bolt/connection icon -->
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-white">Kong API</h3>
+                        <p class="mt-1 text-sm text-gray-400">API Gateway</p>
+                        <p class="mt-3 text-gray-300 text-sm leading-relaxed">
+                            Manages, secures, and orchestrates APIs. Facilitates seamless integration between services and provides robust traffic control.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
     
-    <footer class="bg-gray-800 text-center p-6 mt-6">
-        <p>&copy; 2024 Brenon.Cloud - All rights reserved.</p>
+    <footer class="bg-gray-800 text-center py-8 mt-12">
+        <p class="text-gray-400">&copy; 2024 Brenon.Cloud - All rights reserved.</p>
     </footer>
 
 </body>
