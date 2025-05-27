@@ -13,18 +13,21 @@
                 Brenon.Cloud
             </a>
             <div class="flex items-center">
-                <a href="https://brenon.cloud" class="px-4 py-2 text-white hover:text-gray-300">Home</a>
-                <a href="https://uptime.brenon.cloud/status/services" class="px-4 py-2 text-white hover:text-gray-300">Status</a>
-                <a href="https://github.com/brenonaraujo/brenon.cloud" target="_blank" class="p-3">
-                    <img src="https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png" alt="GitHub" class="h-8 w-8 filter invert hover:opacity-75" />
+                <a href="https://brenon.cloud" class="px-4 py-2 text-white rounded-md hover:text-yellow-500 hover:bg-gray-700 transition-colors duration-150">Home</a>
+                <a href="https://uptime.brenon.cloud/status/services" class="px-4 py-2 text-white rounded-md hover:text-yellow-500 hover:bg-gray-700 transition-colors duration-150">Status</a>
+                <a href="#about" class="tab-link px-4 py-2 text-white rounded-md hover:text-yellow-500 hover:bg-gray-700 transition-colors duration-150">About</a>
+                <a href="#docs" class="tab-link px-4 py-2 text-white rounded-md hover:text-yellow-500 hover:bg-gray-700 transition-colors duration-150">Docs</a>
+                <a href="#roadmap" class="tab-link px-4 py-2 text-white rounded-md hover:text-yellow-500 hover:bg-gray-700 transition-colors duration-150">Roadmap</a>
+                <a href="https://github.com/brenonaraujo/brenon.cloud" target="_blank" class="p-3 text-white hover:opacity-75 transition-opacity duration-150">
+                    <img src="https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png" alt="GitHub" class="h-8 w-8 filter invert" />
                 </a>
-                <a href="https://www.linkedin.com/in/brenonaraujo" target="_blank" class="px-4 py-2">
-                    <img src="https://cdn-icons-png.flaticon.com/256/174/174857.png" alt="LinkedIn" class="h-8 w-8 filter invert hover:opacity-75" />
+                <a href="https://www.linkedin.com/in/brenonaraujo" target="_blank" class="px-4 py-2 text-white hover:opacity-75 transition-opacity duration-150">
+                    <img src="https://cdn-icons-png.flaticon.com/256/174/174857.png" alt="LinkedIn" class="h-8 w-8 filter invert" />
                 </a>
             </div>
         </div>
     </nav>
-    <header class="container mx-auto text-center py-16 px-6">
+    <header id="welcome-banner" class="container mx-auto text-center py-16 px-6">
         <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-40 mb-6"> <!-- Adjust the path and size as needed -->
         <h1 class="text-5xl font-bold text-white">Welcome to Brenon.Cloud</h1>
         <p class="mt-4 text-xl text-gray-300">Your Gateway to a Secure and Integrated Personal Cloud</p>
@@ -92,11 +95,25 @@
                 </div>
             </div>
         </section>
-        
-        <section id="about" class="my-12">
-            <h2 class="text-3xl font-bold text-center mb-6">About</h2>
+
+        <section id="about-content" class="tab-content hidden my-12 py-8 px-6">
+            <h2 class="text-3xl font-bold text-center mb-6 text-white">About</h2>
             <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">
                 Brenon.Cloud is your launchpad for building a powerful, private, and reliable personal cloud. What started with a vision of affordable technological freedom on just two mini computers is now evolving. We're expanding to include robust services like identity management with Authentik and API orchestration with Kong, empowering you to create a truly integrated and secure digital ecosystem. Join us in shaping the future of decentralized, fast, and dependable personal cloud solutions.
+            </p>
+        </section>
+
+        <section id="docs-content" class="tab-content hidden my-12 py-8 px-6">
+            <h2 class="text-3xl font-bold text-center mb-6 text-white">Documentation</h2>
+            <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">
+                Documentation content will be available here soon.
+            </p>
+        </section>
+
+        <section id="roadmap-content" class="tab-content hidden my-12 py-8 px-6">
+            <h2 class="text-3xl font-bold text-center mb-6 text-white">Roadmap</h2>
+            <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">
+                Our future plans and roadmap will be shared here.
             </p>
         </section>
     </main>
@@ -105,5 +122,160 @@
         <p class="text-gray-400">&copy; 2024 Brenon.Cloud - All rights reserved.</p>
     </footer>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        // Select all navigation links for managing active states globally
+        const navLinks = document.querySelectorAll('nav .flex.items-center a'); 
+        const servicesSection = document.getElementById('services');
+        const newServicesSection = document.getElementById('new-services');
+        const welcomeBanner = document.getElementById('welcome-banner'); // This is already correctly defined.
+
+        // Function to set active styles
+        function setActiveLink(activeLink) {
+            // Remove active styles from all nav links
+            navLinks.forEach(link => {
+                link.classList.remove('text-yellow-400', 'font-bold', 'border-b-2', 'border-yellow-400');
+                // Add back default text color if it's not the active one
+                if (link !== activeLink) {
+                    link.classList.add('text-white'); 
+                }
+            });
+
+            // Add active styles to the clicked link
+            activeLink.classList.add('text-yellow-400', 'font-bold', 'border-b-2', 'border-yellow-400');
+            activeLink.classList.remove('text-white');
+        }
+
+        // Function to switch tabs
+        function switchTab(event) {
+            event.preventDefault();
+            const clickedLink = event.currentTarget;
+
+            // Applying conceptual example from the prompt for switchTab
+            // The variable 'clickedLink' is already event.currentTarget
+            if (clickedLink.getAttribute('href') === 'https://brenon.cloud' || clickedLink.textContent.trim() === 'Home') {
+                if (servicesSection) servicesSection.classList.remove('hidden');
+                if (newServicesSection) newServicesSection.classList.remove('hidden');
+                if (welcomeBanner) welcomeBanner.classList.remove('hidden'); // ADDED as per prompt
+                tabContents.forEach(content => content.classList.add('hidden'));
+            } else {
+                // This branch handles #about, #docs, #roadmap
+                if (servicesSection) servicesSection.classList.add('hidden');
+                if (newServicesSection) newServicesSection.classList.add('hidden');
+                if (welcomeBanner) welcomeBanner.classList.add('hidden'); // ADDED as per prompt
+
+                const targetHref = clickedLink.getAttribute('href'); 
+                if (targetHref && targetHref.startsWith('#')) { 
+                    const targetId = targetHref.substring(1) + "-content"; 
+                    const targetContent = document.getElementById(targetId); 
+                    if (targetContent) { 
+                        targetContent.classList.remove('hidden'); 
+                    } else { 
+                        // If target content for a hash doesn't exist, hide all tabs
+                        tabContents.forEach(content => content.classList.add('hidden')); 
+                    }
+                } else { 
+                    // Fallback for non-hash, non-Home links (e.g. external, or if a link was misconfigured)
+                    tabContents.forEach(content => content.classList.add('hidden')); 
+                }
+            }
+
+            setActiveLink(clickedLink);
+        }
+
+        // Attach event listeners to tab links
+        tabLinks.forEach(link => {
+            link.addEventListener('click', switchTab);
+        });
+
+        // Also attach to Home and Status for consistent active state management
+        // Note: Status link navigates away, so active state is brief.
+        const homeLink = Array.from(navLinks).find(link => link.textContent.trim() === 'Home');
+        const statusLink = Array.from(navLinks).find(link => link.textContent.trim() === 'Status');
+
+        if (homeLink) {
+            homeLink.addEventListener('click', function(event) {
+                // Prevent default if it's already on the same page and just managing sections
+                if (window.location.pathname === '/' || window.location.href === homeLink.href) {
+                    event.preventDefault();
+                }
+                // Logic for homeLink click should align with the 'Home' part of switchTab
+                event.preventDefault(); // Keep preventDefault for SPA behavior
+                if (servicesSection) servicesSection.classList.remove('hidden');
+                if (newServicesSection) newServicesSection.classList.remove('hidden');
+                if (welcomeBanner) welcomeBanner.classList.remove('hidden'); // Ensure banner shown for Home
+                tabContents.forEach(content => content.classList.add('hidden'));
+                setActiveLink(homeLink); // Set homeLink active
+            });
+        }
+
+        if (statusLink) {
+            // For the Status link, we mostly just want to style it if clicked,
+            // actual navigation will take it to a new page.
+            statusLink.addEventListener('click', function(event){
+                // No preventDefault, allow navigation
+                setActiveLink(statusLink);
+            });
+        }
+
+        // Initial state setup:
+        // Determine active link based on URL hash or default to Home
+        let activeByDefaultLink = homeLink; // Default to Home
+        const currentHash = window.location.hash; // e.g., #about
+
+        if (currentHash) {
+            const potentialActiveTab = Array.from(tabLinks).find(link => link.getAttribute('href') === currentHash);
+            if (potentialActiveTab) {
+                activeByDefaultLink = potentialActiveTab;
+            }
+        }
+        
+        // Initial state setup:
+        // The .click() simulation for activeByDefaultLink handles the initial state determination.
+        if (activeByDefaultLink) {
+            activeByDefaultLink.click();
+        } else if (homeLink) { // Fallback if no hash and activeByDefaultLink was not determined
+            homeLink.click(); // Simulate click on homeLink to set initial state
+        }
+
+        // Conceptual example for initial load adjustment, as per prompt:
+        // This replaces the previous "Post-click / initial setup verification..." block
+        const isActiveHome = homeLink && homeLink.classList.contains('text-yellow-400');
+        if (isActiveHome) {
+            if (welcomeBanner) welcomeBanner.classList.remove('hidden');
+            if (servicesSection) servicesSection.classList.remove('hidden'); // Ensure visible
+            if (newServicesSection) newServicesSection.classList.remove('hidden'); // Ensure visible
+            tabContents.forEach(content => content.classList.add('hidden')); // Ensure tabs hidden
+        } else {
+            let tabVisible = false;
+            tabContents.forEach(content => {
+                if (!content.classList.contains('hidden')) {
+                    tabVisible = true;
+                }
+            });
+            if (tabVisible) {
+                if (welcomeBanner) welcomeBanner.classList.add('hidden');
+                if (servicesSection) servicesSection.classList.add('hidden'); // Ensure hidden
+                if (newServicesSection) newServicesSection.classList.add('hidden'); // Ensure hidden
+            } else {
+                // Default to home if no tab is specifically targeted by hash and visible
+                // AND it's not the Status link that's active (which navigates away)
+                // Conceptual example implies this default if no tab is visible after load.
+                if (!(statusLink && statusLink.classList.contains('text-yellow-400'))) {
+                    if (welcomeBanner) welcomeBanner.classList.remove('hidden');
+                    if (servicesSection) servicesSection.classList.remove('hidden');
+                    if (newServicesSection) newServicesSection.classList.remove('hidden');
+                    // Ensure Home link is styled as active if we are defaulting to showing Home content
+                    if (homeLink && !homeLink.classList.contains('text-yellow-400')) {
+                        setActiveLink(homeLink);
+                    }
+                    tabContents.forEach(content => content.classList.add('hidden')); 
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
