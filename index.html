@@ -27,7 +27,7 @@
             </div>
         </div>
     </nav>
-    <header class="container mx-auto text-center py-16 px-6">
+    <header id="welcome-banner" class="container mx-auto text-center py-16 px-6">
         <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-40 mb-6"> <!-- Adjust the path and size as needed -->
         <h1 class="text-5xl font-bold text-white">Welcome to Brenon.Cloud</h1>
         <p class="mt-4 text-xl text-gray-300">Your Gateway to a Secure and Integrated Personal Cloud</p>
@@ -130,6 +130,7 @@
         const navLinks = document.querySelectorAll('nav .flex.items-center a'); 
         const servicesSection = document.getElementById('services');
         const newServicesSection = document.getElementById('new-services');
+        const welcomeBanner = document.getElementById('welcome-banner'); // This is already correctly defined.
 
         // Function to set active styles
         function setActiveLink(activeLink) {
@@ -152,29 +153,34 @@
             event.preventDefault();
             const clickedLink = event.currentTarget;
 
-            // Hide all tab contents and main sections
-            tabContents.forEach(content => content.classList.add('hidden'));
-            if (servicesSection) servicesSection.classList.add('hidden');
-            if (newServicesSection) newServicesSection.classList.add('hidden');
-
-            // Determine what to show
-            const targetHref = clickedLink.getAttribute('href');
-
-            if (targetHref.startsWith('#')) {
-                // It's a tab link (About, Docs, Roadmap)
-                const targetId = targetHref.substring(1) + "-content"; // e.g., "about-content"
-                const targetContent = document.getElementById(targetId);
-                if (targetContent) {
-                    targetContent.classList.remove('hidden');
-                }
-            } else if (clickedLink.textContent.trim() === 'Home') {
-                // It's the Home link
+            // Applying conceptual example from the prompt for switchTab
+            // The variable 'clickedLink' is already event.currentTarget
+            if (clickedLink.getAttribute('href') === 'https://brenon.cloud' || clickedLink.textContent.trim() === 'Home') {
                 if (servicesSection) servicesSection.classList.remove('hidden');
                 if (newServicesSection) newServicesSection.classList.remove('hidden');
+                if (welcomeBanner) welcomeBanner.classList.remove('hidden'); // ADDED as per prompt
+                tabContents.forEach(content => content.classList.add('hidden'));
+            } else {
+                // This branch handles #about, #docs, #roadmap
+                if (servicesSection) servicesSection.classList.add('hidden');
+                if (newServicesSection) newServicesSection.classList.add('hidden');
+                if (welcomeBanner) welcomeBanner.classList.add('hidden'); // ADDED as per prompt
+
+                const targetHref = clickedLink.getAttribute('href'); 
+                if (targetHref && targetHref.startsWith('#')) { 
+                    const targetId = targetHref.substring(1) + "-content"; 
+                    const targetContent = document.getElementById(targetId); 
+                    if (targetContent) { 
+                        targetContent.classList.remove('hidden'); 
+                    } else { 
+                        // If target content for a hash doesn't exist, hide all tabs
+                        tabContents.forEach(content => content.classList.add('hidden')); 
+                    }
+                } else { 
+                    // Fallback for non-hash, non-Home links (e.g. external, or if a link was misconfigured)
+                    tabContents.forEach(content => content.classList.add('hidden')); 
+                }
             }
-            // For external links like Status, GitHub, LinkedIn, or direct full URLs,
-            // the default navigation will occur, so no specific content showing/hiding here.
-            // If Status were an internal tab, it would be handled like About/Docs/Roadmap.
 
             setActiveLink(clickedLink);
         }
@@ -195,12 +201,13 @@
                 if (window.location.pathname === '/' || window.location.href === homeLink.href) {
                     event.preventDefault();
                 }
-                // Hide all tab contents
-                tabContents.forEach(content => content.classList.add('hidden'));
-                // Show default sections
+                // Logic for homeLink click should align with the 'Home' part of switchTab
+                event.preventDefault(); // Keep preventDefault for SPA behavior
                 if (servicesSection) servicesSection.classList.remove('hidden');
                 if (newServicesSection) newServicesSection.classList.remove('hidden');
-                setActiveLink(homeLink);
+                if (welcomeBanner) welcomeBanner.classList.remove('hidden'); // Ensure banner shown for Home
+                tabContents.forEach(content => content.classList.add('hidden'));
+                setActiveLink(homeLink); // Set homeLink active
             });
         }
 
@@ -225,19 +232,49 @@
             }
         }
         
+        // Initial state setup:
+        // The .click() simulation for activeByDefaultLink handles the initial state determination.
         if (activeByDefaultLink) {
-            // Simulate a click to set initial state correctly
-            // This ensures the correct content is shown and link is styled
-             activeByDefaultLink.click(); 
-        } else if (homeLink) {
-            // Fallback if no hash or specific tab, ensure Home is styled
-            setActiveLink(homeLink);
-             // And ensure its content is visible
-            if (servicesSection) servicesSection.classList.remove('hidden');
-            if (newServicesSection) newServicesSection.classList.remove('hidden');
-            tabContents.forEach(content => content.classList.add('hidden'));
+            activeByDefaultLink.click();
+        } else if (homeLink) { // Fallback if no hash and activeByDefaultLink was not determined
+            homeLink.click(); // Simulate click on homeLink to set initial state
         }
 
+        // Conceptual example for initial load adjustment, as per prompt:
+        // This replaces the previous "Post-click / initial setup verification..." block
+        const isActiveHome = homeLink && homeLink.classList.contains('text-yellow-400');
+        if (isActiveHome) {
+            if (welcomeBanner) welcomeBanner.classList.remove('hidden');
+            if (servicesSection) servicesSection.classList.remove('hidden'); // Ensure visible
+            if (newServicesSection) newServicesSection.classList.remove('hidden'); // Ensure visible
+            tabContents.forEach(content => content.classList.add('hidden')); // Ensure tabs hidden
+        } else {
+            let tabVisible = false;
+            tabContents.forEach(content => {
+                if (!content.classList.contains('hidden')) {
+                    tabVisible = true;
+                }
+            });
+            if (tabVisible) {
+                if (welcomeBanner) welcomeBanner.classList.add('hidden');
+                if (servicesSection) servicesSection.classList.add('hidden'); // Ensure hidden
+                if (newServicesSection) newServicesSection.classList.add('hidden'); // Ensure hidden
+            } else {
+                // Default to home if no tab is specifically targeted by hash and visible
+                // AND it's not the Status link that's active (which navigates away)
+                // Conceptual example implies this default if no tab is visible after load.
+                if (!(statusLink && statusLink.classList.contains('text-yellow-400'))) {
+                    if (welcomeBanner) welcomeBanner.classList.remove('hidden');
+                    if (servicesSection) servicesSection.classList.remove('hidden');
+                    if (newServicesSection) newServicesSection.classList.remove('hidden');
+                    // Ensure Home link is styled as active if we are defaulting to showing Home content
+                    if (homeLink && !homeLink.classList.contains('text-yellow-400')) {
+                        setActiveLink(homeLink);
+                    }
+                    tabContents.forEach(content => content.classList.add('hidden')); 
+                }
+            }
+        }
     });
 </script>
 </body>
