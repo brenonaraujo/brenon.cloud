@@ -6,15 +6,25 @@
     <title>Brenon's Home Lab</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+    <style>
+        .router-link-active {
+            color: #60a5fa; /* Tailwind's blue-400 */
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-white">
  <nav class="bg-transparent">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="https://brenon.cloud" class="font-bold text-3xl lg:text-5xl text-white">
+            <router-link to="/" class="font-bold text-3xl lg:text-5xl text-white">
                 Brenon.Cloud
-            </a>
+            </router-link>
             <div class="flex items-center">
-                <a href="https://brenon.cloud" class="px-4 py-2 text-white hover:text-gray-300">Home</a>
+                <router-link to="/" class="px-4 py-2 text-white hover:text-gray-300">Home</router-link>
+                <router-link to="/about" class="px-4 py-2 text-white hover:text-gray-300">About</router-link>
+                <router-link to="/docs" class="px-4 py-2 text-white hover:text-gray-300">Docs</router-link>
+                <router-link to="/roadmap" class="px-4 py-2 text-white hover:text-gray-300">Roadmap</router-link>
                 <a href="https://uptime.brenon.cloud/status/services" class="px-4 py-2 text-white hover:text-gray-300">Status</a>
                 <a href="https://github.com/brenonaraujo/brenon.cloud" target="_blank" class="p-3">
                     <img src="https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png" alt="GitHub" class="h-8 w-8 filter invert hover:opacity-75" />
@@ -25,81 +35,10 @@
             </div>
         </div>
     </nav>
-    <header class="container mx-auto text-center py-16 px-6">
-        <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-40 mb-6"> <!-- Adjust the path and size as needed -->
-        <h1 class="text-5xl font-bold text-white">Welcome to Brenon.Cloud</h1>
-        <p class="mt-4 text-xl text-gray-300">Your Gateway to a Secure and Integrated Personal Cloud</p>
-    </header>
 
-<div id="app" class="container mx-auto py-8 px-6">
-    <tab-buttons :tabs="tabs" :current-tab="currentTab" @change-tab="currentTab = $event"></tab-buttons>
-    <tab-content :current-tab="currentTab" :tabs-content="tabsContent"></tab-content>
+<div id="app">
+    <router-view></router-view>
 </div>
-    
-    <main class="container mx-auto p-6">
-        <section id="services" class="my-12">
-            <h2 class="text-3xl font-bold text-center mb-10">Open Source Services</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- n8n Service -->
-                <a href="https://n8n.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    <div class="text-center">
-                        <img src="https://avatars.githubusercontent.com/u/45487711?s=280&v=4" alt="n8n" class="h-24 w-24 mx-auto rounded-full mb-4">
-                        <h3 class="text-2xl font-semibold text-white">n8n</h3>
-                        <p class="mt-2 text-gray-400">Workflow Automation Tool</p>
-                    </div>
-                </a>
-                <!-- Uptime Kuma Service -->
-                <a href="https://uptime.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    <div class="text-center">
-                        <img src="https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png" alt="Uptime Kuma" class="h-24 w-24 mx-auto rounded-full mb-4 filter invert">
-                        <h3 class="text-2xl font-semibold text-white">Uptime Kuma</h3>
-                        <p class="mt-2 text-gray-400">Monitoring and Uptime Checks</p>
-                    </div>
-                </a>
-                <!-- Grafana Service -->
-                <a href="https://grafana.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    <div class="text-center">
-                        <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/grafana_logo_icon_171048.png" alt="Grafana" class="h-24 w-24 mx-auto rounded-full mb-4 filter invert">
-                        <h3 class="text-2xl font-semibold text-white">Grafana</h3>
-                        <p class="mt-2 text-gray-400">Analytics and Monitoring Platform</p>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <section id="new-services" class="my-12">
-            <h2 class="text-3xl font-bold text-center mb-10">New Services</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Authentik Service Card -->
-                <div class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    <div class="text-center">
-                        <svg class="h-24 w-24 mx-auto mb-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                        <h3 class="text-2xl font-semibold text-white">Authentik</h3>
-                        <p class="mt-1 text-sm text-gray-400">Identity Provider (IDP)</p>
-                        <p class="mt-3 text-gray-300 text-sm leading-relaxed">
-                            Centralized identity and access management. Enables Single Sign-On (SSO) for various applications, enhancing security and user experience.
-                        </p>
-                    </div>
-                </div>
-                <!-- Kong API Gateway Service Card -->
-                <div class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    <div class="text-center">
-                        <svg class="h-24 w-24 mx-auto mb-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!-- Simple bolt/connection icon -->
-                        </svg>
-                        <h3 class="text-2xl font-semibold text-white">Kong API</h3>
-                        <p class="mt-1 text-sm text-gray-400">API Gateway</p>
-                        <p class="mt-3 text-gray-300 text-sm leading-relaxed">
-                            Manages, secures, and orchestrates APIs. Facilitates seamless integration between services and provides robust traffic control.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-    </main>
     
     <footer class="bg-gray-800 text-center py-8 mt-12">
         <p class="text-gray-400">&copy; 2024 Brenon.Cloud - All rights reserved.</p>
@@ -107,53 +46,134 @@
 
     <script>
         const { createApp } = Vue;
+        const { createRouter, createWebHashHistory } = VueRouter;
 
-        const app = createApp({
-            data() {
-                return {
-                    tabs: ['About', 'Docs', 'Roadmap'],
-                    currentTab: 'About',
-                    tabsContent: {
-                        'About': '<h2 class="text-3xl font-bold text-center mb-6">About</h2>\n            <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">\n                Brenon.Cloud is your launchpad for building a powerful, private, and reliable personal cloud. What started with a vision of affordable technological freedom on just two mini computers is now evolving. We\'re expanding to include robust services like identity management with Authentik and API orchestration with Kong, empowering you to create a truly integrated and secure digital ecosystem. Join us in shaping the future of decentralized, fast, and dependable personal cloud solutions.\n            </p>',
-                        'Docs': '<div>\n                <h3 class=\'text-2xl font-semibold mb-3\'>Documentation</h3>\n                <p class=\'mb-2\'>Welcome to the documentation section. Here you\'ll find guides and references for using Brenon.Cloud services.</p>\n                <ul class=\'list-disc list-inside space-y-1\'>\n                    <li>Getting Started Guide</li>\n                    <li>API Reference</li>\n                    <li>Troubleshooting</li>\n                </ul>\n            </div>',
-                        'Roadmap': '<div>\n                <h3 class=\'text-2xl font-semibold mb-3\'>Roadmap</h3>\n                <p class=\'mb-2\'>Here\'s what we\'re planning for the future of Brenon.Cloud:</p>\n                <ul class=\'list-disc list-inside space-y-1\'>\n                    <li>Q3 2024: Launch new backup solutions.</li>\n                    <li>Q4 2024: Integrate AI-powered analytics.</li>\n                    <li>Q1 2025: Expand global server locations.</li>\n                </ul>\n            </div>'
-                    }
-                };
-            },
-            methods: {
-                // changeTab(tabName) { // Not strictly necessary if using $event in template
-                //    this.currentTab = tabName;
-                // }
-            }
-        });
+        // Component Definitions
+        const Home = { template: `
+            <div> <!-- Root element for the component -->
+                <header class="container mx-auto text-center py-16 px-6">
+                  <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="mx-auto h-40 mb-6">
+                  <h1 class="text-5xl font-bold text-white">Welcome to Brenon.Cloud</h1>
+                  <p class="mt-4 text-xl text-gray-300">Your Gateway to a Secure and Integrated Personal Cloud</p>
+                </header>
+                <main class="container mx-auto p-6"> <!-- Wrap sections in main for semantic HTML -->
+                  <section id="services" class="my-12">
+                    <h2 class="text-3xl font-bold text-center mb-10">Open Source Services</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- n8n Service -->
+                        <a href="https://n8n.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <img src="https://avatars.githubusercontent.com/u/45487711?s=280&v=4" alt="n8n" class="h-24 w-24 mx-auto rounded-full mb-4">
+                                <h3 class="text-2xl font-semibold text-white">n8n</h3>
+                                <p class="mt-2 text-gray-400">Workflow Automation Tool</p>
+                            </div>
+                        </a>
+                        <!-- Uptime Kuma Service -->
+                        <a href="https://uptime.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <img src="https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png" alt="Uptime Kuma" class="h-24 w-24 mx-auto rounded-full mb-4 filter invert">
+                                <h3 class="text-2xl font-semibold text-white">Uptime Kuma</h3>
+                                <p class="mt-2 text-gray-400">Monitoring and Uptime Checks</p>
+                            </div>
+                        </a>
+                        <!-- Grafana Service -->
+                        <a href="https://grafana.brenon.cloud" target="_blank" class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/grafana_logo_icon_171048.png" alt="Grafana" class="h-24 w-24 mx-auto rounded-full mb-4 filter invert">
+                                <h3 class="text-2xl font-semibold text-white">Grafana</h3>
+                                <p class="mt-2 text-gray-400">Analytics and Monitoring Platform</p>
+                            </div>
+                        </a>
+                    </div>
+                  </section>
+                  <section id="new-services" class="my-12">
+                    <h2 class="text-3xl font-bold text-center mb-10">New Services</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Authentik Service Card -->
+                        <div class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <svg class="h-24 w-24 mx-auto mb-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                                <h3 class="text-2xl font-semibold text-white">Authentik</h3>
+                                <p class="mt-1 text-sm text-gray-400">Identity Provider (IDP)</p>
+                                <p class="mt-3 text-gray-300 text-sm leading-relaxed">
+                                    Centralized identity and access management. Enables Single Sign-On (SSO) for various applications, enhancing security and user experience.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Kong API Gateway Service Card -->
+                        <div class="block p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <svg class="h-24 w-24 mx-auto mb-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!-- Simple bolt/connection icon -->
+                                </svg>
+                                <h3 class="text-2xl font-semibold text-white">Kong API</h3>
+                                <p class="mt-1 text-sm text-gray-400">API Gateway</p>
+                                <p class="mt-3 text-gray-300 text-sm leading-relaxed">
+                                    Manages, secures, and orchestrates APIs. Facilitates seamless integration between services and provides robust traffic control.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                  </section>
+                </main>
+              </div>
+        ` };
 
-        // Define TabButtons component
-        app.component('tab-buttons', {
-            props: ['tabs', 'currentTab'],
-            emits: ['change-tab'],
-            template: `
-                <div class="flex space-x-2 mb-4 justify-center">
-                    <button
-                        v-for="tab in tabs"
-                        :key="tab"
-                        @click="$emit('change-tab', tab)"
-                        :class="['py-2 px-4 font-semibold rounded-lg focus:outline-none transition-colors duration-150', currentTab === tab ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white']"
-                    >
-                        {{ tab }}
-                    </button>
+        const About = { template: `
+            <div class="container mx-auto py-8 px-6">
+                <h2 class="text-3xl font-bold text-center mb-6">About</h2>
+                <p class="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto text-center">
+                    Brenon.Cloud is your launchpad for building a powerful, private, and reliable personal cloud. What started with a vision of affordable technological freedom on just two mini computers is now evolving. We're expanding to include robust services like identity management with Authentik and API orchestration with Kong, empowering you to create a truly integrated and secure digital ecosystem. Join us in shaping the future of decentralized, fast, and dependable personal cloud solutions.
+                </p>
+            </div>
+        ` };
+
+        const Docs = { template: `
+            <div class="container mx-auto py-8 px-6">
+                <h3 class='text-2xl font-semibold mb-3 text-center'>Documentation</h3>
+                <p class='mb-2 text-center'>Welcome to the documentation section. Here you'll find guides and references for using Brenon.Cloud services.</p>
+                <div class="max-w-md mx-auto"> <!-- Centering the list -->
+                  <ul class='list-disc list-inside space-y-1 mt-4 text-gray-300'>
+                    <li>Getting Started Guide</li>
+                    <li>API Reference</li>
+                    <li>Troubleshooting</li>
+                  </ul>
                 </div>
-            `
-        });
+            </div>
+        ` };
 
-        // Define TabContent component
-        app.component('tab-content', {
-            props: ['currentTab', 'tabsContent'],
-            template: `
-                <div class="p-6 bg-gray-800 rounded-xl shadow-lg min-h-[150px]" v-html="tabsContent[currentTab]">
+        const Roadmap = { template: `
+            <div class="container mx-auto py-8 px-6">
+                <h3 class='text-2xl font-semibold mb-3 text-center'>Roadmap</h3>
+                <p class='mb-2 text-center'>Here's what we're planning for the future of Brenon.Cloud:</p>
+                <div class="max-w-md mx-auto"> <!-- Centering the list -->
+                  <ul class='list-disc list-inside space-y-1 mt-4 text-gray-300'>
+                    <li>Q3 2024: Launch new backup solutions.</li>
+                    <li>Q4 2024: Integrate AI-powered analytics.</li>
+                    <li>Q1 2025: Expand global server locations.</li>
+                  </ul>
                 </div>
-            `
+            </div>
+        ` };
+
+        const routes = [
+            { path: '/', component: Home },
+            { path: '/about', component: About },
+            { path: '/docs', component: Docs },
+            { path: '/roadmap', component: Roadmap }
+        ];
+
+        // 4. Create and Mount Router Instance
+        const router = createRouter({
+            history: createWebHashHistory(), // Using hash history
+            routes,
         });
 
+        // 5. Use Router in Vue App
+        const app = createApp({}); // Main app options are minimal for now
+        app.use(router); // Tell Vue to use the router
         app.mount('#app');
     </script>
 </body>
