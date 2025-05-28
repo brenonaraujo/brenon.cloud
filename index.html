@@ -45,6 +45,8 @@
     </footer>
 
     <script>
+        console.log('Vue loaded:', typeof Vue !== 'undefined' ? Vue : 'Not loaded');
+        console.log('VueRouter loaded:', typeof VueRouter !== 'undefined' ? VueRouter : 'Not loaded');
         const { createApp } = Vue;
         const { createRouter, createWebHashHistory } = VueRouter;
 
@@ -158,6 +160,8 @@
             </div>
         ` };
 
+        console.log('Components defined:', { Home, About, Docs, Roadmap });
+
         const routes = [
             { path: '/', component: Home },
             { path: '/about', component: About },
@@ -170,11 +174,15 @@
             history: createWebHashHistory(), // Using hash history
             routes,
         });
+        console.log('Router instance created:', router);
 
         // 5. Use Router in Vue App
         const app = createApp({}); // Main app options are minimal for now
+        console.log('Vue app instance created:', app);
         app.use(router); // Tell Vue to use the router
+        console.log('Router plugged into Vue app.');
         app.mount('#app');
+        console.log('Vue app mounted to #app.');
     </script>
 </body>
 </html>
