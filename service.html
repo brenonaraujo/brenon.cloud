@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Details • Brenon.Cloud</title>
+    <meta name="description" content="Learn about Brenon.Cloud services: what they are, how they work, and how to deploy them with Docker." />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-transparent">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class="font-bold text-2xl sm:text-3xl lg:text-5xl text-white">Brenon.Cloud</a>
+                <button id="nav-toggle" aria-controls="mobile-menu" aria-expanded="false" class="sm:hidden inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-white">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="hidden sm:flex items-center space-x-3">
+                    <a href="/" class="px-3 py-2 text-white hover:text-gray-300">Home</a>
+                    <a href="https://uptime.brenon.cloud/status/services" class="px-3 py-2 text-white hover:text-gray-300">Status</a>
+                    <a href="https://github.com/brenonaraujo/brenon.cloud" target="_blank" rel="noopener noreferrer" class="p-2 text-white hover:text-gray-300" aria-label="GitHub Repository">
+                        <svg class="h-7 w-7" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12 .5C5.73.5.98 5.24.98 11.52c0 4.87 3.16 9 7.55 10.45.55.1.75-.24.75-.53 0-.26-.01-1.13-.02-2.06-3.07.67-3.72-1.31-3.72-1.31-.5-1.27-1.22-1.61-1.22-1.61-.99-.67.07-.66.07-.66 1.09.08 1.66 1.12 1.66 1.12.98 1.68 2.57 1.2 3.2.92.1-.71.38-1.2.69-1.48-2.45-.28-5.02-1.22-5.02-5.42 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .93-.3 3.04 1.13.88-.24 1.83-.36 2.77-.37.94 0 1.89.13 2.77.37 2.11-1.43 3.04-1.13 3.04-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.21-2.58 5.14-5.04 5.41.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.2.64.75.53 4.39-1.46 7.55-5.58 7.55-10.45C23.02 5.24 18.27.5 12 .5z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/brenonaraujo" target="_blank" rel="noopener noreferrer" class="p-2 text-white hover:text-gray-300" aria-label="LinkedIn Profile">
+                        <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M20.451 20.451h-3.554v-5.569c0-1.328-.027-3.036-1.85-3.036-1.853 0-2.136 1.447-2.136 2.943v5.662H9.357V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.368-1.85 3.601 0 4.267 2.371 4.267 5.454v6.286zM5.337 7.433a2.063 2.063 0 110-4.126 2.063 2.063 0 010 4.126zM7.114 20.451H3.56V9h3.554v11.451z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div id="mobile-menu" class="sm:hidden hidden px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-800">Home</a>
+                <a href="https://uptime.brenon.cloud/status/services" class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-800">Status</a>
+                <a href="https://github.com/brenonaraujo/brenon.cloud" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-800">
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path fill-rule="evenodd" d="M12 .5C5.73.5.98 5.24.98 11.52c0 4.87 3.16 9 7.55 10.45.55.1.75-.24.75-.53 0-.26-.01-1.13-.02-2.06-3.07.67-3.72-1.31-3.72-1.31-.5-1.27-1.22-1.61-1.22-1.61-.99-.67.07-.66.07-.66 1.09.08 1.66 1.12 1.66 1.12.98 1.68 2.57 1.2 3.2.92.1-.71.38-1.2.69-1.48-2.45-.28-5.02-1.22-5.02-5.42 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .93-.3 3.04 1.13.88-.24 1.83-.36 2.77-.37.94 0 1.89.13 2.77.37 2.11-1.43 3.04-1.13 3.04-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.21-2.58 5.14-5.04 5.41.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.2.64.75.53 4.39-1.46 7.55-5.58 7.55-10.45C23.02 5.24 18.27.5 12 .5z" clip-rule="evenodd"/></svg>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/brenonaraujo" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-800">
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.451 20.451h-3.554v-5.569c0-1.328-.027-3.036-1.85-3.036-1.853 0-2.136 1.447-2.136 2.943v5.662H9.357V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.368-1.85 3.601 0 4.267 2.371 4.267 5.454v6.286zM5.337 7.433a2.063 2.063 0 110-4.126 2.063 2.063 0 010 4.126zM7.114 20.451H3.56V9h3.554v11.451z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mx-auto max-w-7xl p-6">
+        <div class="mb-6">
+            <a href="/" class="inline-flex items-center gap-2 text-gray-300 hover:text-white">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                Back to Home
+            </a>
+        </div>
+
+        <!-- Header -->
+        <header class="rounded-2xl bg-gradient-to-r from-gray-800 to-gray-700 p-6 sm:p-8 mb-10">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div id="service-icon" class="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl bg-gray-900/60"></div>
+                    <div>
+                        <h1 id="service-title" class="text-2xl sm:text-3xl md:text-4xl font-bold">Service</h1>
+                        <p id="service-tagline" class="text-gray-300 mt-1">Tagline</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <span id="service-status" class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-gray-800 text-gray-300">Status</span>
+                    <a id="btn-launch" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium hover:bg-blue-500 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        Launch Service
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a id="btn-docs" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium hover:bg-gray-700 transition">
+                        Documentation
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </a>
+                    <a href="https://uptime.brenon.cloud/status/services" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium hover:bg-gray-700 transition">
+                        Service Status
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 11h4l2 3 3-6 2 3h5"/></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <section class="grid md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 space-y-8">
+                <article class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-3">What is <span id="service-name-inline">this service</span>?</h2>
+                    <p id="service-what" class="text-gray-300"></p>
+                </article>
+                <article class="bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-3">How it works</h2>
+                    <ul id="service-how" class="list-disc list-inside space-y-2 text-gray-300"></ul>
+                </article>
+                <article id="compose-card" class="bg-gray-800 rounded-xl p-6 hidden">
+                    <h2 class="text-xl font-semibold mb-3">Deploy with Docker</h2>
+                    <p class="text-gray-300 mb-4">Run this service using Docker. Here is a minimal example:</p>
+                    <pre class="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm"><code id="compose-snippet" class="whitespace-pre"></code></pre>
+                </article>
+            </div>
+            <aside class="space-y-6">
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h3 class="font-semibold mb-3">Key features</h3>
+                    <ul id="service-features" class="space-y-2 text-gray-300 list-disc list-inside"></ul>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h3 class="font-semibold mb-3">Related links</h3>
+                    <ul class="space-y-2 text-blue-400">
+                        <li><a id="link-docs" href="#" target="_blank" rel="noopener noreferrer" class="hover:underline">Official Docs</a></li>
+                        <li><a href="https://uptime.brenon.cloud/status/services" target="_blank" rel="noopener noreferrer" class="hover:underline">Brenon.Cloud Status</a></li>
+                        <li><a href="/" class="hover:underline">Back to Home</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-center py-8 mt-12">
+        <p class="text-gray-400">&copy; <span id="year">2024</span> Brenon.Cloud - All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        const btn = document.getElementById('nav-toggle');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                const isHidden = menu.classList.contains('hidden');
+                menu.classList.toggle('hidden', !isHidden);
+                btn.setAttribute('aria-expanded', String(isHidden));
+            });
+        }
+        // Current year
+        const y = document.getElementById('year');
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        // Service content map
+        const services = {
+            'n8n': {
+                title: 'n8n',
+                color: 'text-blue-400',
+                tagline: 'Workflow automation for your stack',
+                status: 'available',
+                launch: 'https://n8n.brenon.cloud',
+                docs: 'https://docs.n8n.io/',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M9 6h6M6 9v6m12-9v12M9 18h6"/></svg>`,
+                what: 'n8n is an extensible workflow automation platform. Connect APIs, databases, and services to orchestrate tasks with triggers and nodes.',
+                how: [
+                    'Build flows visually with nodes for common services and protocols.',
+                    'Trigger via schedules, webhooks, or events and pass data through steps.',
+                    'Self-hosted for full control over data and integrations.',
+                ],
+                features: [
+                    'Hundreds of prebuilt nodes',
+                    'Webhooks and cron triggers',
+                    'Secrets and credentials management',
+                    'Scales horizontally',
+                ],
+                compose: `# n8n as a Swarm stack (use in Portainer Stacks)\nversion: '3.8'\nservices:\n  n8n:\n    image: n8nio/n8n:latest\n    ports:\n      - '5678:5678'\n    volumes:\n      - n8n_data:/home/node/.n8n\n    deploy:\n      replicas: 1\n      restart_policy:\n        condition: on-failure\n      update_config:\n        order: start-first\n        parallelism: 1\n        delay: 5s\nvolumes:\n  n8n_data:`,
+            },
+            'uptime-kuma': {
+                title: 'Uptime Kuma',
+                color: 'text-green-400',
+                tagline: 'Uptime monitoring and alerts',
+                status: 'available',
+                launch: 'https://uptime.brenon.cloud',
+                docs: 'https://github.com/louislam/uptime-kuma',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M4 12h3l2 3 3-6 2 3h6"/></svg>`,
+                what: 'Uptime Kuma is a self-hosted monitoring tool that tracks service availability, latency, and incidents with notifications.',
+                how: [
+                    'Create monitors for HTTP(S), TCP, Ping, and more.',
+                    'Receive alerts via Telegram, Discord, email, and other channels.',
+                    'Visualize historic uptime and response times.',
+                ],
+                features: [
+                    'Multiple monitor types',
+                    'Notification integrations',
+                    'Status pages',
+                    'Lightweight and self-hosted',
+                ],
+                compose: `# Uptime Kuma as a Swarm stack\nversion: '3.8'\nservices:\n  uptime-kuma:\n    image: louislam/uptime-kuma:latest\n    ports:\n      - '3001:3001'\n    volumes:\n      - uptime-kuma:/app/data\n    deploy:\n      replicas: 1\n      restart_policy:\n        condition: on-failure\n      update_config:\n        order: start-first\n        parallelism: 1\n        delay: 5s\nvolumes:\n  uptime-kuma:`,
+            },
+            'grafana': {
+                title: 'Grafana',
+                color: 'text-orange-400',
+                tagline: 'Dashboards and analytics',
+                status: 'available',
+                launch: 'https://grafana.brenon.cloud',
+                docs: 'https://grafana.com/docs/grafana/latest/',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 3.6 15a1.65 1.65 0 0 0-1.51-1H2a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 3.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 3.6c.22 0 .43-.04.63-.1H9a2 2 0 1 1 4 0h.09c.2.06.41.1.63.1a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c0 .22.04.43.1.63V9a2 2 0 1 1 0 4h-.09c-.2.06-.41.1-.61.1z"/></svg>`,
+                what: 'Grafana visualizes metrics and logs from many data sources to build interactive dashboards and alerts.',
+                how: [
+                    'Connect data sources like Prometheus, Loki, InfluxDB, and PostgreSQL.',
+                    'Build dashboards with panels, queries, and variables.',
+                    'Set alert rules and notifications for critical signals.',
+                ],
+                features: [
+                    'Rich panels and plugins',
+                    'Alerting and annotations',
+                    'User and team permissions',
+                ],
+                compose: `# Grafana as a Swarm stack\nversion: '3.8'\nservices:\n  grafana:\n    image: grafana/grafana-oss:latest\n    ports:\n      - '3000:3000'\n    volumes:\n      - grafana:/var/lib/grafana\n    deploy:\n      replicas: 1\n      restart_policy:\n        condition: on-failure\n      update_config:\n        order: start-first\n        parallelism: 1\n        delay: 5s\nvolumes:\n  grafana:`,
+            },
+            'authentik': {
+                title: 'Authentik',
+                color: 'text-blue-400',
+                tagline: 'Identity Provider (IdP) and SSO',
+                status: 'planned',
+                launch: null,
+                docs: 'https://goauthentik.io/docs/',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M9 12l2 2 4-4"/></svg>`,
+                what: 'Authentik is an open-source identity provider offering Single Sign-On, MFA, and access policies for modern applications.',
+                how: [
+                    'Integrates with apps using OIDC, SAML, and LDAP.',
+                    'Manages users, groups, and policies centrally.',
+                    'Supports MFA and device trust for better security.',
+                ],
+                features: [
+                    'OIDC/SAML support',
+                    'MFA and policies',
+                    'Self-service portal',
+                ],
+            },
+            'kong': {
+                title: 'Kong API Gateway',
+                color: 'text-green-400',
+                tagline: 'Secure, manage, and observe APIs',
+                status: 'planned',
+                launch: null,
+                docs: 'https://docs.konghq.com/',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
+                what: 'Kong Gateway provides routing, authentication, rate limiting, and observability for APIs and microservices.',
+                how: [
+                    'Proxy inbound requests to upstream services with plugins for auth and policies.',
+                    'Manage configuration declaratively or via Admin API.',
+                    'Collect metrics and logs to monitor API traffic.',
+                ],
+                features: [
+                    'High-performance proxy',
+                    'Rich plugin ecosystem',
+                    'Declarative config',
+                ],
+            },
+            'docker': {
+                title: 'Docker Deployments',
+                color: 'text-cyan-400',
+                tagline: 'Bring your own container to Brenon.Cloud',
+                status: 'available',
+                launch: null,
+                docs: 'https://docs.docker.com/',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="4" height="4"/><rect x="8" y="11" width="4" height="4"/><rect x="13" y="11" width="4" height="4"/><rect x="8" y="6" width="4" height="4"/><path d="M2 16c0 2.761 2.91 4 6.5 4H16c3.59 0 6.5-1.239 6.5-4 0-1.2-.6-2.2-1.6-3h-4.4"/></svg>`,
+                what: 'Deploy any containerized application on Brenon.Cloud. We support Docker and Docker Compose for consistent, repeatable deployments.',
+                how: [
+                    'Package your app as a Docker image locally or from a registry.',
+                    'Define services, networks, and volumes using Docker Compose.',
+                    'Integrate with our monitoring (Uptime Kuma) and dashboards (Grafana).',
+                ],
+                features: [
+                    'Fast rollouts and rollbacks',
+                    'Isolated runtime per service',
+                    'Easy observability integrations',
+                ],
+                compose: `# Example: simple service as a Swarm stack\nversion: '3.8'\nservices:\n  my-service:\n    image: your-dockerhub-user/your-image:latest\n    ports:\n      - '8080:8080'\n    environment:\n      - NODE_ENV=production\n    deploy:\n      replicas: 2\n      restart_policy:\n        condition: on-failure\n      update_config:\n        order: start-first\n        parallelism: 1\n        delay: 5s\n    # volumes:\n    #   - my_data:/data\n# volumes:\n#   my_data:`,
+            },
+            'portainer': {
+                title: 'Portainer (Swarm Management)',
+                color: 'text-sky-400',
+                tagline: 'UI to manage Docker Swarm and deploy stacks',
+                status: 'available',
+                launch: 'http://portainer.home.server/',
+                docs: 'https://docs.portainer.io/',
+                icon: `<svg class="h-10 w-10 sm:h-12 sm:w-12 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="14" width="4" height="4"/><rect x="8" y="14" width="4" height="4"/><rect x="13" y="14" width="4" height="4"/><rect x="8" y="9" width="4" height="4"/><path d="M2 18c0 2.2 3 3 6 3h7c3 0 6-.8 6-3 0-1-.5-1.8-1.4-2.5"/></svg>`,
+                what: 'Portainer provides a simple UI to operate our Docker Swarm cluster: deploy Compose stacks, manage networks/volumes/secrets, and control access.',
+                how: [
+                    'Create and update Swarm stacks using Compose files with deploy policies.',
+                    'Scale services and perform rolling updates directly from the UI.',
+                    'Manage registries, secrets, configs, and node placement constraints.',
+                ],
+                features: [
+                    'Multi-node Swarm management',
+                    'Stack templates and versioning',
+                    'RBAC, teams, and audit-friendly operations',
+                ],
+                compose: `# Portainer with Agent on Swarm\nversion: '3.8'\nservices:\n  agent:\n    image: portainer/agent:latest\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock\n      - /var/lib/docker/volumes:/var/lib/docker/volumes\n    networks:\n      - agent_network\n    deploy:\n      mode: global\n      placement:\n        constraints: [node.platform.os == linux]\n\n  portainer:\n    image: portainer/portainer-ce:latest\n    command: -H tcp://tasks.agent:9001 --tlsskipverify\n    ports:\n      - '9443:9443'\n    volumes:\n      - portainer_data:/data\n    networks:\n      - agent_network\n    deploy:\n      placement:\n        constraints: [node.role == manager]\n\nnetworks:\n  agent_network:\n    driver: overlay\n    attachable: true\n\nvolumes:\n  portainer_data:`,
+            },
+        };
+
+        function getParam(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name || 'service');
+        }
+
+        function renderService(key) {
+            const data = services[key];
+            const exists = !!data;
+
+            const titleEl = document.getElementById('service-title');
+            const nameInline = document.getElementById('service-name-inline');
+            const taglineEl = document.getElementById('service-tagline');
+            const iconWrap = document.getElementById('service-icon');
+            const statusEl = document.getElementById('service-status');
+            const whatEl = document.getElementById('service-what');
+            const howEl = document.getElementById('service-how');
+            const featuresEl = document.getElementById('service-features');
+            const btnLaunch = document.getElementById('btn-launch');
+            const btnDocs = document.getElementById('btn-docs');
+            const linkDocs = document.getElementById('link-docs');
+            const composeCard = document.getElementById('compose-card');
+            const composeSnippet = document.getElementById('compose-snippet');
+
+            if (!exists) {
+                titleEl.textContent = 'Service not found';
+                taglineEl.textContent = 'Choose a service from the list below.';
+                iconWrap.innerHTML = `<svg class="h-10 w-10 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`;
+                statusEl.textContent = 'unknown';
+                statusEl.className = 'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-gray-800 text-gray-300';
+                whatEl.innerHTML = 'We couldn\'t find that service. Try one of these: ' +
+                    `<a class="text-blue-400 hover:underline" href="/service.html?service=n8n">n8n</a>, ` +
+                    `<a class="text-blue-400 hover:underline" href="/service.html?service=uptime-kuma">Uptime Kuma</a>, ` +
+                    `<a class="text-blue-400 hover:underline" href="/service.html?service=grafana">Grafana</a>, ` +
+                    `<a class="text-blue-400 hover:underline" href="/service.html?service=authentik">Authentik</a>, ` +
+                    `<a class="text-blue-400 hover:underline" href="/service.html?service=kong">Kong</a>, ` +
+                    `<a class="text-blue-400 hover:underline" href="/service.html?service=docker">Docker</a>.`;
+                howEl.innerHTML = '';
+                featuresEl.innerHTML = '';
+                btnLaunch.setAttribute('disabled', 'true');
+                btnLaunch.href = '#';
+                btnDocs.href = '#';
+                linkDocs.href = '#';
+                composeCard.classList.add('hidden');
+                return;
+            }
+
+            // Header
+            titleEl.textContent = data.title;
+            nameInline.textContent = data.title;
+            taglineEl.textContent = data.tagline;
+            iconWrap.innerHTML = data.icon;
+            if (data.color) {
+                iconWrap.classList.add('ring-1','ring-white/10');
+            }
+
+            // Status badge
+            if (data.status === 'available') {
+                statusEl.textContent = 'Available';
+                statusEl.className = 'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-green-900/40 text-green-300 ring-1 ring-green-600/30';
+            } else if (data.status === 'planned') {
+                statusEl.textContent = 'Coming soon';
+                statusEl.className = 'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-yellow-900/40 text-yellow-300 ring-1 ring-yellow-600/30';
+            } else {
+                statusEl.textContent = data.status || 'Unknown';
+                statusEl.className = 'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-gray-800 text-gray-300';
+            }
+
+            // Body
+            whatEl.textContent = data.what;
+            howEl.innerHTML = data.how.map(item => `<li>${item}</li>`).join('');
+            featuresEl.innerHTML = data.features.map(item => `<li>${item}</li>`).join('');
+
+            // Links
+            if (data.launch) {
+                btnLaunch.removeAttribute('disabled');
+                btnLaunch.href = data.launch;
+            } else {
+                btnLaunch.setAttribute('disabled', 'true');
+                btnLaunch.href = '#';
+            }
+            btnDocs.href = data.docs;
+            linkDocs.href = data.docs;
+
+            // Compose snippet
+            if (data.compose) {
+                composeCard.classList.remove('hidden');
+                composeSnippet.textContent = data.compose;
+            } else {
+                composeCard.classList.add('hidden');
+            }
+        }
+
+        const key = (getParam('service') || '').toLowerCase();
+        renderService(key);
+    </script>
+</body>
+</html>
