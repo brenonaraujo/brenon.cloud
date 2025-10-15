@@ -44,10 +44,19 @@ const router = createRouter({
 // Pinia store
 const pinia = createPinia()
 
+// Get saved language preference or use browser default
+const getInitialLocale = () => {
+  const savedLanguage = localStorage.getItem('preferred-language')
+  if (savedLanguage && ['en', 'pt'].includes(savedLanguage)) {
+    return savedLanguage
+  }
+  return navigator.language.startsWith('pt') ? 'pt' : 'en'
+}
+
 // i18n configuration
 const i18n = createI18n({
   legacy: false, // Use Composition API
-  locale: navigator.language.startsWith('pt') ? 'pt' : 'en', // Default locale based on browser
+  locale: getInitialLocale(), // Load saved preference or use browser default
   fallbackLocale: 'en',
   messages: {
     en,

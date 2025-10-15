@@ -182,3 +182,12 @@ Services follow a defined type structure (see `src/types/service.js`):
 - Each service has: `id`, `title`, `description`, `icon`, `color`, `url`
 - Extended properties: `quickStart`, `useCases`, `category`
 - Mock data is currently in `ServicesApiClient` for development
+
+
+## To following at the end of any implementation
+- Create a pull request with a detailed description of changes e a new branch
+- Branch created for each feature has to following this patter to name
+  - feature/short-description
+  - fix/short-description
+  - chore/short-description
+- Setup a precise descriptions of the changes mades and how to test it.

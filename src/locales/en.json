@@ -147,5 +147,13 @@
     "error": "An error occurred",
     "retry": "Retry",
     "close": "Close"
+  },
+  "navbar": {
+    "language": "Language",
+    "selectLanguage": "Select Language",
+    "howItWorks": "How it works",
+    "services": "Services",
+    "about": "About",
+    "status": "Status"
   }
 }
