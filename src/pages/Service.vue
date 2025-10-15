@@ -377,12 +377,16 @@ graph TB
     O[Grafana] --> G
     O --> H
     
+    click M "?service=portainer" "View Portainer Details"
+    click N "?service=kong" "View Kong Details"  
+    click O "?service=grafana" "View Grafana Details"
+    
     style F fill:#0ea5e9,stroke:#0284c7,color:#fff
     style G fill:#22c55e,stroke:#16a34a,color:#fff
     style H fill:#22c55e,stroke:#16a34a,color:#fff
-    style M fill:#8b5cf6,stroke:#7c3aed,color:#fff
-    style N fill:#00d4aa,stroke:#00b894,color:#fff
-    style O fill:#f59e0b,stroke:#d97706,color:#fff
+    style M fill:#8b5cf6,stroke:#7c3aed,color:#fff,stroke-width:3px
+    style N fill:#00d4aa,stroke:#00b894,color:#fff,stroke-width:3px
+    style O fill:#f59e0b,stroke:#d97706,color:#fff,stroke-width:3px
 `,
     demoUrl: 'http://portainer.brenon.cloud'
   },
