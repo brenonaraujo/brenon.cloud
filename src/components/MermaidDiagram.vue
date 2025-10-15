@@ -49,7 +49,7 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/>
                     </svg>
                   </button>
-                  <span class="text-white text-sm font-mono min-w-[3.5rem] text-center">{{ zoomLevel }}%</span>
+                  <span class="text-white text-sm font-mono min-w-[3.5rem] text-center">{{ zoomLevel.fixed(2) }}%</span>
                   <button
                     @click="zoomIn"
                     class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
