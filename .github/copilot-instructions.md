@@ -190,4 +190,4 @@ Services follow a defined type structure (see `src/types/service.js`):
   - feature/short-description
   - fix/short-description
   - chore/short-description
-- Setup a precise descriptions of the changes mades and how to test it.
+- Setup a short resumed description of the changes mades and how to test it.
