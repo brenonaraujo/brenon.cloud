@@ -90,6 +90,9 @@
               @mousemove="onDrag"
               @mouseup="endDrag"
               @mouseleave="endDrag"
+              @touchstart.prevent="handleTouchStart"
+              @touchmove.prevent="handleTouchMove"
+              @touchend.prevent="handleTouchEnd"
               :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }"
             >
               <div class="absolute inset-0 flex items-center justify-center">
@@ -109,7 +112,7 @@
 
             <!-- Footer Info -->
             <div class="mt-4 text-center text-gray-400 text-sm">
-              <p>Scroll wheel to zoom (50%-800%) • Click and drag to navigate anywhere • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
+              <p>Scroll wheel to zoom (50%-800%) • Click/drag to navigate • Pinch to zoom on mobile • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
             </div>
           </div>
         </div>
@@ -144,6 +147,11 @@ const isMaximized = ref(false)
     const isDragging = ref(false)
     const dragStart = ref({ x: 0, y: 0 })
     const panStart = ref({ x: 0, y: 0 })
+    
+    // Touch support variables
+    const lastTouchDistance = ref(0)
+    const touchStartTime = ref(0)
+    const lastTouchCenter = ref({ x: 0, y: 0 })
 
 // Configure Mermaid with dark theme
 const initializeMermaid = () => {
@@ -405,6 +413,107 @@ const endDrag = () => {
   isDragging.value = false
 }
 
+// Touch event handlers for mobile support
+const getTouchDistance = (touches) => {
+  if (touches.length < 2) return 0
+  const touch1 = touches[0]
+  const touch2 = touches[1]
+  return Math.sqrt(
+    Math.pow(touch1.clientX - touch2.clientX, 2) + 
+    Math.pow(touch1.clientY - touch2.clientY, 2)
+  )
+}
+
+const getTouchCenter = (touches) => {
+  if (touches.length === 1) {
+    return { x: touches[0].clientX, y: touches[0].clientY }
+  }
+  
+  const x = (touches[0].clientX + touches[1].clientX) / 2
+  const y = (touches[0].clientY + touches[1].clientY) / 2
+  return { x, y }
+}
+
+const handleTouchStart = (event) => {
+  if (!maximizedContainer.value) return
+  
+  touchStartTime.value = Date.now()
+  
+  if (event.touches.length === 1) {
+    // Single touch - start pan
+    const touch = event.touches[0]
+    isDragging.value = true
+    dragStart.value = { x: touch.clientX, y: touch.clientY }
+    panStart.value = { x: panX.value, y: panY.value }
+    lastTouchCenter.value = { x: touch.clientX, y: touch.clientY }
+  } else if (event.touches.length === 2) {
+    // Two fingers - start pinch zoom
+    isDragging.value = false
+    lastTouchDistance.value = getTouchDistance(event.touches)
+    lastTouchCenter.value = getTouchCenter(event.touches)
+  }
+}
+
+const handleTouchMove = (event) => {
+  if (!maximizedContainer.value) return
+  
+  if (event.touches.length === 1 && isDragging.value) {
+    // Single touch pan
+    const touch = event.touches[0]
+    const dx = touch.clientX - dragStart.value.x
+    const dy = touch.clientY - dragStart.value.y
+    
+    panX.value = panStart.value.x + dx
+    panY.value = panStart.value.y + dy
+  } else if (event.touches.length === 2) {
+    // Two finger pinch zoom
+    const currentDistance = getTouchDistance(event.touches)
+    const currentCenter = getTouchCenter(event.touches)
+    
+    if (lastTouchDistance.value > 0) {
+      // Calculate zoom change
+      const zoomChange = (currentDistance / lastTouchDistance.value)
+      const oldZoom = zoomLevel.value
+      const newZoom = Math.min(800, Math.max(50, oldZoom * zoomChange))
+      
+      // Apply zoom
+      zoomLevel.value = newZoom
+      
+      // Adjust pan to zoom towards touch center (similar to mouse wheel)
+      if (maximizedContainer.value) {
+        const rect = maximizedContainer.value.getBoundingClientRect()
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const touchX = currentCenter.x - rect.left
+        const touchY = currentCenter.y - rect.top
+        
+        const zoomFactor = newZoom / oldZoom
+        panX.value = (panX.value - (touchX - centerX)) * zoomFactor + (touchX - centerX)
+        panY.value = (panY.value - (touchY - centerY)) * zoomFactor + (touchY - centerY)
+      }
+    }
+    
+    lastTouchDistance.value = currentDistance
+    lastTouchCenter.value = currentCenter
+  }
+}
+
+const handleTouchEnd = (event) => {
+  const touchDuration = Date.now() - touchStartTime.value
+  
+  if (event.touches.length === 0) {
+    // All touches ended
+    isDragging.value = false
+    lastTouchDistance.value = 0
+  } else if (event.touches.length === 1) {
+    // One finger lifted, switch to pan mode
+    const touch = event.touches[0]
+    isDragging.value = true
+    dragStart.value = { x: touch.clientX, y: touch.clientY }
+    panStart.value = { x: panX.value, y: panY.value }
+  }
+}
+
 // Keyboard shortcuts
 const handleKeyDown = (event) => {
   if (!isMaximized.value) return
@@ -469,6 +578,24 @@ watch(() => props.diagram, () => {
 
 .cursor-grabbing {
   cursor: grabbing !important;
+}
+
+/* Mobile touch optimizations */
+.mermaid-diagram-maximized {
+  touch-action: none; /* Disable browser gestures */
+  -webkit-touch-callout: none; /* Disable iOS callout */
+  -webkit-user-select: none; /* Disable text selection */
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  .flex button {
+    min-height: 44px; /* iOS recommended touch target */
+    min-width: 44px;
+  }
 }
 
 /* Enable interactions on SVG elements */
