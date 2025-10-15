@@ -8,7 +8,7 @@
         class="mermaid-diagram bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 overflow-x-auto cursor-pointer transition-all hover:border-blue-500/50"
         @click="openMaximized"
       >
-        {{ diagram }}
+        <!-- Diagram will be rendered here by Mermaid -->
       </div>
       
       <!-- Expand Button Overlay -->
@@ -24,100 +24,89 @@
     </div>
 
     <!-- Maximized/Fullscreen Modal -->
-    <Teleport to="body">
-      <Transition name="modal-fade">
-        <div 
-          v-if="isMaximized"
-          class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
-          @click.self="closeMaximized"
-        >
-          <!-- Modal Container -->
-          <div class="relative w-full h-full max-w-7xl max-h-screen p-4 sm:p-8 flex flex-col">
-            
-            <!-- Header with Controls -->
-            <div class="flex items-center justify-between mb-4 bg-gray-900/80 backdrop-blur-sm rounded-lg px-4 py-3">
-              <div class="flex items-center gap-4">
-                <h3 class="text-white font-semibold text-lg">Architecture Diagram</h3>
-                <div class="flex items-center gap-2 border-l border-gray-700 pl-4">
-                  <span class="text-gray-400 text-sm">Zoom:</span>
-                  <button
-                    @click="zoomOut"
-                    class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
-                    title="Zoom Out"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/>
-                    </svg>
-                  </button>
-                  <span class="text-white text-sm font-mono min-w-[3.5rem] text-center">{{ zoomLevel.fixed(2) }}%</span>
-                  <button
-                    @click="zoomIn"
-                    class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
-                    title="Zoom In"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
-                    </svg>
-                  </button>
-                  <button
-                    @click="resetZoom"
-                    class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded transition-colors"
-                    title="Reset Zoom"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-              
-              <!-- Close Button -->
+    <div v-if="isMaximized" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90" @click.self="closeMaximized">
+      <!-- Modal Container -->
+      <div class="relative w-full h-full max-w-7xl max-h-screen p-4 sm:p-8 flex flex-col">
+        
+        <!-- Header with Controls -->
+        <div class="flex items-center justify-between mb-4 bg-gray-900/80 backdrop-blur-sm rounded-lg px-4 py-3">
+          <div class="flex items-center gap-4">
+            <h3 class="text-white font-semibold text-lg">Architecture Diagram</h3>
+            <div class="flex items-center gap-2 border-l border-gray-700 pl-4">
+              <span class="text-gray-400 text-sm">Zoom:</span>
               <button
-                @click="closeMaximized"
-                class="p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-colors"
-                title="Close (ESC)"
+                @click="zoomOut"
+                class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
+                title="Zoom Out"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/>
                 </svg>
               </button>
+              <span class="text-white text-sm font-mono min-w-[3.5rem] text-center">{{ zoomLevel }}%</span>
+              <button
+                @click="zoomIn"
+                class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
+                title="Zoom In"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                </svg>
+              </button>
+              <button
+                @click="resetZoom"
+                class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded transition-colors"
+                title="Reset Zoom"
+              >
+                Reset
+              </button>
             </div>
+          </div>
+          
+          <!-- Close Button -->
+          <button
+            @click="closeMaximized"
+            class="p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-colors"
+            title="Close (ESC)"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
 
-            <!-- Diagram Container with Zoom and Pan -->
+        <!-- Diagram Container with Zoom and Pan -->
+        <div 
+          ref="maximizedContainer"
+          class="flex-1 bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden relative"
+          @wheel.prevent="handleWheel"
+          @mousedown="startDrag"
+          @mousemove="onDrag"
+          @mouseup="endDrag"
+          @mouseleave="endDrag"
+          :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }"
+        >
+          <div class="absolute inset-0 flex items-center justify-center">
             <div 
-              ref="maximizedContainer"
-              class="flex-1 bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden relative"
-              @wheel.prevent="handleWheel"
-              @mousedown="startDrag"
-              @mousemove="onDrag"
-              @mouseup="endDrag"
-              @mouseleave="endDrag"
-              @touchstart.prevent="handleTouchStart"
-              @touchmove.prevent="handleTouchMove"
-              @touchend.prevent="handleTouchEnd"
-              :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }"
+              ref="maximizedDiagram"
+              class="mermaid-diagram-maximized"
+              :style="{ 
+                transform: `translate(${panX}px, ${panY}px) scale(${zoomLevel / 100})`,
+                transformOrigin: 'center center',
+                transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+              }"
             >
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div 
-                  ref="maximizedDiagram"
-                  class="mermaid-diagram-maximized"
-                  :style="{ 
-                    transform: `translate(${panX}px, ${panY}px) scale(${zoomLevel / 100})`,
-                    transformOrigin: 'center center',
-                    transition: isDragging ? 'none' : 'transform 0.1s ease-out'
-                  }"
-                >
-                  <!-- Diagram will be rendered here -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer Info -->
-            <div class="mt-4 text-center text-gray-400 text-sm">
-              <p>Scroll wheel to zoom (50%-800%) • Click/drag to navigate • Pinch to zoom on mobile • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
+              <!-- Diagram will be rendered here -->
             </div>
           </div>
         </div>
-      </Transition>
-    </Teleport>
+
+        <!-- Footer Info -->
+        <div class="mt-4 text-center text-gray-400 text-sm">
+          <p>Scroll wheel to zoom (50%-800%) • Click and drag to navigate anywhere • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -136,22 +125,18 @@ const props = defineProps({
   }
 })
 
+// Reactive variables
 const mermaidElement = ref(null)
 const maximizedDiagram = ref(null)
 const maximizedContainer = ref(null)
 const elementId = ref(`mermaid-${Math.random().toString(36).substr(2, 9)}`)
 const isMaximized = ref(false)
-    const zoomLevel = ref(100)
-    const panX = ref(0)
-    const panY = ref(0)
-    const isDragging = ref(false)
-    const dragStart = ref({ x: 0, y: 0 })
-    const panStart = ref({ x: 0, y: 0 })
-    
-    // Touch support variables
-    const lastTouchDistance = ref(0)
-    const touchStartTime = ref(0)
-    const lastTouchCenter = ref({ x: 0, y: 0 })
+const zoomLevel = ref(100)
+const panX = ref(0)
+const panY = ref(0)
+const isDragging = ref(false)
+const dragStart = ref({ x: 0, y: 0 })
+const panStart = ref({ x: 0, y: 0 })
 
 // Configure Mermaid with dark theme
 const initializeMermaid = () => {
@@ -172,51 +157,24 @@ const initializeMermaid = () => {
       mainBkg: '#1F2937',
       secondBkg: '#374151',
       tertiaryBkg: '#4B5563',
-      // Ensure all text is white for contrast
       textColor: '#FFFFFF',
       nodeTextColor: '#FFFFFF',
-      c0: '#3B82F6', // Light blue nodes
-      c1: '#10B981', // Green nodes  
-      c2: '#F59E0B', // Orange nodes
-      c3: '#EF4444', // Red nodes
-      c4: '#8B5CF6', // Purple nodes
-      c5: '#06B6D4', // Cyan nodes
-      c6: '#84CC16', // Lime nodes
-      c7: '#F97316'  // Orange nodes
+      c0: '#3B82F6',
+      c1: '#10B981',
+      c2: '#F59E0B',
+      c3: '#EF4444',
+      c4: '#8B5CF6',
+      c5: '#06B6D4',
+      c6: '#84CC16',
+      c7: '#F97316'
     },
     flowchart: {
       useMaxWidth: true,
       htmlLabels: true,
       curve: 'basis'
     },
-    sequence: {
-      actorMargin: 50,
-      width: 150,
-      height: 65,
-      boxMargin: 10,
-      boxTextMargin: 5,
-      noteMargin: 10,
-      messageMargin: 35
-    },
-    gantt: {
-      useMaxWidth: true,
-      leftPadding: 75,
-      gridLineStartPadding: 35,
-      fontSize: 11,
-      sectionFontSize: 11,
-      numberSectionStyles: 4
-    },
-    // Enable security level for interactive features
     securityLevel: 'loose',
-    // Enable click events and interactions
-    suppressErrorRendering: false,
-    // Enable pan and zoom
-    panZoom: {
-      enabled: true,
-      minZoom: 0.5,
-      maxZoom: 3,
-      step: 0.1
-    }
+    suppressErrorRendering: false
   })
 }
 
@@ -229,6 +187,8 @@ const renderDiagram = async (targetElement = mermaidElement) => {
     
     // Generate unique ID for this render
     const id = `mermaid-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    
+
     
     // Render the diagram
     const { svg } = await mermaid.render(id, props.diagram)
@@ -260,16 +220,20 @@ const openMaximized = async () => {
   // Reset pan position to center and start with higher zoom
   panX.value = 0
   panY.value = 0
-  zoomLevel.value = 300 // Start at 300% instead of 100%
+  zoomLevel.value = 300
   
   await nextTick()
-  await renderDiagram(maximizedDiagram)
+  
+  // Render diagram in maximized container
+  if (maximizedDiagram.value) {
+    await renderDiagram(maximizedDiagram)
+  }
   
   // Calculate initial zoom to fit diagram in viewport with proper centering
   await nextTick()
   setTimeout(() => {
     fitDiagramToView()
-  }, 150) // Slightly longer delay to ensure proper rendering
+  }, 200)
   
   document.body.style.overflow = 'hidden'
 }
@@ -413,107 +377,6 @@ const endDrag = () => {
   isDragging.value = false
 }
 
-// Touch event handlers for mobile support
-const getTouchDistance = (touches) => {
-  if (touches.length < 2) return 0
-  const touch1 = touches[0]
-  const touch2 = touches[1]
-  return Math.sqrt(
-    Math.pow(touch1.clientX - touch2.clientX, 2) + 
-    Math.pow(touch1.clientY - touch2.clientY, 2)
-  )
-}
-
-const getTouchCenter = (touches) => {
-  if (touches.length === 1) {
-    return { x: touches[0].clientX, y: touches[0].clientY }
-  }
-  
-  const x = (touches[0].clientX + touches[1].clientX) / 2
-  const y = (touches[0].clientY + touches[1].clientY) / 2
-  return { x, y }
-}
-
-const handleTouchStart = (event) => {
-  if (!maximizedContainer.value) return
-  
-  touchStartTime.value = Date.now()
-  
-  if (event.touches.length === 1) {
-    // Single touch - start pan
-    const touch = event.touches[0]
-    isDragging.value = true
-    dragStart.value = { x: touch.clientX, y: touch.clientY }
-    panStart.value = { x: panX.value, y: panY.value }
-    lastTouchCenter.value = { x: touch.clientX, y: touch.clientY }
-  } else if (event.touches.length === 2) {
-    // Two fingers - start pinch zoom
-    isDragging.value = false
-    lastTouchDistance.value = getTouchDistance(event.touches)
-    lastTouchCenter.value = getTouchCenter(event.touches)
-  }
-}
-
-const handleTouchMove = (event) => {
-  if (!maximizedContainer.value) return
-  
-  if (event.touches.length === 1 && isDragging.value) {
-    // Single touch pan
-    const touch = event.touches[0]
-    const dx = touch.clientX - dragStart.value.x
-    const dy = touch.clientY - dragStart.value.y
-    
-    panX.value = panStart.value.x + dx
-    panY.value = panStart.value.y + dy
-  } else if (event.touches.length === 2) {
-    // Two finger pinch zoom
-    const currentDistance = getTouchDistance(event.touches)
-    const currentCenter = getTouchCenter(event.touches)
-    
-    if (lastTouchDistance.value > 0) {
-      // Calculate zoom change
-      const zoomChange = (currentDistance / lastTouchDistance.value)
-      const oldZoom = zoomLevel.value
-      const newZoom = Math.min(800, Math.max(50, oldZoom * zoomChange))
-      
-      // Apply zoom
-      zoomLevel.value = newZoom
-      
-      // Adjust pan to zoom towards touch center (similar to mouse wheel)
-      if (maximizedContainer.value) {
-        const rect = maximizedContainer.value.getBoundingClientRect()
-        const centerX = rect.width / 2
-        const centerY = rect.height / 2
-        const touchX = currentCenter.x - rect.left
-        const touchY = currentCenter.y - rect.top
-        
-        const zoomFactor = newZoom / oldZoom
-        panX.value = (panX.value - (touchX - centerX)) * zoomFactor + (touchX - centerX)
-        panY.value = (panY.value - (touchY - centerY)) * zoomFactor + (touchY - centerY)
-      }
-    }
-    
-    lastTouchDistance.value = currentDistance
-    lastTouchCenter.value = currentCenter
-  }
-}
-
-const handleTouchEnd = (event) => {
-  const touchDuration = Date.now() - touchStartTime.value
-  
-  if (event.touches.length === 0) {
-    // All touches ended
-    isDragging.value = false
-    lastTouchDistance.value = 0
-  } else if (event.touches.length === 1) {
-    // One finger lifted, switch to pan mode
-    const touch = event.touches[0]
-    isDragging.value = true
-    dragStart.value = { x: touch.clientX, y: touch.clientY }
-    panStart.value = { x: panX.value, y: panY.value }
-  }
-}
-
 // Keyboard shortcuts
 const handleKeyDown = (event) => {
   if (!isMaximized.value) return
@@ -580,67 +443,9 @@ watch(() => props.diagram, () => {
   cursor: grabbing !important;
 }
 
-/* Mobile touch optimizations */
-.mermaid-diagram-maximized {
-  touch-action: none; /* Disable browser gestures */
-  -webkit-touch-callout: none; /* Disable iOS callout */
-  -webkit-user-select: none; /* Disable text selection */
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Improve touch targets on mobile */
-@media (max-width: 768px) {
-  .flex button {
-    min-height: 44px; /* iOS recommended touch target */
-    min-width: 44px;
-  }
-}
-
 /* Enable interactions on SVG elements */
 :deep(svg) {
   pointer-events: auto !important;
-}
-
-/* Modal animations */
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-fade-enter-from,
-.modal-fade-leave-to {
-  opacity: 0;
-}
-
-/* Custom scrollbar for maximized view */
-.scrollbar-thin {
-  scrollbar-width: thin;
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: #111827;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 4px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #4B5563;
-}
-
-/* Keyboard shortcut styling */
-kbd {
-  font-family: monospace;
-  font-size: 0.875rem;
 }
 
 /* Override Mermaid's default styles for dark theme */

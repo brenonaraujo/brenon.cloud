@@ -377,9 +377,9 @@ graph TB
     O[Grafana] --> G
     O --> H
     
-    click M "?service=portainer" "View Portainer Details"
-    click N "?service=kong" "View Kong Details"  
-    click O "?service=grafana" "View Grafana Details"
+    click M "?service=portainer"
+    click N "?service=kong"
+    click O "?service=grafana"
     
     style F fill:#0ea5e9,stroke:#0284c7,color:#fff
     style G fill:#22c55e,stroke:#16a34a,color:#fff
