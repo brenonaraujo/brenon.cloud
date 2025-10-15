@@ -5,7 +5,7 @@
           <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          <span>{{ t('servicePage.backToHome') }}</span>
+          <span>Back to Home</span>
         </router-link>
       </nav>
       
@@ -22,7 +22,6 @@
       </div>
       
       <div v-else-if="service" class="space-y-16">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Hero Section -->
         <div class="text-center">
           <div class="inline-flex items-center justify-center w-24 h-24 rounded-xl bg-white/5 backdrop-blur-sm border border-gray-700/50 mb-6 p-4">
@@ -41,7 +40,7 @@
 
         <!-- Architecture Diagram -->
         <div v-if="service.mermaidDiagram" class="space-y-8">
-          <h2 class="text-2xl font-semibold text-center text-white">{{ t('servicePage.architecture.title', { name: service.shortName }) }}</h2>
+          <h2 class="text-2xl font-semibold text-center text-white">How {{ service.shortName }} Fits in Brenon.Cloud</h2>
           <MermaidDiagram :diagram="service.mermaidDiagram" />
         </div>
 
@@ -53,7 +52,7 @@
               <svg class="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
               </svg>
-              {{ t('servicePage.features.title') }}
+              Core Features
             </h2>
             <div class="grid gap-4">
               <div v-for="feature in service.features" :key="feature" class="flex items-start gap-3 p-4 rounded-lg bg-gray-900/30">
@@ -71,7 +70,7 @@
               <svg class="w-6 h-6 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
               </svg>
-              {{ t('servicePage.useCases.title') }}
+              Use Cases
             </h2>
             <div class="space-y-6">
               <div v-for="useCase in service.useCases" :key="useCase.title" class="p-4 rounded-lg bg-gray-900/30">
@@ -86,7 +85,7 @@
 
         <!-- Getting Started -->
         <div class="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-emerald-500/10 rounded-2xl p-8 border border-gray-700/50">
-          <h2 class="text-2xl font-semibold mb-6 text-white text-center">{{ t('servicePage.gettingStarted.title') }}</h2>
+          <h2 class="text-2xl font-semibold mb-6 text-white text-center">Getting Started</h2>
           <div class="max-w-4xl mx-auto">
             <div class="prose prose-invert prose-lg max-w-none">
               <p v-html="service.gettingStarted"></p>
@@ -94,7 +93,7 @@
             
             <!-- Quick Start Steps -->
             <div v-if="service.quickStart" class="mt-8">
-              <h3 class="text-lg font-medium text-white mb-6">{{ t('servicePage.gettingStarted.quickStart') }}</h3>
+              <h3 class="text-lg font-medium text-white mb-6">Quick Start Guide</h3>
               <div class="grid md:grid-cols-3 gap-6">
                 <div v-for="(step, index) in service.quickStart" :key="index" class="text-center">
                   <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-4 text-blue-400 font-bold">
@@ -138,7 +137,6 @@
               </svg>
             </a>
           </div>
-        </div>
         </div>
       </div>
 
