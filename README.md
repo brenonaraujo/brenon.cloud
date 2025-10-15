@@ -38,10 +38,80 @@ A visão do Brenon.Cloud é expandir e incluir serviços robustos como gerenciam
 * **Repositório GitHub**: [https://github.com/brenonaraujo/brenon.cloud](https://github.com/brenonaraujo/brenon.cloud)
 * **LinkedIn do Autor**: [https://www.linkedin.com/in/brenonaraujo](https://www.linkedin.com/in/brenonaraujo)
 
-## Tecnologias Utilizadas (Página de Aterrissagem)
+## Tecnologias da Aplicação Web
 
-* HTML5
-* Tailwind CSS
+Esta landing page é construída usando tecnologias modernas de desenvolvimento web:
+
+* **Vue 3** - Framework JavaScript progressivo com Composition API
+* **Vite** - Ferramenta de build rápida com Hot Module Replacement
+* **Pinia** - Gerenciamento de estado oficial do Vue
+* **Vue Router** - Roteamento SPA
+* **Vue I18n** - Internacionalização (Português/Inglês)
+* **Tailwind CSS** - Framework CSS utility-first
+* **Mermaid** - Renderização de diagramas
+
+### Arquitetura
+O projeto implementa **Clean Architecture** com separação de responsabilidades em camadas, injeção de dependências e princípios SOLID. 
+
+📖 **Para detalhes completos da arquitetura, consulte [ARCHITECTURE.md](./ARCHITECTURE.md)**
+
+## Desenvolvimento Local
+
+### Pré-requisitos
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+
+### Instalação e Execução
+
+```bash
+# Clone o repositório
+git clone https://github.com/brenonaraujo/brenon.cloud.git
+cd brenon.cloud
+
+# Instale as dependências
+npm install
+
+# Execute o servidor de desenvolvimento
+npm run dev
+
+# Ou use a task configurada (inclui watch do Tailwind)
+npm run tailwind:watch
+```
+
+A aplicação estará disponível em `http://localhost:5173`
+
+### Scripts Disponíveis
+
+```bash
+npm run dev        # Servidor de desenvolvimento com HMR
+npm run build      # Build para produção
+npm run preview    # Preview do build de produção
+```
+
+## Deploy
+
+### Netlify (Atual)
+Este projeto está configurado para deploy automático no Netlify:
+
+- **URL de Produção**: [https://brenon.cloud](https://brenon.cloud)
+- **Configuração**: `netlify.toml` na raiz do projeto
+- **Deploy**: Automático via integração GitHub
+- **Redirects**: SPA routing configurado para `/index.html`
+
+### Deploy Manual
+Para fazer deploy em outros provedores:
+
+```bash
+# Build para produção
+npm run build
+
+# Arquivos estáticos gerados em ./dist/
+# Faça upload da pasta dist/ para seu provedor de hospedagem
+```
+
+### Variáveis de Ambiente
+Configure as seguintes variáveis conforme necessário:
+- `VITE_API_BASE_URL` - URL base da API (quando implementada)
 
 ---
 

@@ -1,174 +1,44 @@
 # Brenon.Cloud - AI Coding Instructions
 
 ## Project Overview
-This is a Vue 3 + Vite landing page for Brenon.Cloud, a personal cloud infrastructure platform. The site showcases Docker-based services and serves as a gateway to personal cloud services. **Current architecture is transitioning toward clean, scalable patterns with REST API integration, internationalization, and centralized state management.**
+This is a Vue 3 + Vite landing page for Brenon.Cloud, a personal cloud infrastructure platform. The site showcases Docker-based services and serves as a gateway to personal cloud services. The application implements **Clean Architecture** with layered separation of concerns, dependency injection, and SOLID principles.
 
-## Clean Architecture & SOLID Principles
+## Architecture Overview
 
-### Current State & Improvement Goals
-- **Current**: Hardcoded service data in components, mixed concerns, tight coupling
-- **Target**: Layered architecture with separation of concerns, dependency injection, and clean abstractions
+### Technology Stack
+- **Vue 3** with Composition API
+- **Vite** for build tooling and HMR
+- **Pinia** for state management
+- **Vue Router** for navigation
+- **Vue I18n** for internationalization
+- **Tailwind CSS** for styling
+- **Mermaid** for diagram rendering
 
-### Planned Architecture Layers
+### Clean Architecture Layers
 ```
 src/
-├── api/              # API layer - REST client abstractions
-├── stores/           # State management - Pinia stores 
-├── services/         # Business logic layer
-├── composables/      # Reusable composition functions
-├── components/       # Presentation layer
-├── locales/          # i18n translation files
-└── types/           # TypeScript definitions
+├── api/              # Infrastructure - HTTP clients and data access
+├── services/         # Domain - Business logic and rules
+├── stores/           # Application - State management (Pinia)
+├── composables/      # Application - Reusable composition functions
+├── components/       # Presentation - UI components
+├── locales/          # Infrastructure - Translation files
+└── types/           # Domain - Type definitions and contracts
 ```
 
-### Component Structure (Clean Architecture)
-- **UI Components** (`src/components/ui/`): Atomic, reusable, no business logic
-- **Feature Components** (`src/components/features/`): Service-specific, consume stores/composables
-- **Layout Components** (`src/components/layout/`): Structural components
-- **Icons**: Custom Vue render functions in `src/components/icons/Icons.js` using `h()` pattern
-
-### SOLID Principles Implementation
-
-#### Single Responsibility Principle (SRP)
-```javascript
-// ❌ Current: ServiceCard handles display + data + logic
-// ✅ Target: Separate concerns
-// ServiceCard.vue - only presentation
-// useService.js - data fetching logic  
-// serviceStore.js - state management
+### Data Flow Pattern
+The application follows a unidirectional data flow:
+```
+API Client → Service Layer → Pinia Store → Composable → Component
+                         ↓
+                   i18n Service → Translation Keys → Component
 ```
 
-#### Open/Closed Principle (OCP)
-```javascript
-// ✅ Extendable service rendering without modification
-const serviceRenderers = {
-  default: DefaultServiceRenderer,
-  enhanced: EnhancedServiceRenderer
-}
-```
-
-#### Dependency Inversion Principle (DIP)
-```javascript
-// ✅ Components depend on abstractions, not concrete implementations
-// useApiService() instead of direct fetch calls
-// useI18n() instead of hardcoded strings
-```
-
-### Data Flow Architecture
-
-#### Current Issues to Refactor
-1. **Hardcoded service data** in `Home.vue` and `Service.vue` (lines 212-270)
-2. **Mixed presentation/data logic** in components
-3. **No centralized state management** for service data
-4. **Hardcoded strings** throughout components
-
-#### Target Data Flow
-```
-REST API → API Service → Pinia Store → Composable → Component
-                    ↓
-              i18n Service → Translation Keys → Component
-```
-
-## Planned Feature Implementation
-
-### 1. REST API Integration
-**Target Structure:**
-```javascript
-// src/api/services.js
-export class ServicesApiClient {
-  async getServices() { /* GET /api/services */ }
-  async getService(id) { /* GET /api/services/:id */ }
-}
-
-// src/services/serviceService.js  
-export class ServiceService {
-  constructor(apiClient, i18nService) {
-    this.apiClient = apiClient
-    this.i18nService = i18nService
-  }
-}
-```
-
-**Replace hardcoded data in:**
-- `Home.vue` services array (lines 212-270)
-- `Service.vue` services object (lines 100+)
-
-### 2. Internationalization (i18n)
-**Setup Pattern:**
-```javascript
-// src/locales/en.json
-{
-  "services": {
-    "authentik": {
-      "title": "Identity & Access (Authentik)",
-      "description": "Centralize login with SSO..."
-    }
-  }
-}
-
-// Component usage
-const { t } = useI18n()
-const title = computed(() => t('services.authentik.title'))
-```
-
-**Files needing i18n:**
-- All hardcoded strings in `Home.vue`, `Service.vue`, `Navbar.vue`
-- Service descriptions and feature lists
-- UI labels and buttons
-
-### 3. Pinia State Management
-**Store Architecture:**
-```javascript
-// src/stores/serviceStore.js
-export const useServiceStore = defineStore('services', () => {
-  const services = ref([])
-  const loading = ref(false)
-  const error = ref(null)
-  
-  const fetchServices = async () => { /* API call */ }
-  const getServiceById = (id) => services.value.find(s => s.id === id)
-  
-  return { services, loading, error, fetchServices, getServiceById }
-})
-```
-
-### 4. Composables for Reusability
-**Target Composables:**
-```javascript
-// src/composables/useServices.js
-export function useServices() {
-  const store = useServiceStore()
-  const { t } = useI18n()
-  
-  return {
-    services: computed(() => store.services),
-    loading: computed(() => store.loading),
-    fetchServices: store.fetchServices
-  }
-}
-```
-
-## Development Workflow & Refactoring Strategy
-
-### Phase 1: Setup Infrastructure
-1. **Install dependencies**: `pinia`, `vue-i18n`, `axios/ofetch`
-2. **Create directory structure**: `api/`, `stores/`, `composables/`, `locales/`
-3. **Setup Pinia and i18n plugins** in `main.js`
-
-### Phase 2: Extract Hardcoded Data
-1. **Move service data** from components to JSON/API
-2. **Create service store** and API client
-3. **Replace direct data access** with store composables
-
-### Phase 3: Implement i18n
-1. **Extract all strings** to translation files
-2. **Replace hardcoded text** with `$t()` calls
-3. **Add language switcher** component
-
-### Phase 4: Clean Architecture
-1. **Create service layer** abstractions
-2. **Implement dependency injection** patterns
-3. **Add error boundaries** and loading states
+### Component Architecture
+- **UI Components** (`src/components/ui/`): Atomic, pure presentation components
+- **Layout Components** (`src/components/layout/`): Structural layout containers  
+- **Feature Components**: Business-specific components that consume stores/composables
+- **Icons**: Custom Vue render functions using `h()` pattern
 
 ### Build & Development
 - **Dev server**: `npm run dev` (Vite with HMR)
@@ -181,30 +51,27 @@ export function useServices() {
 - **Environment variables**: Configure API endpoints per environment
 - **SPA routing**: Redirects all routes to `/index.html`
 
-## Key Files & Refactoring Priorities
+## SOLID Principles in Practice
 
-### Current Critical Files (Refactor Priority)
-1. **`src/pages/Home.vue`** - Extract hardcoded services array to store
-2. **`src/pages/Service.vue`** - Replace hardcoded service objects with API calls
-3. **`src/components/ServiceCard.vue`** - Make generic, consume from props/store
-4. **`src/main.js`** - Setup Pinia, i18n, and API client injection
+### Single Responsibility Principle (SRP)
+Each layer has a single, well-defined responsibility:
+- **API clients**: Handle HTTP requests and data fetching
+- **Service classes**: Implement business logic and domain rules
+- **Stores**: Manage application state and coordinate data flow
+- **Composables**: Provide reusable reactive logic
+- **Components**: Handle presentation and user interaction
 
-### New Files to Create
-- `src/stores/serviceStore.js` - Centralized service state
-- `src/api/client.js` - HTTP client configuration
-- `src/services/serviceService.js` - Business logic layer
-- `src/locales/en.json`, `src/locales/pt.json` - Translation files
-- `src/composables/useServices.js` - Reusable service logic
+### Open/Closed Principle (OCP)
+The architecture supports extension without modification:
+- Service rendering through configurable patterns
+- Icon system with pluggable icon components
+- Extensible API clients and service layers
 
-### Dependencies to Add
-```json
-{
-  "pinia": "^2.1.7",
-  "vue-i18n": "^9.8.0", 
-  "ofetch": "^1.3.3",
-  "@pinia/nuxt": "^0.5.1"
-}
-```
+### Dependency Inversion Principle (DIP)
+Components depend on abstractions, not implementations:
+- Use `inject()` for service dependencies
+- Consume stores through composables
+- Access translations through `useI18n()` composable
 
 ## Component Development Guidelines
 
@@ -245,113 +112,55 @@ const { t } = useI18n()
 </script>
 ```
 
-### SOLID Component Patterns
+### Component Guidelines
 
-#### Single Responsibility Examples
-```javascript
-// ❌ Bad: Component doing too much
-// ServiceCard.vue handling: display + data fetching + routing + i18n
-
-// ✅ Good: Separated concerns
-// ServiceCard.vue - only display
-// useServices.js - data management  
-// useNavigation.js - routing logic
-// i18n composable - translations
-```
-
-#### Dependency Inversion in Components
-```vue
-<!-- ✅ Good: Depend on abstractions -->
-<script setup>
-// Inject services through composables
-const apiService = inject('apiService') // Abstract interface
-const { t } = useI18n() // Translation abstraction
-</script>
-
-<!-- ❌ Bad: Direct dependencies -->
-<script setup>
-// Direct imports create tight coupling
-import { fetchServices } from '../api/services.js'
-</script>
-```
-
-### New UI Components
-Place in `src/components/ui/` following atomic design:
-- **Atoms**: `Button.vue`, `Input.vue`, `Icon.vue`
-- **Molecules**: `SearchBox.vue`, `ServiceCard.vue`
-- **Organisms**: `ServiceGrid.vue`, `NavigationBar.vue`
-
-**Requirements:**
-- Use Tailwind with design tokens
+#### UI Components (`src/components/ui/`)
+**Purpose**: Pure, reusable, atomic components
+- Use Tailwind CSS for styling
 - Accept generic `variant` and `size` props
 - Emit semantic events, not DOM events
 - Use slots for content distribution
 - No business logic or state management
 
-### Icon System Enhancement
-Current: `src/components/icons/Icons.js` using `h()` render functions
-**Improvement needed**: Dynamic icon loading with TypeScript
-```javascript
-// Target: Icon registry pattern
-export const iconRegistry = {
-  checkmark: () => import('./CheckmarkIcon.vue'),
-  bolt: () => import('./BoltIcon.vue')
-}
+#### Feature Components
+**Purpose**: Business-specific components that consume stores/composables
+- Access data through composables like `useServices()`
+- Use `useI18n()` for translations
+- Implement proper loading and error states
 
-export function useIcon(name) {
-  return computed(() => iconRegistry[name]?.())
-}
+#### Component Principles
+```javascript
+// ✅ Good: Separated concerns
+// ServiceCard.vue - only presentation
+// useServices.js - data management  
+// serviceStore.js - state management
+// i18n - translations
 ```
 
-### Service Integration (Clean Architecture)
-**Current**: Hardcoded objects in `Home.vue`
-**Target**: API-driven with proper abstractions
+### Dependency Injection Pattern
+Components should depend on abstractions, not implementations:
+```vue
+<script setup>
+// ✅ Good: Use composables and abstractions
+const apiService = inject('serviceService')
+const { t } = useI18n()
+const { services, loading, error } = useServices()
 
-```javascript
-// ❌ Current: Hardcoded in component
-const services = [
-  { id: 'authentik', title: 'Identity...', /* ... */ }
-]
+// ❌ Avoid: Direct imports create tight coupling
+// import { fetchServices } from '../api/services.js'
+</script>
+```
 
-// ✅ Target: Clean service layer
-// 1. API Client (Infrastructure)
-class ServiceApiClient {
-  async getServices() { /* HTTP call */ }
-}
-
-// 2. Service Layer (Domain)  
-class ServiceService {
-  constructor(apiClient) { this.apiClient = apiClient }
-  async getAllServices() { /* Business logic */ }
-}
-
-// 3. Store (Application)
-const useServiceStore = defineStore('services', () => {
-  const service = inject('serviceService')
-  const services = ref([])
-  
-  async function fetchServices() {
-    services.value = await service.getAllServices()
-  }
-  
-  return { services, fetchServices }
-})
-
-// 4. Composable (Presentation)
-function useServices() {
-  const store = useServiceStore()
-  return {
-    services: computed(() => store.services),
-    fetchServices: store.fetchServices
-  }
-}
-
-// 5. Component (UI)
-const { services } = useServices()
+### Data Flow Architecture
+Follow the established unidirectional data flow:
+```
+ServicesApiClient → ServiceService → serviceStore → useServices() → Component
+                                 ↓
+                            i18n → useI18n() → Component
 ```
 
 ### Error Handling & Loading States
-**Pattern**: Consistent error boundaries across components
+Implement consistent patterns across components:
 ```vue
 <template>
   <div>
@@ -360,15 +169,16 @@ const { services } = useServices()
     <ServiceGrid v-else :services="services" />
   </div>
 </template>
-
-<script setup>
-const { services, loading, error } = useServices()
-</script>
 ```
 
-### TypeScript Integration (Future)
-**Preparation**: Structure code for easy TS migration
-- Use explicit prop definitions
-- Type composable return values
-- Define service interfaces
-- Create type-safe API clients
+### Icon System
+Current implementation uses `h()` render functions in `src/components/icons/Icons.js`
+- Icons are registered in a centralized file
+- Components import icons from `src/components/icons/index.js`
+- Follow the existing pattern for new icons
+
+### Service Data Structure
+Services follow a defined type structure (see `src/types/service.js`):
+- Each service has: `id`, `title`, `description`, `icon`, `color`, `url`
+- Extended properties: `quickStart`, `useCases`, `category`
+- Mock data is currently in `ServicesApiClient` for development
