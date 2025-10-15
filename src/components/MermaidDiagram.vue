@@ -29,33 +29,33 @@
       <div class="relative w-full h-full max-w-7xl max-h-screen p-4 sm:p-8 flex flex-col">
         
         <!-- Header with Controls -->
-        <div class="flex items-center justify-between mb-4 bg-gray-900/80 backdrop-blur-sm rounded-lg px-4 py-3">
-          <div class="flex items-center gap-4">
-            <h3 class="text-white font-semibold text-lg">Architecture Diagram</h3>
-            <div class="flex items-center gap-2 border-l border-gray-700 pl-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-0 sm:justify-between mb-4 bg-gray-900/80 backdrop-blur-sm rounded-lg px-4 py-3">
+          <h3 class="text-white font-semibold text-lg sm:text-xl">Architecture Diagram</h3>
+          <div class="flex items-center justify-between w-full sm:w-auto gap-4">
+            <div class="flex items-center gap-2 sm:border-l sm:border-gray-700 sm:pl-4">
               <span class="text-gray-400 text-sm">Zoom:</span>
               <button
                 @click="zoomOut"
-                class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
+                class="p-2 sm:p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors touch-manipulation"
                 title="Zoom Out"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/>
                 </svg>
               </button>
               <span class="text-white text-sm font-mono min-w-[3.5rem] text-center">{{ zoomLevel }}%</span>
               <button
                 @click="zoomIn"
-                class="p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors"
+                class="p-2 sm:p-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded transition-colors touch-manipulation"
                 title="Zoom In"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
                 </svg>
               </button>
               <button
                 @click="resetZoom"
-                class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded transition-colors"
+                class="px-3 py-2 sm:px-3 sm:py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded transition-colors touch-manipulation"
                 title="Reset Zoom"
               >
                 Reset
@@ -66,10 +66,10 @@
           <!-- Close Button -->
           <button
             @click="closeMaximized"
-            class="p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-colors"
-            title="Close (ESC)"
+            class="p-3 sm:p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-colors touch-manipulation"
+            title="Close"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
@@ -84,7 +84,10 @@
           @mousemove="onDrag"
           @mouseup="endDrag"
           @mouseleave="endDrag"
-          :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }"
+          @touchstart.prevent="handleTouchStart"
+          @touchmove.prevent="handleTouchMove"
+          @touchend.prevent="handleTouchEnd"
+          :class="{ 'cursor-grab': !isDragging && !isTouch, 'cursor-grabbing': isDragging && !isTouch }"
         >
           <div class="absolute inset-0 flex items-center justify-center">
             <div 
@@ -103,7 +106,8 @@
 
         <!-- Footer Info -->
         <div class="mt-4 text-center text-gray-400 text-sm">
-          <p>Scroll wheel to zoom (50%-800%) • Click and drag to navigate anywhere • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
+          <p class="hidden sm:block">Scroll wheel to zoom (50%-800%) • Click and drag to navigate anywhere • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
+          <p class="block sm:hidden">Pinch to zoom (50%-800%) • Touch and drag to navigate • Tap outside to close</p>
         </div>
       </div>
     </div>
@@ -137,6 +141,11 @@ const panY = ref(0)
 const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
 const panStart = ref({ x: 0, y: 0 })
+
+// Touch support variables
+const lastTouchDistance = ref(0)
+const lastTouchCenter = ref({ x: 0, y: 0 })
+const isTouch = ref(false)
 
 // Configure Mermaid with dark theme
 const initializeMermaid = () => {
@@ -375,6 +384,107 @@ const onDrag = (event) => {
 
 const endDrag = () => {
   isDragging.value = false
+  isTouch.value = false
+}
+
+// Touch event handlers for mobile support
+const getTouchDistance = (touches) => {
+  if (touches.length < 2) return 0
+  const touch1 = touches[0]
+  const touch2 = touches[1]
+  return Math.sqrt(
+    Math.pow(touch1.clientX - touch2.clientX, 2) + 
+    Math.pow(touch1.clientY - touch2.clientY, 2)
+  )
+}
+
+const getTouchCenter = (touches) => {
+  if (touches.length === 1) {
+    return { x: touches[0].clientX, y: touches[0].clientY }
+  }
+  
+  const x = (touches[0].clientX + touches[1].clientX) / 2
+  const y = (touches[0].clientY + touches[1].clientY) / 2
+  return { x, y }
+}
+
+const handleTouchStart = (event) => {
+  if (!maximizedContainer.value) return
+  
+  isTouch.value = true
+  
+  if (event.touches.length === 1) {
+    // Single touch - start pan
+    const touch = event.touches[0]
+    isDragging.value = true
+    dragStart.value = { x: touch.clientX, y: touch.clientY }
+    panStart.value = { x: panX.value, y: panY.value }
+    lastTouchCenter.value = { x: touch.clientX, y: touch.clientY }
+  } else if (event.touches.length === 2) {
+    // Two fingers - start pinch zoom
+    isDragging.value = false
+    lastTouchDistance.value = getTouchDistance(event.touches)
+    lastTouchCenter.value = getTouchCenter(event.touches)
+  }
+}
+
+const handleTouchMove = (event) => {
+  if (!maximizedContainer.value) return
+  
+  if (event.touches.length === 1 && isDragging.value) {
+    // Single touch pan
+    const touch = event.touches[0]
+    const dx = touch.clientX - dragStart.value.x
+    const dy = touch.clientY - dragStart.value.y
+    
+    panX.value = panStart.value.x + dx
+    panY.value = panStart.value.y + dy
+  } else if (event.touches.length === 2) {
+    // Two finger pinch zoom
+    const currentDistance = getTouchDistance(event.touches)
+    const currentCenter = getTouchCenter(event.touches)
+    
+    if (lastTouchDistance.value > 0) {
+      // Calculate zoom change
+      const zoomChange = (currentDistance / lastTouchDistance.value)
+      const oldZoom = zoomLevel.value
+      const newZoom = Math.min(800, Math.max(50, oldZoom * zoomChange))
+      
+      // Apply zoom
+      zoomLevel.value = newZoom
+      
+      // Adjust pan to zoom towards touch center (similar to mouse wheel)
+      if (maximizedContainer.value) {
+        const rect = maximizedContainer.value.getBoundingClientRect()
+        const centerX = rect.width / 2
+        const centerY = rect.height / 2
+        const touchX = currentCenter.x - rect.left
+        const touchY = currentCenter.y - rect.top
+        
+        const zoomFactor = newZoom / oldZoom
+        panX.value = (panX.value - (touchX - centerX)) * zoomFactor + (touchX - centerX)
+        panY.value = (panY.value - (touchY - centerY)) * zoomFactor + (touchY - centerY)
+      }
+    }
+    
+    lastTouchDistance.value = currentDistance
+    lastTouchCenter.value = currentCenter
+  }
+}
+
+const handleTouchEnd = (event) => {
+  if (event.touches.length === 0) {
+    // All touches ended
+    isDragging.value = false
+    isTouch.value = false
+    lastTouchDistance.value = 0
+  } else if (event.touches.length === 1) {
+    // One finger lifted, switch to pan mode
+    const touch = event.touches[0]
+    isDragging.value = true
+    dragStart.value = { x: touch.clientX, y: touch.clientY }
+    panStart.value = { x: panX.value, y: panY.value }
+  }
 }
 
 // Keyboard shortcuts
@@ -432,6 +542,9 @@ watch(() => props.diagram, () => {
   transition: transform 0.2s ease-out;
   text-align: center;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
 }
 
 /* Cursor styles for dragging */
@@ -441,6 +554,18 @@ watch(() => props.diagram, () => {
 
 .cursor-grabbing {
   cursor: grabbing !important;
+}
+
+/* Touch optimization */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .mermaid-container {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Enable interactions on SVG elements */
