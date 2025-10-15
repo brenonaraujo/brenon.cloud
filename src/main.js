@@ -1,13 +1,23 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { createPinia } from 'pinia'
+import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import './style.css'
 
-// Import pages
+// Pages
 import Home from './pages/Home.vue'
 import Service from './pages/Service.vue'
 
-// Create router
+// Clean Architecture Layers
+import { servicesApi } from './api/servicesApi'
+import { ServiceService } from './services/serviceService'
+
+// i18n translations
+import en from './locales/en.json'
+import pt from './locales/pt.json'
+
+// Router configuration
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -31,11 +41,32 @@ const router = createRouter({
   ]
 })
 
-// Create Vue app
+// Pinia store
+const pinia = createPinia()
+
+// i18n configuration
+const i18n = createI18n({
+  legacy: false, // Use Composition API
+  locale: navigator.language.startsWith('pt') ? 'pt' : 'en', // Default locale based on browser
+  fallbackLocale: 'en',
+  messages: {
+    en,
+    pt
+  }
+})
+
+// Dependency Injection: Service Layer
+const serviceService = new ServiceService(servicesApi)
+
+// Create and configure app
 const app = createApp(App)
 
-// Use router
+// Register plugins
 app.use(router)
+app.use(pinia)
+app.use(i18n)
 
-// Mount app
+// Provide dependencies (Dependency Injection)
+app.provide('serviceService', serviceService)
+
 app.mount('#app')

@@ -1,0 +1,151 @@
+{
+  "home": {
+    "hero": {
+      "title": "Brenon.Cloud",
+      "subtitle": "Your Gateway to a Secure and Integrated Personal Cloud",
+      "getStarted": "Get started",
+      "exploreServices": "Explore services"
+    },
+    "docker": {
+      "title": "Deploy, deliver, and self‑manage your services",
+      "description": "Use Brenon.Cloud building blocks to run personal services end‑to‑end with security, routing, automation, and observability.",
+      "learnMore": "Learn more about Docker deployments",
+      "howWeUse": "How we use Portainer",
+      "openPortainer": "Open Portainer",
+      "features": {
+        "managed": {
+          "title": "Managed with Portainer",
+          "description": "Visual UI to deploy and manage Swarm stacks, networks, volumes, and secrets across nodes."
+        },
+        "stacks": {
+          "title": "Swarm Stacks",
+          "description": "Compose v3 with deploy policies, health checks, and rolling updates for reliable releases."
+        },
+        "scalable": {
+          "title": "Scalable & Resilient",
+          "description": "Scale replicas per service and leverage node failover to keep apps available."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Deploy Any Service with Docker",
+      "description": "We run Docker Swarm on a cluster of mini‑computer nodes and manage it with Portainer. Deploy Compose stacks, scale replicas, and roll out zero‑downtime updates from a simple UI."
+    },
+    "about": {
+      "title": "About Brenon.Cloud",
+      "description": "Empowering individuals with enterprise-grade cloud infrastructure",
+      "vision": "Brenon.Cloud started with a simple vision: making enterprise-grade cloud infrastructure accessible to individuals. What began with two mini computers has evolved into a robust platform that brings the power of modern cloud architecture to your personal projects.",
+      "stack": {
+        "title": "Infrastructure Stack",
+        "items": [
+          "Docker Swarm Orchestration",
+          "Kong API Gateway",
+          "Authentik Identity Management",
+          "Automated CI/CD Pipeline"
+        ]
+      },
+      "security": {
+        "title": "Security & Reliability",
+        "items": [
+          "Zero-trust Architecture",
+          "SSL/TLS Encryption",
+          "Automated Backups",
+          "High Availability Setup"
+        ]
+      },
+      "automation": {
+        "title": "Automation & Scaling",
+        "items": [
+          "Auto-scaling Services",
+          "Monitoring & Alerts",
+          "Resource Optimization",
+          "Load Balancing"
+        ]
+      },
+      "flow": {
+        "title": "How Your Services Flow",
+        "edge": {
+          "title": "Edge Gateway",
+          "description": "Traffic routing, SSL termination, and initial security layer"
+        },
+        "auth": {
+          "title": "Authentication",
+          "description": "Identity verification and access control"
+        },
+        "service": {
+          "title": "Service Layer",
+          "description": "Your containerized applications and services"
+        }
+      },
+      "cta": {
+        "title": "Ready to Build Your Cloud?",
+        "description": "Join us in shaping the future of personal cloud infrastructure.",
+        "getStarted": "Get Started with Docker",
+        "viewGithub": "View on GitHub"
+      }
+    }
+  },
+  "services": {
+    "authentik": {
+      "title": "Identity & Access (Authentik)",
+      "shortName": "Authentik",
+      "description": "Centralize login with SSO, MFA, and fine‑grained policies for your apps and services."
+    },
+    "kong": {
+      "title": "API & Edge (Kong)",
+      "shortName": "Kong",
+      "description": "Secure and route traffic, apply auth and rate‑limits, and expose services safely to the web."
+    },
+    "docker": {
+      "title": "Deployments (Docker)",
+      "shortName": "Docker",
+      "description": "Package services as containers or Compose stacks and run them reliably on Brenon.Cloud."
+    },
+    "uptime-kuma": {
+      "title": "Monitoring (Uptime Kuma)",
+      "shortName": "Uptime Kuma",
+      "description": "Track availability and response times with alerts to your preferred channels."
+    },
+    "grafana": {
+      "title": "Dashboards (Grafana)",
+      "shortName": "Grafana",
+      "description": "Visualize metrics and logs across services with reusable, shareable dashboards."
+    },
+    "n8n": {
+      "title": "Automation (n8n)",
+      "shortName": "n8n",
+      "description": "Automate tasks with visual workflows that connect APIs, databases, and services."
+    }
+  },
+  "servicePage": {
+    "backToHome": "Back to Home",
+    "notFound": {
+      "title": "Service Not Found",
+      "description": "The requested service could not be found.",
+      "returnHome": "Return Home"
+    },
+    "architecture": {
+      "title": "How {name} Fits in Brenon.Cloud"
+    },
+    "features": {
+      "title": "Core Features"
+    },
+    "useCases": {
+      "title": "Use Cases"
+    },
+    "gettingStarted": {
+      "title": "Getting Started",
+      "quickStart": "Quick Start Guide"
+    },
+    "actions": {
+      "launch": "Launch {name}",
+      "viewDocs": "View Documentation"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close"
+  }
+}

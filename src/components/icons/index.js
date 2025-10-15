@@ -1,4 +1,3 @@
-// Icon components registry
 export { default as CheckmarkIcon } from './CheckmarkIcon.vue'
 export { default as BoltIcon } from './BoltIcon.vue'
 export { default as CubeIcon } from './CubeIcon.vue'
