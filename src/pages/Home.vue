@@ -223,7 +223,7 @@ const services = [
     description: 'Centralize login with SSO, MFA, and fine‑grained policies for your apps and services.',
     icon: 'checkmark',
     color: 'blue',
-    learnMoreUrl: './service.html?service=authentik'
+    learnMoreUrl: '/service.html?service=authentik'
   },
   {
     id: 'kong',
@@ -231,7 +231,7 @@ const services = [
     description: 'Secure and route traffic, apply auth and rate‑limits, and expose services safely to the web.',
     icon: 'bolt',
     color: 'green',
-    learnMoreUrl: './service.html?service=kong'
+    learnMoreUrl: '/service.html?service=kong'
   },
   {
     id: 'docker',
@@ -239,7 +239,7 @@ const services = [
     description: 'Package services as containers or Compose stacks and run them reliably on Brenon.Cloud.',
     icon: 'cube',
     color: 'cyan',
-    learnMoreUrl: './service.html?service=docker'
+    learnMoreUrl: '/service.html?service=docker'
   },
   {
     id: 'uptime',
@@ -247,7 +247,7 @@ const services = [
     description: 'Track availability and response times with alerts to your preferred channels.',
     icon: 'chart',
     color: 'green',
-    learnMoreUrl: './service.html?service=uptime-kuma'
+    learnMoreUrl: '/service.html?service=uptime-kuma'
   },
   {
     id: 'grafana',
@@ -255,7 +255,7 @@ const services = [
     description: 'Visualize metrics and logs across services with reusable, shareable dashboards.',
     icon: 'settings',
     color: 'orange',
-    learnMoreUrl: './service.html?service=grafana'
+    learnMoreUrl: '/service.html?service=grafana'
   },
   {
     id: 'n8n',
@@ -263,7 +263,7 @@ const services = [
     description: 'Automate tasks with visual workflows that connect APIs, databases, and services.',
     icon: 'workflow',
     color: 'blue',
-    learnMoreUrl: './service.html?service=n8n'
+    learnMoreUrl: '/service.html?service=n8n'
   }
 ]
 
