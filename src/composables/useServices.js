@@ -97,6 +97,18 @@ export function useServices() {
     return getLocalizedService(service)
   }
 
+  /**
+   * Create a reactive computed for a specific service by ID
+   * @param {string} id - Service ID  
+   * @returns {ComputedRef<Service|null>} Reactive localized service
+   */
+  const createLocalizedServiceById = (id) => {
+    return computed(() => {
+      const service = store.services.find(s => s.id === id)
+      return getLocalizedService(service)
+    })
+  }
+
   return {
     // State
     services: computed(() => store.allServices),
@@ -108,6 +120,7 @@ export function useServices() {
     // Getters
     getServiceById: (id) => store.getServiceById(id),
     getLocalizedServiceById,
+    createLocalizedServiceById,
     servicesByColor: (color) => store.servicesByColor(color),
     
     // Actions

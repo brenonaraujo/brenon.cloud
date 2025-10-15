@@ -21,6 +21,12 @@
         <router-link to="/" class="text-blue-400 hover:underline">{{ t('servicePage.notFound.returnHome') }}</router-link>
       </div>
       
+      <!-- Language switching loading state -->
+      <div v-else-if="isLanguageSwitching" class="text-center py-12">
+        <div class="inline-block animate-pulse text-2xl text-blue-400">🌐</div>
+        <p class="mt-4 text-gray-400">Loading...</p>
+      </div>
+      
       <div v-else-if="service" class="space-y-16">
         <!-- Hero Section -->
         <div class="text-center">
@@ -158,16 +164,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, h, computed } from 'vue'
+import { ref, onMounted, h, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
 import { useServices } from '../composables/useServices'
 
 const route = useRoute()
-const { t } = useI18n()
-const { loadService, getLocalizedServiceById, loading, error } = useServices()
-const service = ref(null)
+const { t, locale } = useI18n()
+const { loadService, createLocalizedServiceById, loading, error } = useServices()
+const serviceId = route.query.service
+const service = serviceId ? createLocalizedServiceById(serviceId) : ref(null)
+const isLanguageSwitching = ref(false)
 
 // Simple icon components
 const ServiceIcon = ({ type }) => {
@@ -200,14 +208,24 @@ const pageTitle = computed(() => {
 
 // Load service data on mount
 onMounted(async () => {
-  const serviceId = route.query.service
   if (serviceId) {
     try {
       await loadService(serviceId)
-      service.value = getLocalizedServiceById(serviceId)
     } catch (err) {
       // Service loading failed - user will see empty state
     }
+  }
+})
+
+// Watch for language changes and show brief loading state
+watch(locale, () => {
+  if (serviceId && service.value) {
+    isLanguageSwitching.value = true
+    
+    // Show loading state briefly for better UX
+    setTimeout(() => {
+      isLanguageSwitching.value = false
+    }, 300)
   }
 })
 </script>
