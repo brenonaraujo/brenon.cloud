@@ -1,0 +1,14 @@
+# netlify.toml at repository root
+[build]
+  base    = "."         # because the Vue project is at the repo root
+  publish = "dist"      # tell Netlify to deploy the Vite build output
+  command = "npm install && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS    = "--legacy-peer-deps"
+
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200
