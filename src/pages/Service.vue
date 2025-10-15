@@ -166,7 +166,7 @@ import { useServices } from '../composables/useServices'
 
 const route = useRoute()
 const { t } = useI18n()
-const { loadService, loadServices, loading, error } = useServices()
+const { loadService, getLocalizedServiceById, loading, error } = useServices()
 const service = ref(null)
 
 // Simple icon components
@@ -203,8 +203,8 @@ onMounted(async () => {
   const serviceId = route.query.service
   if (serviceId) {
     try {
-      const data = await loadService(serviceId)
-      service.value = data
+      await loadService(serviceId)
+      service.value = getLocalizedServiceById(serviceId)
     } catch (err) {
       // Service loading failed - user will see empty state
     }

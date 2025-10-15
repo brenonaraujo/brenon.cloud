@@ -239,11 +239,11 @@ import FlowLine from '../components/ui/FlowLine.vue'
 import { useServices } from '../composables/useServices'
 
 const { t, tm } = useI18n()
-const { services, loading, error, loadServices } = useServices()
+const { localizedServices, loading, error, loadServices } = useServices()
 
 // Create a computed that filters valid services
 const validServices = computed(() => {
-  const svc = services.value || []
+  const svc = localizedServices.value || []
   return svc.filter(service => service && service.id && service.title)
 })
 
