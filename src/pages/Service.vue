@@ -27,9 +27,9 @@
         </div>
 
         <!-- Architecture Diagram -->
-        <div v-if="service.architecture" class="bg-gray-800/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
-          <h2 class="text-2xl font-semibold mb-8 text-center text-white">How {{ service.shortName }} Fits in Brenon.Cloud</h2>
-          <component :is="service.architecture" />
+        <div v-if="service.mermaidDiagram" class="space-y-8">
+          <h2 class="text-2xl font-semibold text-center text-white">How {{ service.shortName }} Fits in Brenon.Cloud</h2>
+          <MermaidDiagram :diagram="service.mermaidDiagram" />
         </div>
 
         <!-- Features & Use Cases Grid -->
@@ -148,6 +148,7 @@
 <script setup>
 import { ref, onMounted, h } from 'vue'
 import { useRoute } from 'vue-router'
+import MermaidDiagram from '../components/MermaidDiagram.vue'
 
 // Simple icon components
 const ServiceIcon = ({ type }) => {
@@ -170,102 +171,7 @@ const ServiceIcon = ({ type }) => {
   ])
 }
 
-// Architecture diagram components
-const AuthentikArchitecture = () => {
-  return h('div', { class: 'text-center' }, [
-    h('div', { class: 'flex flex-col md:flex-row items-center justify-center gap-8' }, [
-      h('div', { class: 'flex flex-col items-center' }, [
-        h('div', { class: 'w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mb-3' }, [
-          ServiceIcon({ type: 'shield' })
-        ]),
-        h('span', { class: 'text-white font-medium' }, 'Users')
-      ]),
-      h('svg', { class: 'w-8 h-8 text-gray-600 rotate-90 md:rotate-0', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor' }, [
-        h('path', { d: 'M5 12h14m-7-7l7 7-7 7', 'stroke-width': '2' })
-      ]),
-      h('div', { class: 'flex flex-col items-center bg-purple-500/10 p-6 rounded-xl border-2 border-purple-500/20' }, [
-        h('div', { class: 'w-16 h-16 bg-purple-500/20 rounded-xl flex items-center justify-center mb-3' }, [
-          ServiceIcon({ type: 'shield' })
-        ]),
-        h('span', { class: 'text-white font-medium' }, 'Authentik'),
-        h('span', { class: 'text-sm text-gray-400' }, 'Identity Hub')
-      ]),
-      h('svg', { class: 'w-8 h-8 text-gray-600 rotate-90 md:rotate-0', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor' }, [
-        h('path', { d: 'M5 12h14m-7-7l7 7-7 7', 'stroke-width': '2' })
-      ]),
-      h('div', { class: 'grid grid-cols-2 gap-4' }, [
-        h('div', { class: 'flex flex-col items-center' }, [
-          h('div', { class: 'w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-2' }, [
-            h('span', { class: 'text-xs text-green-400 font-bold' }, 'G')
-          ]),
-          h('span', { class: 'text-xs text-gray-400' }, 'Grafana')
-        ]),
-        h('div', { class: 'flex flex-col items-center' }, [
-          h('div', { class: 'w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-2' }, [
-            h('span', { class: 'text-xs text-blue-400 font-bold' }, 'P')
-          ]),
-          h('span', { class: 'text-xs text-gray-400' }, 'Portainer')
-        ])
-      ])
-    ])
-  ])
-}
-
-const KongArchitecture = () => {
-  return h('div', { class: 'text-center' }, [
-    h('div', { class: 'flex flex-col md:flex-row items-center justify-center gap-8' }, [
-      h('div', { class: 'flex flex-col items-center' }, [
-        h('div', { class: 'w-16 h-16 bg-gray-500/20 rounded-xl flex items-center justify-center mb-3' }, [
-          h('span', { class: 'text-2xl' }, '🌐')
-        ]),
-        h('span', { class: 'text-white font-medium' }, 'Internet')
-      ]),
-      h('span', { class: 'text-2xl' }, '→'),
-      h('div', { class: 'flex flex-col items-center bg-blue-500/10 p-6 rounded-xl border-2 border-blue-500/20' }, [
-        h('div', { class: 'w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mb-3' }, [
-          ServiceIcon({ type: 'server' })
-        ]),
-        h('span', { class: 'text-white font-medium' }, 'Kong Gateway'),
-        h('span', { class: 'text-sm text-gray-400' }, 'Route • Auth • Rate Limit')
-      ]),
-      h('span', { class: 'text-2xl' }, '→'),
-      h('div', { class: 'grid grid-cols-2 gap-4' }, [
-        h('div', { class: 'text-center' }, [
-          h('div', { class: 'w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center mb-2 mx-auto' }, [
-            h('span', { class: 'text-xs text-emerald-400 font-bold' }, '🐳')
-          ]),
-          h('div', { class: 'text-xs text-gray-400' }, 'Containers')
-        ])
-      ])
-    ])
-  ])
-}
-
-// Simplified architecture components for other services
-const DockerArchitecture = () => h('div', { class: 'text-center py-8' }, [
-  h('div', { class: 'text-4xl mb-4' }, '🐳'),
-  h('p', { class: 'text-gray-400' }, 'Multi-node Swarm Cluster with automatic scaling and failover')
-])
-
-const UptimeArchitecture = () => h('div', { class: 'text-center py-8' }, [
-  h('div', { class: 'text-4xl mb-4' }, '📊'),
-  h('p', { class: 'text-gray-400' }, 'Continuous monitoring with instant alerts and status reporting')
-])
-
-const GrafanaArchitecture = () => h('div', { class: 'text-center py-8' }, [
-  h('div', { class: 'text-4xl mb-4' }, '📈'),
-  h('p', { class: 'text-gray-400' }, 'Collect metrics from all services and visualize in unified dashboards')
-])
-
-const N8nArchitecture = () => h('div', { class: 'text-center py-8' }, [
-  h('div', { class: 'text-4xl mb-4' }, '⚡'),
-  h('p', { class: 'text-gray-400' }, 'Connect and automate workflows between all Brenon.Cloud services')
-])
-
-const PortainerArchitecture = () => h('div', { class: 'text-center py-8' }, [
-  h('div', { class: 'text-4xl mb-4' }, '🖥️'),
-  h('p', { class: 'text-gray-400' }, 'Visual interface for managing Docker containers and stacks')
-])
+// Service icon helper component for consistent styling
 
 const route = useRoute()
 const service = ref(null)
@@ -313,7 +219,25 @@ const services = {
       { title: 'Test SSO', description: 'Verify single sign-on functionality' }
     ],
     gettingStarted: 'Authentik is your security foundation - deploy it once, secure everything forever. Like a LEGO baseplate, it provides the stable foundation that all other services connect to. Every new service you deploy automatically inherits enterprise-grade security without additional configuration. <a href="https://auth.brenon.cloud" class="text-blue-400 hover:underline">Start building your secure cloud ecosystem here</a>.',
-    architecture: 'AuthentikArchitecture',
+    mermaidDiagram: `
+graph TD
+    A[Users] --> B[Authentik Identity Provider]
+    B --> C[Kong Gateway]
+    B --> D[Grafana Dashboards]
+    B --> E[Portainer Management]
+    B --> F[n8n Workflows]
+    
+    C --> G[Golang APIs]
+    C --> H[Python Services]
+    C --> I[AI Agents]
+    
+    style B fill:#9333ea,stroke:#7c3aed,color:#fff
+    style A fill:#3b82f6,stroke:#2563eb,color:#fff
+    style C fill:#10b981,stroke:#059669,color:#fff
+    style D fill:#f59e0b,stroke:#d97706,color:#fff
+    style E fill:#ef4444,stroke:#dc2626,color:#fff
+    style F fill:#8b5cf6,stroke:#7c3aed,color:#fff
+`,
     demoUrl: 'https://auth.brenon.cloud'
   },
   'kong': {
@@ -358,7 +282,33 @@ const services = {
       { title: 'Add Plugins', description: 'Enable auth, rate limiting, or other features' }
     ],
     gettingStarted: 'Kong is your networking Swiss Army knife - it transforms any simple HTTP service into a professional API. Like LEGO Technic beams that connect and strengthen your build, Kong connects your services with enterprise features. Deploy a Golang API container, point Kong to it, add the Authentik plugin, and instantly have a secure, rate-limited, monitored API. <a href="https://api.brenon.cloud" class="text-blue-400 hover:underline">See the magic in action</a>.',
-    architecture: 'KongArchitecture',
+    mermaidDiagram: `
+graph LR
+    A[Internet Traffic] --> B[Kong Gateway]
+    
+    B --> C[Rate Limiting]
+    B --> D[Authentication]
+    B --> E[Load Balancing]
+    
+    C --> F[Golang APIs]
+    D --> G[Python Services]
+    E --> H[Static Sites]
+    
+    F --> I[User Service]
+    F --> J[Order Service]
+    G --> K[AI Models]
+    G --> L[Data APIs]
+    
+    M[Authentik] --> D
+    N[Grafana] --> B
+    O[Uptime Kuma] --> B
+    
+    style B fill:#00d4aa,stroke:#00b894,color:#fff
+    style A fill:#636e72,stroke:#2d3436,color:#fff
+    style M fill:#9333ea,stroke:#7c3aed,color:#fff
+    style N fill:#f59e0b,stroke:#d97706,color:#fff
+    style O fill:#ef4444,stroke:#dc2626,color:#fff
+`,
     demoUrl: 'https://api.brenon.cloud'
   },
   'docker': {
@@ -403,7 +353,37 @@ const services = {
       { title: 'Monitor Health', description: 'Check service status and performance' }
     ],
     gettingStarted: 'Deploy your applications as Docker containers or Compose stacks. Use our Portainer interface to manage deployments, or deploy directly via Docker CLI. All services run on our multi-node Swarm cluster for high availability.',
-    architecture: 'DockerArchitecture',
+    mermaidDiagram: `
+graph TB
+    A[Developer] --> B[Git Push]
+    B --> C[GitHub Actions]
+    C --> D[Docker Build]
+    D --> E[Container Registry]
+    
+    E --> F[Docker Swarm Manager]
+    F --> G[Node 1 - Mini PC]
+    F --> H[Node 2 - Mini PC]
+    
+    G --> I[Golang Service<br/>~50MB RAM]
+    G --> J[Python API<br/>~100MB RAM]
+    H --> K[Web App<br/>~30MB RAM]
+    H --> L[Database<br/>~200MB RAM]
+    
+    M[Portainer] --> F
+    N[Kong] --> I
+    N --> J
+    N --> K
+    
+    O[Grafana] --> G
+    O --> H
+    
+    style F fill:#0ea5e9,stroke:#0284c7,color:#fff
+    style G fill:#22c55e,stroke:#16a34a,color:#fff
+    style H fill:#22c55e,stroke:#16a34a,color:#fff
+    style M fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style N fill:#00d4aa,stroke:#00b894,color:#fff
+    style O fill:#f59e0b,stroke:#d97706,color:#fff
+`,
     demoUrl: 'http://portainer.brenon.cloud'
   },
   'portainer': {
@@ -464,7 +444,65 @@ const services = {
       { title: 'Create Status Page', description: 'Build public status page for transparency' }
     ],
     gettingStarted: 'Monitor all your services with Uptime Kuma. Set up monitors for your applications and receive alerts when issues occur. View service status and uptime statistics at our monitoring dashboard.',
-    architecture: 'UptimeArchitecture',
+    mermaidDiagram: `
+graph TB
+    subgraph "Monitoring Engine"
+        uptime[Uptime Kuma]
+        checks[Health Checks]
+        status[Status Tracker]
+    end
+    
+    subgraph "Service Targets"
+        kong[Kong Gateway]
+        auth[Authentik Login]
+        portainer[Portainer UI]
+        grafana[Grafana Dashboards]
+        n8n[n8n Workflows]
+    end
+    
+    subgraph "Alert Channels"
+        discord[Discord Bot]
+        telegram[Telegram Bot]
+        email[Email Alerts]
+        webhook[Webhooks]
+    end
+    
+    subgraph "Public Interface"
+        statuspage[Public Status Page]
+        api[Status API]
+        widget[Embed Widget]
+    end
+    
+    uptime --> checks
+    checks -->|HTTP/TCP| kong
+    checks -->|HTTPS| auth
+    checks -->|API Health| portainer
+    checks -->|Endpoint Check| grafana
+    checks -->|Workflow Status| n8n
+    
+    checks --> status
+    status -->|Service Down| discord
+    status -->|Alert Fired| telegram
+    status -->|Critical Issue| email
+    status -->|Trigger n8n| webhook
+    
+    status --> statuspage
+    status --> api
+    statuspage --> widget
+    
+    kong -.->|Response Time| uptime
+    auth -.->|SSL Cert Status| uptime
+    
+    classDef monitor fill:#4ade80,stroke:#22c55e,stroke-width:2px
+    classDef targets fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px
+    classDef alerts fill:#ef4444,stroke:#dc2626,stroke-width:2px
+    classDef public fill:#f59e0b,stroke:#d97706,stroke-width:2px
+    
+    class uptime,checks,status monitor
+    class kong,auth,portainer,grafana,n8n targets
+    class discord,telegram,email,webhook alerts
+    class statuspage,api,widget public
+    `,
     demoUrl: 'https://uptime.brenon.cloud'
   },
   'grafana': {
@@ -509,7 +547,76 @@ const services = {
       { title: 'Set Up Alerts', description: 'Configure notifications for threshold breaches' }
     ],
     gettingStarted: 'Create powerful dashboards to visualize your infrastructure metrics. Connect to data sources like Prometheus and build custom charts to monitor performance, resource usage, and application health.',
-    architecture: 'GrafanaArchitecture',
+    mermaidDiagram: `
+graph TB
+    subgraph "Visualization Layer"
+        grafana[Grafana Dashboards]
+        panels[Custom Panels]
+        alerts[Alert Manager]
+    end
+    
+    subgraph "Data Sources"
+        prometheus[Prometheus Metrics]
+        docker[Docker Stats]
+        kong_metrics[Kong Analytics]
+        uptime_data[Uptime Kuma Data]
+    end
+    
+    subgraph "Metric Collectors"
+        node_exporter[Node Exporter]
+        cadvisor[cAdvisor]
+        app_metrics[App Metrics]
+    end
+    
+    subgraph "Alert Channels"
+        webhook_alerts[n8n Webhooks]
+        discord_notify[Discord]
+        email_alert[Email]
+        telegram_bot[Telegram Bot]
+    end
+    
+    subgraph "Infrastructure"
+        mini_pc1[Mini PC 1]
+        mini_pc2[Mini PC 2]
+        mini_pc3[Mini PC 3]
+        containers[Docker Containers]
+    end
+    
+    mini_pc1 --> node_exporter
+    mini_pc2 --> node_exporter
+    mini_pc3 --> node_exporter
+    containers --> cadvisor
+    
+    node_exporter --> prometheus
+    cadvisor --> prometheus
+    app_metrics --> prometheus
+    docker --> prometheus
+    kong_metrics --> prometheus
+    uptime_data --> prometheus
+    
+    prometheus --> grafana
+    grafana --> panels
+    grafana --> alerts
+    
+    alerts --> webhook_alerts
+    alerts --> discord_notify
+    alerts --> email_alert
+    alerts --> telegram_bot
+    
+    webhook_alerts -.->|Auto Recovery| containers
+    
+    classDef visualization fill:#4ade80,stroke:#22c55e,stroke-width:2px
+    classDef data fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px
+    classDef collectors fill:#f59e0b,stroke:#d97706,stroke-width:2px
+    classDef alerts fill:#ef4444,stroke:#dc2626,stroke-width:2px
+    classDef infra fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    
+    class grafana,panels,alerts visualization
+    class prometheus,docker,kong_metrics,uptime_data data
+    class node_exporter,cadvisor,app_metrics collectors
+    class webhook_alerts,discord_notify,email_alert,telegram_bot alerts
+    class mini_pc1,mini_pc2,mini_pc3,containers infra
+    `,
     demoUrl: 'https://grafana.brenon.cloud'
   },
   'n8n': {
@@ -554,7 +661,52 @@ const services = {
       { title: 'Test & Deploy', description: 'Validate workflow and set it live' }
     ],
     gettingStarted: 'Automate repetitive tasks by connecting different services and APIs. Create workflows that trigger on events, process data, and integrate your tools seamlessly. Build powerful automations without writing code.',
-    architecture: 'N8nArchitecture',
+    mermaidDiagram: `
+graph TB
+    subgraph "Automation Hub"
+        n8n[n8n Workflows]
+        triggers[Event Triggers]
+        actions[Actions & APIs]
+    end
+    
+    subgraph "External Sources"
+        grafana[Grafana Alerts]
+        webhook[HTTP Webhooks]
+        schedule[Scheduled Tasks]
+        telegram[Telegram Bot]
+    end
+    
+    subgraph "Target Systems"
+        portainer[Portainer API]
+        kong[Kong Gateway]
+        auth[Authentik Users]
+        notification[WhatsApp/Discord]
+    end
+    
+    grafana -->|Alert Fired| triggers
+    webhook -->|HTTP Request| triggers
+    schedule -->|Cron Job| triggers
+    telegram -->|Bot Command| triggers
+    
+    triggers --> n8n
+    n8n --> actions
+    
+    actions -->|Deploy Services| portainer
+    actions -->|Route Traffic| kong
+    actions -->|Manage Users| auth
+    actions -->|Send Alerts| notification
+    
+    n8n -.->|Monitor Status| grafana
+    n8n -.->|Log Activities| portainer
+    
+    classDef automation fill:#4ade80,stroke:#22c55e,stroke-width:2px
+    classDef external fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px
+    classDef target fill:#f59e0b,stroke:#d97706,stroke-width:2px
+    
+    class n8n,triggers,actions automation
+    class grafana,webhook,schedule,telegram external
+    class portainer,kong,auth,notification target
+    `,
     demoUrl: 'https://n8n.brenon.cloud'
   },
   'portainer': {
@@ -599,7 +751,66 @@ const services = {
       { title: 'Monitor Services', description: 'Track container health and performance' }
     ],
     gettingStarted: 'Portainer provides a web-based interface for managing your Docker deployments. Access it at <a href="http://portainer.brenon.cloud" class="text-blue-400 hover:underline">portainer.brenon.cloud</a> to deploy stacks, monitor services, and manage your containerized applications.',
-    architecture: 'PortainerArchitecture',
+    mermaidDiagram: `
+graph TB
+    subgraph "Management Interface"
+        portainer[Portainer Web UI]
+        templates[Service Templates]
+        stacks[Stack Manager]
+    end
+    
+    subgraph "Docker Swarm Cluster"
+        manager[Manager Node]
+        worker1[Worker Node 1]
+        worker2[Worker Node 2]
+        worker3[Worker Node 3]
+    end
+    
+    subgraph "Container Services"
+        webapp[Web Apps]
+        api[API Services]
+        db[Databases]
+        cache[Cache Services]
+    end
+    
+    subgraph "Integration Layer"
+        kong[Kong Gateway]
+        auth[Authentik SSO]
+        monitor[Grafana Monitor]
+    end
+    
+    Developer --> portainer
+    portainer --> templates
+    templates --> stacks
+    
+    stacks -->|Deploy| manager
+    manager -->|Orchestrate| worker1
+    manager -->|Orchestrate| worker2
+    manager -->|Orchestrate| worker3
+    
+    worker1 --> webapp
+    worker2 --> api
+    worker3 --> db
+    worker1 --> cache
+    
+    webapp --> kong
+    api --> kong
+    webapp -.->|Metrics| monitor
+    api -.->|Metrics| monitor
+    
+    portainer -.->|SSO Login| auth
+    stacks -.->|Auto-register| kong
+    
+    classDef management fill:#4ade80,stroke:#22c55e,stroke-width:2px
+    classDef cluster fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px
+    classDef services fill:#f59e0b,stroke:#d97706,stroke-width:2px
+    classDef integration fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    
+    class portainer,templates,stacks management
+    class manager,worker1,worker2,worker3 cluster
+    class webapp,api,db,cache services
+    class kong,auth,monitor integration
+    `,
     demoUrl: 'http://portainer.brenon.cloud'
   }
 }
