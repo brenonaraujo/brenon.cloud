@@ -1,6 +1,5 @@
 <template>
   <div class="mermaid-container">
-    <!-- Normal View with Expand Button -->
     <div class="relative group">
       <div 
         ref="mermaidElement" 
@@ -8,10 +7,8 @@
         class="mermaid-diagram bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 overflow-x-auto cursor-pointer transition-all hover:border-blue-500/50"
         @click="openMaximized"
       >
-        <!-- Diagram will be rendered here by Mermaid -->
       </div>
       
-      <!-- Expand Button Overlay -->
       <button
         @click="openMaximized"
         class="absolute top-4 right-4 bg-gray-900/80 backdrop-blur-sm text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-blue-600 z-10"
@@ -23,12 +20,10 @@
       </button>
     </div>
 
-    <!-- Maximized/Fullscreen Modal -->
     <div v-if="isMaximized" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90" @click.self="closeMaximized">
       <!-- Modal Container -->
       <div class="relative w-full h-full max-w-7xl max-h-screen p-4 sm:p-8 flex flex-col">
         
-        <!-- Header with Controls -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-0 sm:justify-between mb-4 bg-gray-900/80 backdrop-blur-sm rounded-lg px-4 py-3">
           <h3 class="text-white font-semibold text-lg sm:text-xl">Architecture Diagram</h3>
           <div class="flex items-center justify-between w-full sm:w-auto gap-4">
@@ -63,7 +58,6 @@
             </div>
           </div>
           
-          <!-- Close Button -->
           <button
             @click="closeMaximized"
             class="p-3 sm:p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-colors touch-manipulation"
@@ -75,7 +69,6 @@
           </button>
         </div>
 
-        <!-- Diagram Container with Zoom and Pan -->
         <div 
           ref="maximizedContainer"
           class="flex-1 bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden relative"
@@ -99,12 +92,10 @@
                 transition: isDragging ? 'none' : 'transform 0.1s ease-out'
               }"
             >
-              <!-- Diagram will be rendered here -->
             </div>
           </div>
         </div>
 
-        <!-- Footer Info -->
         <div class="mt-4 text-center text-gray-400 text-sm">
           <p class="hidden sm:block">Scroll wheel to zoom (50%-800%) • Click and drag to navigate anywhere • <kbd class="px-2 py-1 bg-gray-800 rounded text-gray-300">ESC</kbd> to close</p>
           <p class="block sm:hidden">Pinch to zoom (50%-800%) • Touch and drag to navigate • Tap outside to close</p>
@@ -129,7 +120,6 @@ const props = defineProps({
   }
 })
 
-// Reactive variables
 const mermaidElement = ref(null)
 const maximizedDiagram = ref(null)
 const maximizedContainer = ref(null)
@@ -142,12 +132,10 @@ const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
 const panStart = ref({ x: 0, y: 0 })
 
-// Touch support variables
 const lastTouchDistance = ref(0)
 const lastTouchCenter = ref({ x: 0, y: 0 })
 const isTouch = ref(false)
 
-// Configure Mermaid with dark theme
 const initializeMermaid = () => {
   mermaid.initialize({
     startOnLoad: false,
@@ -191,21 +179,14 @@ const renderDiagram = async (targetElement = mermaidElement) => {
   if (!targetElement.value || !props.diagram) return
 
   try {
-    // Clear previous content
     targetElement.value.innerHTML = ''
     
-    // Generate unique ID for this render
     const id = `mermaid-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     
-
-    
-    // Render the diagram
     const { svg } = await mermaid.render(id, props.diagram)
     
-    // Insert the rendered SVG
     targetElement.value.innerHTML = svg
     
-    // Style the SVG
     const svgElement = targetElement.value.querySelector('svg')
     if (svgElement) {
       svgElement.style.display = 'block'
@@ -222,23 +203,19 @@ const renderDiagram = async (targetElement = mermaidElement) => {
   }
 }
 
-// Maximization functions
 const openMaximized = async () => {
   isMaximized.value = true
   
-  // Reset pan position to center and start with higher zoom
   panX.value = 0
   panY.value = 0
   zoomLevel.value = 300
   
   await nextTick()
   
-  // Render diagram in maximized container
   if (maximizedDiagram.value) {
     await renderDiagram(maximizedDiagram)
   }
   
-  // Calculate initial zoom to fit diagram in viewport with proper centering
   await nextTick()
   setTimeout(() => {
     fitDiagramToView()
@@ -255,7 +232,6 @@ const closeMaximized = () => {
   document.body.style.overflow = ''
 }
 
-// Fit diagram to viewport on initial open
 const fitDiagramToView = () => {
   if (!maximizedContainer.value || !maximizedDiagram.value) return
   
@@ -264,20 +240,16 @@ const fitDiagramToView = () => {
   
   if (!svgElement) return
   
-  // Reset position first to get accurate measurements
   panX.value = 0
   panY.value = 0
   zoomLevel.value = 100
   
-  // Wait a moment for the reset to take effect
   setTimeout(() => {
     const containerRect = container.getBoundingClientRect()
     
-    // Get SVG natural dimensions
     let svgWidth = svgElement.width?.baseVal?.value || svgElement.clientWidth
     let svgHeight = svgElement.height?.baseVal?.value || svgElement.clientHeight
     
-    // Fallback to getBBox for more accurate content dimensions
     if (!svgWidth || !svgHeight) {
       try {
         const bbox = svgElement.getBBox()
@@ -290,21 +262,17 @@ const fitDiagramToView = () => {
       }
     }
     
-    // Calculate scale to fit with padding (85% of container for better visibility)
     const scaleX = (containerRect.width * 0.85) / svgWidth
     const scaleY = (containerRect.height * 0.85) / svgHeight
     const fitScale = Math.min(scaleX, scaleY)
     
-    // Start with at least 300% scale or the fit scale, whichever is larger
-    const minScale = 3.0 // 300%
+    const minScale = 3.0
     const targetScale = Math.max(fitScale, minScale)
     
-    // Set the calculated zoom level (minimum 300%, maximum 800%)
     zoomLevel.value = Math.min(800, Math.max(300, Math.round(targetScale * 100)))
   }, 10)
 }
 
-// Zoom functions
 const zoomIn = () => {
   if (zoomLevel.value < 800) {
     zoomLevel.value += 100
@@ -321,7 +289,6 @@ const resetZoom = () => {
   fitDiagramToView()
 }
 
-// Mouse wheel zoom with pan adjustment
 const handleWheel = (event) => {
   event.preventDefault()
   
@@ -330,14 +297,11 @@ const handleWheel = (event) => {
   const oldZoom = zoomLevel.value
   
   if (event.deltaY < 0) {
-    // Scroll up - zoom in
     zoomLevel.value = Math.min(800, zoomLevel.value + 35)
   } else {
-    // Scroll down - zoom out
     zoomLevel.value = Math.max(50, zoomLevel.value - 35)
   }
   
-  // Adjust pan to zoom towards mouse position
   const rect = maximizedContainer.value.getBoundingClientRect()
   const mouseX = event.clientX - rect.left
   const mouseY = event.clientY - rect.top
@@ -349,11 +313,9 @@ const handleWheel = (event) => {
   panY.value = (panY.value - (mouseY - centerY)) * zoomFactor + (mouseY - centerY)
 }
 
-// Drag to pan
 const startDrag = (event) => {
   if (!maximizedContainer.value) return
   
-  // Don't drag on interactive elements
   const target = event.target
   if (target.tagName === 'A' || target.closest('a')) {
     return
@@ -387,7 +349,6 @@ const endDrag = () => {
   isTouch.value = false
 }
 
-// Touch event handlers for mobile support
 const getTouchDistance = (touches) => {
   if (touches.length < 2) return 0
   const touch1 = touches[0]
@@ -414,14 +375,12 @@ const handleTouchStart = (event) => {
   isTouch.value = true
   
   if (event.touches.length === 1) {
-    // Single touch - start pan
     const touch = event.touches[0]
     isDragging.value = true
     dragStart.value = { x: touch.clientX, y: touch.clientY }
     panStart.value = { x: panX.value, y: panY.value }
     lastTouchCenter.value = { x: touch.clientX, y: touch.clientY }
   } else if (event.touches.length === 2) {
-    // Two fingers - start pinch zoom
     isDragging.value = false
     lastTouchDistance.value = getTouchDistance(event.touches)
     lastTouchCenter.value = getTouchCenter(event.touches)
@@ -432,7 +391,6 @@ const handleTouchMove = (event) => {
   if (!maximizedContainer.value) return
   
   if (event.touches.length === 1 && isDragging.value) {
-    // Single touch pan
     const touch = event.touches[0]
     const dx = touch.clientX - dragStart.value.x
     const dy = touch.clientY - dragStart.value.y
@@ -440,20 +398,18 @@ const handleTouchMove = (event) => {
     panX.value = panStart.value.x + dx
     panY.value = panStart.value.y + dy
   } else if (event.touches.length === 2) {
-    // Two finger pinch zoom
+    
     const currentDistance = getTouchDistance(event.touches)
     const currentCenter = getTouchCenter(event.touches)
     
     if (lastTouchDistance.value > 0) {
-      // Calculate zoom change
       const zoomChange = (currentDistance / lastTouchDistance.value)
       const oldZoom = zoomLevel.value
       const newZoom = Math.min(800, Math.max(50, oldZoom * zoomChange))
       
-      // Apply zoom
+      
       zoomLevel.value = newZoom
       
-      // Adjust pan to zoom towards touch center (similar to mouse wheel)
       if (maximizedContainer.value) {
         const rect = maximizedContainer.value.getBoundingClientRect()
         const centerX = rect.width / 2
@@ -474,12 +430,10 @@ const handleTouchMove = (event) => {
 
 const handleTouchEnd = (event) => {
   if (event.touches.length === 0) {
-    // All touches ended
     isDragging.value = false
     isTouch.value = false
     lastTouchDistance.value = 0
   } else if (event.touches.length === 1) {
-    // One finger lifted, switch to pan mode
     const touch = event.touches[0]
     isDragging.value = true
     dragStart.value = { x: touch.clientX, y: touch.clientY }
@@ -487,7 +441,6 @@ const handleTouchEnd = (event) => {
   }
 }
 
-// Keyboard shortcuts
 const handleKeyDown = (event) => {
   if (!isMaximized.value) return
   
@@ -514,10 +467,9 @@ onMounted(async () => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown)
-  document.body.style.overflow = '' // Cleanup
+  document.body.style.overflow = ''
 })
 
-// Watch for diagram changes
 watch(() => props.diagram, () => {
   renderDiagram()
   if (isMaximized.value) {
@@ -547,7 +499,6 @@ watch(() => props.diagram, () => {
   touch-action: none;
 }
 
-/* Cursor styles for dragging */
 .cursor-grab {
   cursor: grab;
 }
@@ -556,24 +507,20 @@ watch(() => props.diagram, () => {
   cursor: grabbing !important;
 }
 
-/* Touch optimization */
 .touch-manipulation {
   touch-action: manipulation;
 }
 
-/* Mobile-specific improvements */
 @media (max-width: 640px) {
   .mermaid-container {
     -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Enable interactions on SVG elements */
 :deep(svg) {
   pointer-events: auto !important;
 }
 
-/* Override Mermaid's default styles for dark theme */
 :deep(.mermaid) svg {
   background: transparent !important;
 }
@@ -597,7 +544,6 @@ watch(() => props.diagram, () => {
   color: #FFFFFF !important;
 }
 
-/* Ensure all text elements are white for maximum contrast */
 :deep(text) {
   fill: #FFFFFF !important;
   color: #FFFFFF !important;

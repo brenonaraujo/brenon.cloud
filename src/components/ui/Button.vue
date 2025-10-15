@@ -1,8 +1,9 @@
 <template>
-  <a
+  <component
+    :is="href ? 'a' : 'button'"
     :href="href"
     :class="[
-      'inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3',
+      'inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 transition-colors',
       variant === 'primary' ? 'bg-blue-600 hover:bg-blue-500' : 'bg-gray-800 hover:bg-gray-700',
       'text-white'
     ]"
@@ -12,14 +13,15 @@
       <path d="M5 12h14"/>
       <path d="M12 5l7 7-7 7"/>
     </svg>
-  </a>
+  </component>
 </template>
 
 <script setup>
 defineProps({
   href: {
     type: String,
-    required: true
+    required: false,
+    default: undefined
   },
   variant: {
     type: String,

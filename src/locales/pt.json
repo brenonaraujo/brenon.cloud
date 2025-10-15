@@ -1,0 +1,151 @@
+{
+  "home": {
+    "hero": {
+      "title": "Brenon.Cloud",
+      "subtitle": "Seu Portal para uma Nuvem Pessoal Segura e Integrada",
+      "getStarted": "Começar",
+      "exploreServices": "Explorar serviços"
+    },
+    "docker": {
+      "title": "Implante, entregue e autogerencie seus serviços",
+      "description": "Use os componentes do Brenon.Cloud para executar serviços pessoais de ponta a ponta com segurança, roteamento, automação e observabilidade.",
+      "learnMore": "Saiba mais sobre implantações Docker",
+      "howWeUse": "Como usamos o Portainer",
+      "openPortainer": "Abrir Portainer",
+      "features": {
+        "managed": {
+          "title": "Gerenciado com Portainer",
+          "description": "Interface visual para implantar e gerenciar stacks Swarm, redes, volumes e segredos entre nós."
+        },
+        "stacks": {
+          "title": "Swarm Stacks",
+          "description": "Compose v3 com políticas de implantação, verificações de integridade e atualizações contínuas para lançamentos confiáveis."
+        },
+        "scalable": {
+          "title": "Escalável e Resiliente",
+          "description": "Escale réplicas por serviço e aproveite a redundância de nós para manter aplicativos disponíveis."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Implante Qualquer Serviço com Docker",
+      "description": "Executamos Docker Swarm em um cluster de mini-computadores e gerenciamos com Portainer. Implante stacks Compose, escale réplicas e realize atualizações sem tempo de inatividade a partir de uma interface simples."
+    },
+    "about": {
+      "title": "Sobre Brenon.Cloud",
+      "description": "Capacitando indivíduos com infraestrutura de nuvem de nível empresarial",
+      "vision": "Brenon.Cloud começou com uma visão simples: tornar a infraestrutura de nuvem de nível empresarial acessível para indivíduos. O que começou com dois mini-computadores evoluiu para uma plataforma robusta que traz o poder da arquitetura de nuvem moderna para seus projetos pessoais.",
+      "stack": {
+        "title": "Stack de Infraestrutura",
+        "items": [
+          "Orquestração Docker Swarm",
+          "Gateway de API Kong",
+          "Gerenciamento de Identidade Authentik",
+          "Pipeline CI/CD Automatizado"
+        ]
+      },
+      "security": {
+        "title": "Segurança e Confiabilidade",
+        "items": [
+          "Arquitetura Zero-Trust",
+          "Criptografia SSL/TLS",
+          "Backups Automatizados",
+          "Configuração de Alta Disponibilidade"
+        ]
+      },
+      "automation": {
+        "title": "Automação e Escalabilidade",
+        "items": [
+          "Serviços de Auto-escalabilidade",
+          "Monitoramento e Alertas",
+          "Otimização de Recursos",
+          "Balanceamento de Carga"
+        ]
+      },
+      "flow": {
+        "title": "Como Seus Serviços Fluem",
+        "edge": {
+          "title": "Gateway de Borda",
+          "description": "Roteamento de tráfego, terminação SSL e camada de segurança inicial"
+        },
+        "auth": {
+          "title": "Autenticação",
+          "description": "Verificação de identidade e controle de acesso"
+        },
+        "service": {
+          "title": "Camada de Serviço",
+          "description": "Suas aplicações e serviços em contêineres"
+        }
+      },
+      "cta": {
+        "title": "Pronto para Construir Sua Nuvem?",
+        "description": "Junte-se a nós na formação do futuro da infraestrutura de nuvem pessoal.",
+        "getStarted": "Começar com Docker",
+        "viewGithub": "Ver no GitHub"
+      }
+    }
+  },
+  "services": {
+    "authentik": {
+      "title": "Identidade e Acesso (Authentik)",
+      "shortName": "Authentik",
+      "description": "Centralize o login com SSO, MFA e políticas refinadas para seus aplicativos e serviços."
+    },
+    "kong": {
+      "title": "API e Borda (Kong)",
+      "shortName": "Kong",
+      "description": "Proteja e roteie tráfego, aplique autenticação e limites de taxa, e exponha serviços com segurança na web."
+    },
+    "docker": {
+      "title": "Implantações (Docker)",
+      "shortName": "Docker",
+      "description": "Empacote serviços como contêineres ou stacks Compose e execute-os de forma confiável no Brenon.Cloud."
+    },
+    "uptime-kuma": {
+      "title": "Monitoramento (Uptime Kuma)",
+      "shortName": "Uptime Kuma",
+      "description": "Acompanhe disponibilidade e tempos de resposta com alertas para seus canais preferidos."
+    },
+    "grafana": {
+      "title": "Painéis (Grafana)",
+      "shortName": "Grafana",
+      "description": "Visualize métricas e logs em todos os serviços com painéis reutilizáveis e compartilháveis."
+    },
+    "n8n": {
+      "title": "Automação (n8n)",
+      "shortName": "n8n",
+      "description": "Automatize tarefas com fluxos de trabalho visuais que conectam APIs, bancos de dados e serviços."
+    }
+  },
+  "servicePage": {
+    "backToHome": "Voltar para Início",
+    "notFound": {
+      "title": "Serviço Não Encontrado",
+      "description": "O serviço solicitado não pôde ser encontrado.",
+      "returnHome": "Retornar ao Início"
+    },
+    "architecture": {
+      "title": "Como {name} se Encaixa no Brenon.Cloud"
+    },
+    "features": {
+      "title": "Recursos Principais"
+    },
+    "useCases": {
+      "title": "Casos de Uso"
+    },
+    "gettingStarted": {
+      "title": "Primeiros Passos",
+      "quickStart": "Guia de Início Rápido"
+    },
+    "actions": {
+      "launch": "Abrir {name}",
+      "viewDocs": "Ver Documentação"
+    }
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro",
+    "retry": "Tentar novamente",
+    "close": "Fechar"
+  }
+}

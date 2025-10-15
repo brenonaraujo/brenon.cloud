@@ -120,15 +120,12 @@ const menuItems = [
 ]
 
 const scrollToSection = (sectionId) => {
-  // Close mobile menu if open
   if (isMobileMenuOpen.value) {
-    toggleMobileMenu()
   }
 
   // If we're not on the home page, navigate there first
   if (router.currentRoute.value.path !== '/') {
-    router.push('/')
-    // Wait for navigation and DOM update
+  router.push('/')
     setTimeout(() => {
       const element = document.getElementById(sectionId)
       if (element) {
