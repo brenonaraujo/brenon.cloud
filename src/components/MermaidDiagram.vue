@@ -326,13 +326,13 @@ const fitDiagramToView = () => {
 // Zoom functions
 const zoomIn = () => {
   if (zoomLevel.value < 800) {
-    zoomLevel.value += 80
+    zoomLevel.value += 100
   }
 }
 
 const zoomOut = () => {
   if (zoomLevel.value > 50) {
-    zoomLevel.value -= 80
+    zoomLevel.value -= 100
   }
 }
 
@@ -350,10 +350,10 @@ const handleWheel = (event) => {
   
   if (event.deltaY < 0) {
     // Scroll up - zoom in
-    zoomLevel.value = Math.min(800, zoomLevel.value + 30)
+    zoomLevel.value = Math.min(800, zoomLevel.value + 35)
   } else {
     // Scroll down - zoom out
-    zoomLevel.value = Math.max(50, zoomLevel.value - 30)
+    zoomLevel.value = Math.max(50, zoomLevel.value - 35)
   }
   
   // Adjust pan to zoom towards mouse position
