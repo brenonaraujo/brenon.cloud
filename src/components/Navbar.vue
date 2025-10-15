@@ -43,6 +43,8 @@
               </a>
             </template>
           </nav>
+          <!-- Language Selector -->
+          <LanguageSelector />
           <!-- Social Links -->
           <div class="flex items-center space-x-4">
             <a href="https://github.com/brenonaraujo" target="_blank" rel="noopener noreferrer">
@@ -97,6 +99,10 @@
                 </a>
               </template>
             </div>
+            <!-- Language Selector for Mobile -->
+            <div class="mt-8 flex justify-center">
+              <LanguageSelector />
+            </div>
           </nav>
         </div>
       </div>
@@ -105,19 +111,22 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import SocialLinks from './SocialLinks.vue'
+import LanguageSelector from './ui/LanguageSelector.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const isMobileMenuOpen = ref(false)
 
-const menuItems = [
-  { to: 'how-it-works', text: 'How it works' },
-  { to: 'docker', text: 'Services' },
-  { to: 'about', text: 'About' },
-  { to: 'https://uptime.brenon.cloud/status/services', text: 'Status', external: true }
-]
+const menuItems = computed(() => [
+  { to: 'how-it-works', text: t('navbar.howItWorks') },
+  { to: 'docker', text: t('navbar.services') },
+  { to: 'about', text: t('navbar.about') },
+  { to: 'https://uptime.brenon.cloud/status/services', text: t('navbar.status'), external: true }
+])
 
 const scrollToSection = (sectionId) => {
   if (isMobileMenuOpen.value) {
