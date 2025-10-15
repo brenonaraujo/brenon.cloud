@@ -49,6 +49,7 @@ All 6 services now have full Portuguese translations:
 - `getLocalizedService(service)` - Transforms raw service to localized version
 - `localizedServices` - Computed property with all services localized
 - `getLocalizedServiceById(id)` - Gets specific localized service
+- `createLocalizedServiceById(id)` - **NEW**: Creates reactive computed for service content
 
 ## 🧪 Testing Instructions
 
@@ -62,6 +63,8 @@ All 6 services now have full Portuguese translations:
 4. **Test service pages**:
    - Click "Learn More" on any service card
    - Verify service detail page shows localized content
+   - **Switch language while on service detail page**
+   - Verify content updates instantly with brief loading animation
 5. **Test fallback behavior**:
    - Content should always display (English fallback when Portuguese missing)
 
@@ -132,7 +135,10 @@ const getLocalizedText = (localizedText) => {
 - [x] TypeScript types are correct
 - [x] All services have complete translations
 - [x] Existing functionality remains unchanged
-- [x] Language switching works correctly
+- [x] Language switching works correctly on home page
+- [x] **FIXED**: Language switching now works on service detail pages
+- [x] Reactive content updates when language changes
+- [x] Loading state during language transitions
 - [x] Fallback behavior works as expected
 - [x] No console errors or warnings
 - [x] Follows existing code style and architecture
@@ -152,7 +158,22 @@ This implementation provides a solid foundation for:
 - Pluralization support
 - Date/number localization
 
-## 📋 Breaking Changes
+## � Bug Fixes
+
+### Language Switching on Service Detail Pages
+**Issue**: Service detail pages didn't update content when users changed language.
+
+**Root Cause**: Service content was only loaded once in `onMounted` and not reactive to language changes.
+
+**Solution**: 
+- Created `createLocalizedServiceById()` function that returns reactive computed service
+- Service content now automatically updates when language changes
+- Added smooth loading animation (300ms) during language transitions
+- Maintained performance with computed properties
+
+**Result**: Perfect language switching experience across all pages.
+
+## �📋 Breaking Changes
 **None** - This implementation is fully backward compatible.
 
 ## 🙏 Notes for Reviewers
