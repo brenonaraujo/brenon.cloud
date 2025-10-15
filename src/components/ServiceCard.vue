@@ -5,7 +5,7 @@
         <div :class="[`p-3 rounded-lg bg-${color}-400/10`]">
           <component 
             :is="iconComponent" 
-            :class="[`h-6 w-6 text-${color}-400`]"
+            :class="[`h-8 w-8 text-${color}-400`]"
           />
         </div>
         <h3 class="text-lg font-semibold">{{ title }}</h3>

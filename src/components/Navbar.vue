@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-20 items-center justify-between">
         <router-link to="/" class="group flex items-center gap-3 hover:opacity-90 transition-opacity">
-          <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="h-8 w-8">
+          <img src="/brenon-cloud-logo.png" alt="Brenon.Cloud Logo" class="h-12 w-12">
           <div>
             <span class="font-medium text-white text-lg">Brenon.Cloud</span>
             <span class="text-sm text-gray-400 block">Personal Cloud Services</span>
