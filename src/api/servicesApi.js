@@ -1413,6 +1413,194 @@ graph TB
     class kong,auth,monitor integration
     `,
         demoUrl: 'http://portainer.brenon.cloud'
+      },
+      {
+        id: 'minio',
+        title: {
+          en: 'MinIO - Object Storage',
+          pt: 'MinIO - Armazenamento de Objetos'
+        },
+        shortName: {
+          en: 'MinIO',
+          pt: 'MinIO'
+        },
+        description: {
+          en: 'High-performance, S3 compatible object storage that transforms your cloud into a data lake, empowering modern applications with unlimited, cost-effective storage scalability',
+          pt: 'Armazenamento de objetos de alta performance compatível com S3 que transforma sua nuvem em um data lake, capacitando aplicações modernas com escalabilidade de armazenamento ilimitada e econômica'
+        },
+        icon: 'cloudstorage',
+        color: 'red',
+        learnMoreUrl: '/service?service=minio',
+        image: 'https://static.cdnlogo.com/logos/m/74/minio_thumb.png',
+        features: [
+          {
+            en: 'S3-compatible API for seamless integration',
+            pt: 'API compatível com S3 para integração perfeita'
+          },
+          {
+            en: 'Multi-cloud and hybrid cloud deployment',
+            pt: 'Implantação multi-cloud e nuvem híbrida'
+          },
+          {
+            en: 'Enterprise-grade security and encryption',
+            pt: 'Segurança e criptografia de nível empresarial'
+          },
+          {
+            en: 'Built-in data protection and versioning',
+            pt: 'Proteção de dados e versionamento integrados'
+          },
+          {
+            en: 'High-performance distributed storage',
+            pt: 'Armazenamento distribuído de alta performance'
+          },
+          {
+            en: 'Web-based management console',
+            pt: 'Console de gerenciamento baseado na web'
+          },
+          {
+            en: 'Lambda notifications and event-driven workflows',
+            pt: 'Notificações Lambda e workflows orientados por eventos'
+          },
+          {
+            en: 'Data lifecycle management and retention policies',
+            pt: 'Gerenciamento de ciclo de vida de dados e políticas de retenção'
+          }
+        ],
+        useCases: [
+          {
+            title: {
+              en: 'AI/ML Data Pipeline Storage',
+              pt: 'Armazenamento de Pipeline de Dados AI/ML'
+            },
+            description: {
+              en: 'Store massive datasets for machine learning training, model artifacts, and inference results. MinIO integrates seamlessly with TensorFlow, PyTorch, and MLflow workflows deployed on Brenon.Cloud, providing scalable storage for data scientists and AI engineers.',
+              pt: 'Armazene conjuntos de dados massivos para treinamento de machine learning, artefatos de modelo e resultados de inferência. MinIO se integra perfeitamente com workflows TensorFlow, PyTorch e MLflow implantados no Brenon.Cloud, fornecendo armazenamento escalável para cientistas de dados e engenheiros de IA.'
+            }
+          },
+          {
+            title: {
+              en: 'Application Asset Storage',
+              pt: 'Armazenamento de Assets de Aplicação'
+            },
+            description: {
+              en: 'Host static assets, user uploads, images, videos, and documents for your web applications. Your Vue.js frontends and Python/Golang APIs can directly upload and serve files through MinIO\'s S3-compatible interface, reducing server load and improving performance.',
+              pt: 'Hospede assets estáticos, uploads de usuários, imagens, vídeos e documentos para suas aplicações web. Seus frontends Vue.js e APIs Python/Golang podem fazer upload e servir arquivos diretamente através da interface compatível com S3 do MinIO, reduzindo a carga do servidor e melhorando a performance.'
+            }
+          },
+          {
+            title: {
+              en: 'Backup and Disaster Recovery',
+              pt: 'Backup e Recuperação de Desastres'
+            },
+            description: {
+              en: 'Automated backup storage for databases, application data, and Docker volumes. Integrate with n8n workflows for scheduled backups, retention policies, and disaster recovery procedures. Your PostgreSQL dumps, MongoDB exports, and application logs are safely stored with versioning support.',
+              pt: 'Armazenamento automatizado de backup para bancos de dados, dados de aplicação e volumes Docker. Integre com workflows n8n para backups agendados, políticas de retenção e procedimentos de recuperação de desastres. Seus dumps PostgreSQL, exportações MongoDB e logs de aplicação são armazenados com segurança com suporte a versionamento.'
+            }
+          }
+        ],
+        integrations: [
+          { 
+            name: 'n8n Workflows', 
+            description: {
+              en: 'Automated file processing and data pipelines',
+              pt: 'Processamento automatizado de arquivos e pipelines de dados'
+            }
+          },
+          { 
+            name: 'Authentik SSO', 
+            description: {
+              en: 'Secure access control and user authentication',
+              pt: 'Controle de acesso seguro e autenticação de usuários'
+            }
+          },
+          { 
+            name: 'Kong Gateway', 
+            description: {
+              en: 'API gateway for secure file access',
+              pt: 'Gateway de API para acesso seguro a arquivos'
+            }
+          },
+          { 
+            name: 'Grafana Monitoring', 
+            description: {
+              en: 'Storage metrics and performance monitoring',
+              pt: 'Métricas de armazenamento e monitoramento de performance'
+            }
+          }
+        ],
+        quickStart: [
+          { 
+            title: {
+              en: 'Access MinIO Console',
+              pt: 'Acessar Console MinIO'
+            }, 
+            description: {
+              en: 'Login to MinIO web interface',
+              pt: 'Faça login na interface web do MinIO'
+            }
+          },
+          { 
+            title: {
+              en: 'Create Bucket',
+              pt: 'Criar Bucket'
+            }, 
+            description: {
+              en: 'Set up your first storage bucket',
+              pt: 'Configure seu primeiro bucket de armazenamento'
+            }
+          },
+          { 
+            title: {
+              en: 'Configure Access Keys',
+              pt: 'Configurar Chaves de Acesso'
+            }, 
+            description: {
+              en: 'Generate API keys for application integration',
+              pt: 'Gere chaves de API para integração com aplicações'
+            }
+          }
+        ],
+        gettingStarted: {
+          en: 'MinIO transforms your infrastructure into an unlimited data lake - like adding infinite storage space to your digital workshop. Every application you build can store, retrieve, and serve files at enterprise scale without complexity. <a href="https://minio.brenon.cloud" class="text-red-400 hover:underline">Start building your data-driven applications here</a>.',
+          pt: 'MinIO transforma sua infraestrutura em um data lake ilimitado - como adicionar espaço de armazenamento infinito ao seu workshop digital. Cada aplicação que você constrói pode armazenar, recuperar e servir arquivos em escala empresarial sem complexidade. <a href="https://minio.brenon.cloud" class="text-red-400 hover:underline">Comece a construir suas aplicações orientadas a dados aqui</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Applications] --> B[MinIO Object Storage]
+    B --> C[Data Lake]
+    
+    D[AI/ML Pipeline] --> B
+    E[Web Applications] --> B
+    F[Backup Systems] --> B
+    
+    B --> G[S3 Compatible API]
+    B --> H[Web Console]
+    B --> I[Event Notifications]
+    
+    J[n8n Workflows] --> I
+    K[Authentik SSO] --> H
+    L[Kong Gateway] --> G
+    
+    C --> M[Raw Data Storage]
+    C --> N[Processed Data]
+    C --> O[Model Artifacts]
+    C --> P[User Assets]
+    
+    style B fill:#dc2626,stroke:#b91c1c,color:#fff
+    style A fill:#3b82f6,stroke:#2563eb,color:#fff
+    style C fill:#059669,stroke:#047857,color:#fff
+    
+    classDef storage fill:#dc2626,stroke:#b91c1c,stroke-width:2px
+    classDef apps fill:#3b82f6,stroke:#2563eb,stroke-width:2px
+    classDef data fill:#059669,stroke:#047857,stroke-width:2px
+    classDef integration fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    
+    class B,G,H,I storage
+    class A,D,E,F apps
+    class C,M,N,O,P data
+    class J,K,L integration
+    `,
+        demoUrl: 'http://minio-console.brenon.cloud'
       }
     ]
   }

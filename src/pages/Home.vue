@@ -42,7 +42,7 @@
 
         <!-- Services grid -->
         <template v-else>
-          <div v-if="validServices?.length > 0" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div v-if="validServices?.length > 0" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr">
             <ServiceCard
               v-for="service in validServices.slice(0, 3)"
               :key="service.id"
@@ -51,9 +51,10 @@
               :icon="service.icon"
               :color="service.color"
               :learnMoreUrl="service.learnMoreUrl"
+              :demoUrl="service.demoUrl"
             />
           </div>
-          <div v-if="validServices?.length > 3" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+          <div v-if="validServices?.length > 3" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 auto-rows-fr">
             <ServiceCard
               v-for="service in validServices.slice(3)"
               :key="service.id"
@@ -62,6 +63,7 @@
               :icon="service.icon"
               :color="service.color"
               :learnMoreUrl="service.learnMoreUrl"
+              :demoUrl="service.demoUrl"
             />
           </div>
           
