@@ -1,0 +1,96 @@
+name: 📝 New blog post
+description: Propose a new article for the Brenon.Cloud blog. Maintainers convert this into a Markdown file under `src/content/blog/`.
+title: "[Blog] <your post title>"
+labels: ["blog", "content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✍️ Write a Brenon.Cloud blog post
+
+        Fill in the fields below. A maintainer will review the proposal and turn it
+        into a Markdown file at `src/content/blog/<slug>.<locale>.md`. The site will
+        pick it up automatically on the next deploy.
+
+        > Filename convention:
+        > - `my-post.en.md` → English
+        > - `my-post.pt.md` → Portuguese
+        > - `my-post.md` → fallback shown when a localized version is missing
+        >
+        > To publish the same article in multiple languages, open one issue per
+        > language sharing the same `slug`.
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: The post title shown as the page heading.
+      placeholder: e.g. Hardening Docker Swarm with rootless nodes
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      description: Locale this content is written in. Drives the filename suffix.
+      options:
+        - English (en)
+        - Português (pt)
+        - Language-neutral (no suffix, used as fallback)
+    validations:
+      required: true
+  - type: input
+    id: slug
+    attributes:
+      label: Slug (optional)
+      description: URL-safe identifier shared across translations. If empty, a maintainer will derive one from the title.
+      placeholder: hardening-docker-swarm
+  - type: textarea
+    id: description
+    attributes:
+      label: Short description
+      description: 1–2 sentences summarising the post. Used on cards and SEO previews.
+      placeholder: A practical walkthrough of running Swarm in rootless mode without losing observability.
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Publish date (YYYY-MM-DD)
+      description: Defaults to the issue creation date when omitted.
+      placeholder: 2026-05-20
+  - type: input
+    id: tags
+    attributes:
+      label: Tags (comma separated)
+      placeholder: docker, swarm, security
+  - type: input
+    id: cover
+    attributes:
+      label: Cover image URL (optional)
+      description: Public URL or repository-relative path (e.g. `/brenon-cloud-logo.png`).
+      placeholder: /brenon-cloud-logo.png
+  - type: textarea
+    id: content
+    attributes:
+      label: Content (Markdown)
+      description: The full body of the post in Markdown. Headings, code blocks, lists and links are supported.
+      placeholder: |
+        ## Introduction
+
+        Write your post here using **Markdown**.
+
+        ```bash
+        docker swarm init
+        ```
+      render: markdown
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Checklist
+      options:
+        - label: I am the author or have permission to publish this content.
+          required: true
+        - label: I followed the design intent of Brenon.Cloud (clear, technical, friendly).
+          required: true

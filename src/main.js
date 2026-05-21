@@ -8,10 +8,14 @@ import './style.css'
 // Pages
 import Home from './pages/Home.vue'
 import Service from './pages/Service.vue'
+import Blog from './pages/Blog.vue'
+import BlogPost from './pages/BlogPost.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
 import { ServiceService } from './services/serviceService'
+import { blogApi } from './api/blogApi'
+import { BlogService } from './services/blogService'
 
 // i18n translations
 import en from './locales/en.json'
@@ -31,6 +35,17 @@ const router = createRouter({
       name: 'service',
       component: Service,
       props: route => ({ serviceId: route.query.service })
+    },
+    {
+      path: '/blog',
+      name: 'blog',
+      component: Blog
+    },
+    {
+      path: '/blog/:slug',
+      name: 'blog-post',
+      component: BlogPost,
+      props: true
     },
     {
       path: '/status',
@@ -66,6 +81,7 @@ const i18n = createI18n({
 
 // Dependency Injection: Service Layer
 const serviceService = new ServiceService(servicesApi)
+const blogService = new BlogService(blogApi)
 
 // Create and configure app
 const app = createApp(App)
@@ -77,5 +93,6 @@ app.use(i18n)
 
 // Provide dependencies (Dependency Injection)
 app.provide('serviceService', serviceService)
+app.provide('blogService', blogService)
 
 app.mount('#app')

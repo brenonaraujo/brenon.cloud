@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Brenon.Cloud Documentation
+    url: https://docs.brenon.cloud
+    about: Browse the public documentation before opening an issue.

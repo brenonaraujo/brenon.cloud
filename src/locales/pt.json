@@ -115,6 +115,11 @@
       "title": "Automação (n8n)",
       "shortName": "n8n",
       "description": "Automatize tarefas com fluxos de trabalho visuais que conectam APIs, bancos de dados e serviços."
+    },
+    "console-air": {
+      "title": "Akash Console Air",
+      "shortName": "Console Air",
+      "description": "Deployments self-custodial na Akash Network — conecte uma carteira, troque AKT por ACTs e faça deploy sem e-mail ou cartão de crédito."
     }
   },
   "servicePage": {
@@ -154,6 +159,25 @@
     "howItWorks": "Como funciona",
     "services": "Serviços",
     "about": "Sobre",
+    "blog": "Blog",
     "status": "Status"
+  },
+  "blog": {
+    "title": "Blog do Brenon.Cloud",
+    "subtitle": "Notas, mergulhos técnicos e lições aprendidas operando uma nuvem pessoal.",
+    "readMore": "Ler mais",
+    "readingTime": "{min} min de leitura",
+    "backToList": "Voltar para todos os posts",
+    "by": "por",
+    "translationFallback": "Disponível apenas neste idioma",
+    "translationNotice": "Este post ainda não foi traduzido. Exibindo a versão em {locale}.",
+    "empty": {
+      "title": "Nenhum post ainda",
+      "description": "Volte em breve — os primeiros artigos estão a caminho."
+    },
+    "notFound": {
+      "title": "Post não encontrado",
+      "description": "Este artigo não existe ou foi movido."
+    }
   }
 }
