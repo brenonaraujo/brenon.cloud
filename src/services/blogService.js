@@ -28,6 +28,24 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   return defaultLinkRender(tokens, idx, options, env, self)
 }
 
+const defaultImageRender =
+  md.renderer.rules.image ||
+  function (tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options)
+  }
+
+md.renderer.rules.image = function (tokens, idx, options, env, self) {
+  const src = tokens[idx].attrGet('src') || ''
+  tokens[idx].attrSet('loading', 'lazy')
+  tokens[idx].attrSet('decoding', 'async')
+
+  if (/^https?:\/\//.test(src)) {
+    tokens[idx].attrSet('referrerpolicy', 'no-referrer')
+  }
+
+  return defaultImageRender(tokens, idx, options, env, self)
+}
+
 const FRONTMATTER_RE = /^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/
 
 /**
@@ -194,6 +212,7 @@ export class BlogService {
       author: data.author || '',
       tags: Array.isArray(data.tags) ? data.tags : [],
       cover: data.cover || '',
+      coverFallback: data.coverFallback || '',
       content,
       html: md.render(content),
       readingTime: estimateReadingTime(content),

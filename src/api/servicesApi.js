@@ -1771,7 +1771,7 @@ graph TD
     style D fill:#9333ea,stroke:#7c3aed,color:#fff
     style G fill:#059669,stroke:#047857,color:#fff
         `,
-        demoUrl: 'https://console-air.brenon.cloud'
+        demoUrl: 'https://akash.brenon.cloud'
       }
     ]
   }

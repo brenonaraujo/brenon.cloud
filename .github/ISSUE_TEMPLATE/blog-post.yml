@@ -67,8 +67,14 @@ body:
     id: cover
     attributes:
       label: Cover image URL (optional)
-      description: Public URL or repository-relative path (e.g. `/brenon-cloud-logo.png`).
-      placeholder: /brenon-cloud-logo.png
+      description: Public URL or path served from `public/` (e.g. `/brenon-cloud-logo.png` for `public/brenon-cloud-logo.png`). External links are supported.
+      placeholder: https://example.com/cover.jpg
+  - type: input
+    id: coverFallback
+    attributes:
+      label: Cover fallback path (optional)
+      description: Path served from `public/` used if the external cover URL fails to load.
+      placeholder: /images/blog/my-cover.jpg
   - type: textarea
     id: content
     attributes:
