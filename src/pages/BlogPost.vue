@@ -63,7 +63,12 @@
         v-if="post.cover"
         :src="post.cover"
         :alt="post.title"
+        :data-fallback-src="post.coverFallback || ''"
+        referrerpolicy="no-referrer"
+        loading="eager"
+        decoding="async"
         class="w-full rounded-2xl border border-gray-800"
+        @error="handleCoverError"
       />
 
       <div class="prose-blog" v-html="post.html"></div>
@@ -92,6 +97,18 @@ const route = useRoute()
 const { t } = useI18n()
 const { loadPost, loading, error, locale, formatDate } = useBlog()
 const post = ref(null)
+
+function handleCoverError(event) {
+  const image = event.currentTarget
+  const fallbackSrc = image.dataset.fallbackSrc
+
+  if (fallbackSrc && image.getAttribute('src') !== fallbackSrc) {
+    image.src = fallbackSrc
+    return
+  }
+
+  image.style.display = 'none'
+}
 
 const fetch = async (slug) => {
   post.value = await loadPost(slug)

@@ -1,10 +1,11 @@
 ---
-title: Console Air on Brenon.Cloud — Permissionless Akash Deployments for Everyone
+title: Akash Console Air on Brenon.Cloud — Permissionless Akash Deployments for Everyone
 description: We deployed Akash Console Air on Brenon.Cloud and opened it to anyone. Connect a wallet, swap a minimum of 10 AKT for ACTs, and ship to a decentralized cloud — no email, no credit card, no KYC.
 date: 2026-05-20
 author: Brenon Araujo
 tags: [akash, decentralized-cloud, console-air, web3, deployments]
-cover: /brenon-cloud-logo.png
+cover: https://logowik.com/content/uploads/images/akash-network-akt1389.jpg
+coverFallback: /images/blog/akash-network-akt1389.jpg
 ---
 
 # Why we put Console Air on Brenon.Cloud
@@ -48,7 +49,7 @@ permissionless.
 
 Brenon.Cloud’s job is to make this kind of access frictionless. So we
 deployed Console Air on our own infrastructure and **opened it to
-anyone** at [`console-air.brenon.cloud`](https://console-air.brenon.cloud).
+anyone** at [`akash.brenon.cloud`](https://akash.brenon.cloud).
 
 Our goals:
 
@@ -112,7 +113,7 @@ just provide an additional public, no-questions-asked entry point.
 
 ## Try it
 
-[Open Console Air on Brenon.Cloud →](https://console-air.brenon.cloud)
+[Open Console Air on Brenon.Cloud →](https://akash.brenon.cloud)
 
 Bring a Keplr wallet, top it up with at least 10 AKT, and you are one
 swap and one SDL away from your first decentralized deployment.

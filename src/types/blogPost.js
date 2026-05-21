@@ -9,6 +9,7 @@
  * @property {string} [author]      Optional author name.
  * @property {string[]} [tags]      Optional tag list.
  * @property {string} [cover]       Optional cover image URL.
+ * @property {string} [coverFallback] Optional fallback image URL or path.
  * @property {string} content       Raw markdown body (without frontmatter).
  * @property {string} html          Rendered HTML body.
  * @property {number} readingTime   Approximate reading time in minutes.

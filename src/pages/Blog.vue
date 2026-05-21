@@ -51,7 +51,12 @@
           <img
             :src="post.cover"
             :alt="post.title"
+            :data-fallback-src="post.coverFallback || ''"
+            referrerpolicy="no-referrer"
+            loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            @error="handleCoverError"
           />
         </div>
         <div class="p-6 flex flex-col flex-1">
@@ -101,6 +106,18 @@ import { useBlog } from '../composables/useBlog'
 
 const { t } = useI18n()
 const { posts, loading, error, locale, loadPosts, formatDate } = useBlog()
+
+function handleCoverError(event) {
+  const image = event.currentTarget
+  const fallbackSrc = image.dataset.fallbackSrc
+
+  if (fallbackSrc && image.getAttribute('src') !== fallbackSrc) {
+    image.src = fallbackSrc
+    return
+  }
+
+  image.style.display = 'none'
+}
 
 onMounted(() => loadPosts())
 watch(locale, () => loadPosts())
