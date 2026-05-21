@@ -10,10 +10,16 @@
           {{ t('home.hero.subtitle') }}
         </p>
         <div class="mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button href="#docker" variant="primary" class="min-w-[160px]" withArrow>
+          <router-link
+            to="/blog"
+            class="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white transition-colors min-w-[160px]"
+          >
             {{ t('home.hero.getStarted') }}
-          </Button>
-          <Button href="#docker" variant="secondary" class="min-w-[160px]" withArrow>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+            </svg>
+          </router-link>
+          <Button href="#about-me" variant="secondary" class="min-w-[160px]" withArrow>
             {{ t('home.hero.exploreServices') }}
           </Button>
         </div>
@@ -117,8 +123,88 @@
         <FlowLine class="mt-6" :steps="['Write compose', 'Deploy as Swarm stack', 'Scale replicas', 'Rolling update', 'Monitor & dashboards']" />
       </Section>
 
+      <!-- About Me -->
+      <section id="about-me" class="py-16 sm:py-20">
+        <div class="grid md:grid-cols-[auto,1fr] gap-10 items-center max-w-5xl mx-auto">
+          <div class="flex justify-center">
+            <div class="relative w-44 h-44 sm:w-56 sm:h-56 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/30 to-emerald-500/30 ring-1 ring-white/10">
+              <img
+                v-if="!photoFailed"
+                :src="profile.photo"
+                :alt="profile.name"
+                class="w-full h-full object-cover"
+                @error="photoFailed = true"
+              />
+              <div v-else class="w-full h-full flex items-center justify-center text-4xl font-semibold text-white">
+                {{ profile.initials }}
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="text-sm uppercase tracking-widest text-blue-400 mb-2">{{ t('home.aboutMe.eyebrow') }}</p>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">{{ t('home.aboutMe.title') }}</h2>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span
+                v-for="role in profile.roles"
+                :key="role"
+                class="px-3 py-1 rounded-full text-xs font-medium bg-gray-800 text-gray-200 ring-1 ring-white/10"
+              >
+                {{ t(`home.aboutMe.roles.${role}`) }}
+              </span>
+            </div>
+            <div class="space-y-4 text-gray-300 leading-relaxed">
+              <p v-for="(paragraph, idx) in tm('home.aboutMe.bio')" :key="idx">{{ paragraph }}</p>
+            </div>
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              <router-link
+                to="/blog"
+                class="inline-flex items-center gap-2 rounded-lg px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+              >
+                {{ t('home.aboutMe.ctaBlog') }}
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </router-link>
+              <router-link
+                to="/path"
+                class="inline-flex items-center gap-2 rounded-lg px-5 py-3 bg-gray-800 hover:bg-gray-700 text-white transition-colors"
+              >
+                {{ t('home.aboutMe.ctaPath') }}
+              </router-link>
+              <div class="flex items-center gap-3 ml-auto">
+                <a
+                  v-for="link in visibleSocialLinks"
+                  :key="link.id"
+                  :href="link.url"
+                  :aria-label="link.label"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-gray-400 hover:text-white transition-colors text-sm underline-offset-4 hover:underline"
+                >
+                  {{ link.label }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Blog Teaser -->
+      <section class="py-12">
+        <div class="max-w-4xl mx-auto rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-emerald-500/10 ring-1 ring-white/10 p-8 sm:p-10 text-center">
+          <p class="text-sm uppercase tracking-widest text-emerald-400 mb-2">{{ t('home.blogTeaser.eyebrow') }}</p>
+          <h2 class="text-2xl sm:text-3xl font-bold mb-3">{{ t('home.blogTeaser.title') }}</h2>
+          <p class="text-gray-300 max-w-2xl mx-auto mb-6">{{ t('home.blogTeaser.description') }}</p>
+          <router-link
+            to="/blog"
+            class="inline-flex items-center gap-2 rounded-lg px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+          >
+            {{ t('home.blogTeaser.cta') }}
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </router-link>
+        </div>
+      </section>
+
       <Section
-        id="about"
+        id="infrastructure"
         :title="t('home.about.title')"
         :description="t('home.about.description')"
       >
@@ -232,16 +318,18 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ServiceCard from '../components/ServiceCard.vue'
 import Button from '../components/ui/Button.vue'
 import Section from '../components/ui/Section.vue'
 import FlowLine from '../components/ui/FlowLine.vue'
 import { useServices } from '../composables/useServices'
+import { profile, visibleSocialLinks } from '../config/profile'
 
 const { t, tm } = useI18n()
 const { localizedServices, loading, error, loadServices } = useServices()
+const photoFailed = ref(false)
 
 // Create a computed that filters valid services
 const validServices = computed(() => {

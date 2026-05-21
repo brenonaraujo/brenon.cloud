@@ -1,16 +1,38 @@
 {
   "home": {
     "hero": {
-      "title": "Brenon.Cloud",
-      "subtitle": "Your Gateway to a Secure and Integrated Personal Cloud",
-      "getStarted": "Get started",
-      "exploreServices": "Explore services"
+      "title": "Brenon Araujo",
+      "subtitle": "Backend engineer, content creator, and home‑cloud builder. I share the journey of running a personal cloud on mini‑computers and writing about the craft along the way.",
+      "getStarted": "Read the blog",
+      "exploreServices": "Meet me"
+    },
+    "aboutMe": {
+      "eyebrow": "About me",
+      "title": "Hi, I'm Brenon",
+      "roles": {
+        "backendEngineer": "Backend Engineer",
+        "contentCreator": "Content Creator",
+        "homeCloudBuilder": "Home‑Cloud Builder"
+      },
+      "bio": [
+        "I'm a backend engineer in love with distributed systems, clean architecture, and the craft of writing software that lasts.",
+        "Brenon.Cloud started as a curiosity: could I run, at home, on a handful of mini‑computers, the kind of services we usually rent from big providers? Turns out yes — and along the way I'm sharing every lesson, mistake, and idea that comes up.",
+        "Beyond writing code, I write about it. Use this space as my open notebook: studies, experiments, deep‑dives, and the path I'm walking as an engineer."
+      ],
+      "ctaBlog": "Read the blog",
+      "ctaPath": "See my study path"
+    },
+    "blogTeaser": {
+      "eyebrow": "Latest writing",
+      "title": "Notes from the journey",
+      "description": "Deep‑dives, lessons learned, and experiments — written as I go.",
+      "cta": "Visit the blog"
     },
     "docker": {
-      "title": "Deploy, deliver, and self‑manage your services",
-      "description": "Use Brenon.Cloud building blocks to run personal services end‑to‑end with security, routing, automation, and observability.",
+      "title": "What runs on my home cloud",
+      "description": "These are the building blocks I use to deploy, route, secure, and observe everything running on Brenon.Cloud — and what I write about most often.",
       "learnMore": "Learn more about Docker deployments",
-      "howWeUse": "How we use Portainer",
+      "howWeUse": "How I use Portainer",
       "openPortainer": "Open Portainer",
       "features": {
         "managed": {
@@ -29,12 +51,12 @@
     },
     "howItWorks": {
       "title": "Deploy Any Service with Docker",
-      "description": "We run Docker Swarm on a cluster of mini‑computer nodes and manage it with Portainer. Deploy Compose stacks, scale replicas, and roll out zero‑downtime updates from a simple UI."
+      "description": "I run Docker Swarm on a cluster of mini‑computer nodes and manage it with Portainer. Compose stacks go in, replicas scale, and rolling updates happen from a simple UI."
     },
     "about": {
-      "title": "About Brenon.Cloud",
-      "description": "Empowering individuals with enterprise-grade cloud infrastructure",
-      "vision": "Brenon.Cloud started with a simple vision: making enterprise-grade cloud infrastructure accessible to individuals. What began with two mini computers has evolved into a robust platform that brings the power of modern cloud architecture to your personal projects.",
+      "title": "The infrastructure behind it",
+      "description": "A look under the hood of the home cloud powering this site",
+      "vision": "Brenon.Cloud started with a simple question: how far can a few mini‑computers at home go? It evolved into a small but real platform — and into the playground where I write, experiment, and learn in the open.",
       "stack": {
         "title": "Infrastructure Stack",
         "items": [
@@ -63,7 +85,7 @@
         ]
       },
       "flow": {
-        "title": "How Your Services Flow",
+        "title": "How requests flow through the cluster",
         "edge": {
           "title": "Edge Gateway",
           "description": "Traffic routing, SSL termination, and initial security layer"
@@ -74,16 +96,46 @@
         },
         "service": {
           "title": "Service Layer",
-          "description": "Your containerized applications and services"
+          "description": "Containerized applications and services"
         }
       },
       "cta": {
-        "title": "Ready to Build Your Cloud?",
-        "description": "Join us in shaping the future of personal cloud infrastructure.",
+        "title": "Curious how it's built?",
+        "description": "Follow the writing, browse the code, or take a peek at the path I've been walking.",
         "getStarted": "Get Started with Docker",
         "viewGithub": "View on GitHub"
       }
     }
+  },
+  "pathToGlory": {
+    "title": "Path to Glory",
+    "subtitle": "The roadmaps and resources I follow on the way to becoming a better engineer.",
+    "intro": "This is the curated trail I'm walking — and recommend — for anyone aiming for a career like mine. Roadmaps from roadmap.sh that I keep coming back to, plus the books, courses, and channels that shaped how I think.",
+    "roadmaps": {
+      "title": "Recommended roadmaps",
+      "description": "Open trails from roadmap.sh I'd hand to my younger self.",
+      "items": {
+        "backend": {
+          "title": "Backend",
+          "description": "The foundation: APIs, databases, caching, messaging, and everything that keeps the lights on behind the scenes."
+        },
+        "data-engineer": {
+          "title": "Data Engineer",
+          "description": "Pipelines, storage, and processing — turning raw events into reliable data products."
+        },
+        "software-architect": {
+          "title": "Software Architect",
+          "description": "Stepping back to design systems: trade‑offs, patterns, and the long view of a codebase."
+        }
+      }
+    },
+    "resources": {
+      "title": "Study resources",
+      "description": "Books, courses, and channels I keep returning to.",
+      "items": [],
+      "comingSoon": "Curated picks coming soon — I'm still gathering the ones that truly mattered."
+    },
+    "openLink": "Open"
   },
   "services": {
     "authentik": {
@@ -156,11 +208,17 @@
   "navbar": {
     "language": "Language",
     "selectLanguage": "Select Language",
+    "aboutMe": "About me",
     "howItWorks": "How it works",
     "services": "Services",
-    "about": "About",
+    "about": "Infrastructure",
     "blog": "Blog",
+    "pathToGlory": "Path to Glory",
     "status": "Status"
+  },
+  "footer": {
+    "tagline": "Backend engineer, content creator, home‑cloud builder.",
+    "rights": "All rights reserved."
   },
   "blog": {
     "title": "Brenon.Cloud Blog",
