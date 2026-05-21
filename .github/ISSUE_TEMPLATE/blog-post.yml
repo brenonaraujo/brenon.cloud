@@ -1,4 +1,4 @@
-name: 📝 New blog post
+name: New blog post
 description: Propose a new article for the Brenon.Cloud blog. Maintainers convert this into a Markdown file under `src/content/blog/`.
 title: "[Blog] <your post title>"
 labels: ["blog", "content"]
@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## ✍️ Write a Brenon.Cloud blog post
+        ## Write a Brenon.Cloud blog post
 
         Fill in the fields below. A maintainer will review the proposal and turn it
         into a Markdown file at `src/content/blog/<slug>.<locale>.md`. The site will
@@ -20,7 +20,7 @@ body:
         > To publish the same article in multiple languages, open one issue per
         > language sharing the same `slug`.
   - type: input
-    id: title
+    id: post-title
     attributes:
       label: Title
       description: The post title shown as the page heading.
@@ -45,7 +45,7 @@ body:
       description: URL-safe identifier shared across translations. If empty, a maintainer will derive one from the title.
       placeholder: hardening-docker-swarm
   - type: textarea
-    id: description
+    id: short-description
     attributes:
       label: Short description
       description: 1–2 sentences summarising the post. Used on cards and SEO previews.
@@ -53,30 +53,30 @@ body:
     validations:
       required: true
   - type: input
-    id: date
+    id: publish-date
     attributes:
       label: Publish date (YYYY-MM-DD)
       description: Defaults to the issue creation date when omitted.
       placeholder: 2026-05-20
   - type: input
-    id: tags
+    id: post-tags
     attributes:
       label: Tags (comma separated)
       placeholder: docker, swarm, security
   - type: input
-    id: cover
+    id: cover-image
     attributes:
       label: Cover image URL (optional)
       description: Public URL or path served from `public/` (e.g. `/brenon-cloud-logo.png` for `public/brenon-cloud-logo.png`). External links are supported.
       placeholder: https://example.com/cover.jpg
   - type: input
-    id: coverFallback
+    id: cover-fallback
     attributes:
       label: Cover fallback path (optional)
       description: Path served from `public/` used if the external cover URL fails to load.
       placeholder: /images/blog/my-cover.jpg
   - type: textarea
-    id: content
+    id: post-content
     attributes:
       label: Content (Markdown)
       description: The full body of the post in Markdown. Headings, code blocks, lists and links are supported.
@@ -92,7 +92,7 @@ body:
     validations:
       required: true
   - type: checkboxes
-    id: confirm
+    id: confirmation
     attributes:
       label: Checklist
       options:
