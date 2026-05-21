@@ -154,6 +154,23 @@
     "howItWorks": "How it works",
     "services": "Services",
     "about": "About",
+    "blog": "Blog",
     "status": "Status"
+  },
+  "blog": {
+    "title": "Brenon.Cloud Blog",
+    "subtitle": "Notes, deep-dives and lessons learned while running a personal cloud.",
+    "readMore": "Read more",
+    "readingTime": "{min} min read",
+    "backToList": "Back to all posts",
+    "by": "by",
+    "empty": {
+      "title": "No posts yet",
+      "description": "Check back soon — the first articles are on the way."
+    },
+    "notFound": {
+      "title": "Post not found",
+      "description": "This article does not exist or was moved."
+    }
   }
 }

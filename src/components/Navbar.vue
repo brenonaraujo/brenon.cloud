@@ -33,6 +33,13 @@
               >
                 {{ item.text }}
               </a>
+              <router-link
+                v-else-if="item.route"
+                :to="item.to"
+                class="text-gray-300 hover:text-white transition-colors"
+              >
+                {{ item.text }}
+              </router-link>
               <a 
                 v-else
                 href="#"
@@ -89,6 +96,14 @@
                 >
                   {{ item.text }}
                 </a>
+                <router-link
+                  v-else-if="item.route"
+                  :to="item.to"
+                  class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 transition-colors"
+                  @click="toggleMobileMenu"
+                >
+                  {{ item.text }}
+                </router-link>
                 <a 
                   v-else
                   href="#"
@@ -125,6 +140,7 @@ const menuItems = computed(() => [
   { to: 'how-it-works', text: t('navbar.howItWorks') },
   { to: 'docker', text: t('navbar.services') },
   { to: 'about', text: t('navbar.about') },
+  { to: '/blog', text: t('navbar.blog'), route: true },
   { to: 'https://uptime.brenon.cloud/status/services', text: t('navbar.status'), external: true }
 ])
 

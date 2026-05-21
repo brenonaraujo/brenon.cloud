@@ -154,6 +154,23 @@
     "howItWorks": "Como funciona",
     "services": "Serviços",
     "about": "Sobre",
+    "blog": "Blog",
     "status": "Status"
+  },
+  "blog": {
+    "title": "Blog do Brenon.Cloud",
+    "subtitle": "Notas, mergulhos técnicos e lições aprendidas operando uma nuvem pessoal.",
+    "readMore": "Ler mais",
+    "readingTime": "{min} min de leitura",
+    "backToList": "Voltar para todos os posts",
+    "by": "por",
+    "empty": {
+      "title": "Nenhum post ainda",
+      "description": "Volte em breve — os primeiros artigos estão a caminho."
+    },
+    "notFound": {
+      "title": "Post não encontrado",
+      "description": "Este artigo não existe ou foi movido."
+    }
   }
 }
