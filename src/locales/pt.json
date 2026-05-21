@@ -1,16 +1,38 @@
 {
   "home": {
     "hero": {
-      "title": "Brenon.Cloud",
-      "subtitle": "Seu Portal para uma Nuvem Pessoal Segura e Integrada",
-      "getStarted": "Começar",
-      "exploreServices": "Explorar serviços"
+      "title": "Brenon Araujo",
+      "subtitle": "Engenheiro de backend, entusiasta de Inteligência Artificial e construtor de home‑cloud. Compartilho a jornada de rodar uma nuvem pessoal em mini‑computadores e escrever sobre o ofício no caminho.",
+      "getStarted": "Ler o blog",
+      "exploreServices": "Me conheça"
+    },
+    "aboutMe": {
+      "eyebrow": "Sobre mim",
+      "title": "Oi, eu sou o Brenon",
+      "roles": {
+        "backendEngineer": "Engenheiro de Backend",
+        "contentCreator": "Entusiasta de Inteligência Artificial",
+        "homeCloudBuilder": "Construtor de Home‑Cloud"
+      },
+      "bio": [
+        "Sou engenheiro de backend apaixonado por sistemas distribuídos, arquitetura limpa e pelo ofício de escrever software que dura.",
+        "O Brenon.Cloud começou como uma curiosidade: dá pra rodar, em casa, em alguns mini‑computadores, o tipo de serviço que normalmente alugamos de grandes provedores? Spoiler: dá — e no caminho compartilho cada lição, erro e ideia que aparece.",
+        "Além de escrever código, escrevo sobre ele. Use este espaço como meu caderno aberto: estudos, experimentos, deep‑dives e o caminho que estou trilhando como engenheiro."
+      ],
+      "ctaBlog": "Ler o blog",
+      "ctaPath": "Ver meu caminho de estudos"
+    },
+    "blogTeaser": {
+      "eyebrow": "Últimos textos",
+      "title": "Anotações da jornada",
+      "description": "Deep‑dives, lições aprendidas e experimentos — escritos enquanto acontecem.",
+      "cta": "Visitar o blog"
     },
     "docker": {
-      "title": "Implante, entregue e autogerencie seus serviços",
-      "description": "Use os componentes do Brenon.Cloud para executar serviços pessoais de ponta a ponta com segurança, roteamento, automação e observabilidade.",
+      "title": "O que roda na minha home cloud",
+      "description": "Estes são os blocos que uso para implantar, rotear, proteger e observar tudo o que roda no Brenon.Cloud — e sobre o que mais escrevo por aqui.",
       "learnMore": "Saiba mais sobre implantações Docker",
-      "howWeUse": "Como usamos o Portainer",
+      "howWeUse": "Como uso o Portainer",
       "openPortainer": "Abrir Portainer",
       "features": {
         "managed": {
@@ -29,12 +51,12 @@
     },
     "howItWorks": {
       "title": "Implante Qualquer Serviço com Docker",
-      "description": "Executamos Docker Swarm em um cluster de mini-computadores e gerenciamos com Portainer. Implante stacks Compose, escale réplicas e realize atualizações sem tempo de inatividade a partir de uma interface simples."
+      "description": "Rodo Docker Swarm em um cluster de mini‑computadores e gerencio com Portainer. Stacks Compose entram, réplicas escalam e atualizações sem downtime acontecem por uma interface simples."
     },
     "about": {
-      "title": "Sobre Brenon.Cloud",
-      "description": "Capacitando indivíduos com infraestrutura de nuvem de nível empresarial",
-      "vision": "Brenon.Cloud começou com uma visão simples: tornar a infraestrutura de nuvem de nível empresarial acessível para indivíduos. O que começou com dois mini-computadores evoluiu para uma plataforma robusta que traz o poder da arquitetura de nuvem moderna para seus projetos pessoais.",
+      "title": "A infraestrutura por trás disso",
+      "description": "Um olhar por dentro da home cloud que sustenta este site",
+      "vision": "O Brenon.Cloud nasceu de uma pergunta simples: até onde chegam alguns mini‑computadores em casa? Virou uma pequena (mas real) plataforma — e o playground onde escrevo, experimento e aprendo em público.",
       "stack": {
         "title": "Stack de Infraestrutura",
         "items": [
@@ -63,7 +85,7 @@
         ]
       },
       "flow": {
-        "title": "Como Seus Serviços Fluem",
+        "title": "Como as requisições fluem pelo cluster",
         "edge": {
           "title": "Gateway de Borda",
           "description": "Roteamento de tráfego, terminação SSL e camada de segurança inicial"
@@ -74,16 +96,46 @@
         },
         "service": {
           "title": "Camada de Serviço",
-          "description": "Suas aplicações e serviços em contêineres"
+          "description": "Aplicações e serviços em contêineres"
         }
       },
       "cta": {
-        "title": "Pronto para Construir Sua Nuvem?",
-        "description": "Junte-se a nós na formação do futuro da infraestrutura de nuvem pessoal.",
+        "title": "Curioso pra saber como é construído?",
+        "description": "Acompanhe os textos, navegue pelo código ou dê uma olhada no caminho que estou trilhando.",
         "getStarted": "Começar com Docker",
         "viewGithub": "Ver no GitHub"
       }
     }
+  },
+  "pathToGlory": {
+    "title": "Caminho para a Glória",
+    "subtitle": "Os roadmaps e recursos que sigo no caminho de me tornar um engenheiro melhor.",
+    "intro": "Esta é a trilha curada que estou percorrendo — e que recomendo — pra quem quer uma carreira parecida com a minha. Roadmaps do roadmap.sh aos quais sempre volto, mais os livros, cursos e canais que moldaram como penso.",
+    "roadmaps": {
+      "title": "Roadmaps recomendados",
+      "description": "Trilhas abertas do roadmap.sh que entregaria pro meu eu mais novo.",
+      "items": {
+        "backend": {
+          "title": "Backend",
+          "description": "A base: APIs, bancos, cache, mensageria e tudo que mantém as luzes acesas nos bastidores."
+        },
+        "data-engineer": {
+          "title": "Engenharia de Dados",
+          "description": "Pipelines, armazenamento e processamento — transformando eventos brutos em produtos de dados confiáveis."
+        },
+        "software-architect": {
+          "title": "Arquiteto de Software",
+          "description": "Dar um passo atrás pra desenhar sistemas: trade‑offs, padrões e a visão de longo prazo de uma base de código."
+        }
+      }
+    },
+    "resources": {
+      "title": "Recursos de estudo",
+      "description": "Livros, cursos e canais aos quais sempre volto.",
+      "items": [],
+      "comingSoon": "Indicações curadas em breve — ainda estou organizando as que realmente fizeram diferença."
+    },
+    "openLink": "Abrir"
   },
   "services": {
     "authentik": {
@@ -156,11 +208,17 @@
   "navbar": {
     "language": "Idioma",
     "selectLanguage": "Selecionar Idioma",
+    "aboutMe": "Sobre mim",
     "howItWorks": "Como funciona",
     "services": "Serviços",
-    "about": "Sobre",
+    "about": "Infraestrutura",
     "blog": "Blog",
+    "pathToGlory": "Caminho para a Glória",
     "status": "Status"
+  },
+  "footer": {
+    "tagline": "Engenheiro de backend, entusiasta de Inteligência Artificial, construtor de home‑cloud.",
+    "rights": "Todos os direitos reservados."
   },
   "blog": {
     "title": "Blog do Brenon.Cloud",

@@ -4,8 +4,8 @@ description: Learn how Akash creates a decentralized compute marketplace on Kube
 date: 2026-05-20
 author: Brenon Araujo
 tags: [akash, depin, web3, kubernetes, decentralized-cloud, gpu]
-cover: https://logowik.com/content/uploads/images/akash-network-akt1389.jpg
-coverFallback: /images/blog/akash-network-akt1389.jpg
+cover: /images/blog/akash_network_about.png
+coverFallback: /images/blog/akash_network_about.png
 ---
 
 # Akash Network: the Airbnb of cloud computing for Web3
@@ -88,6 +88,37 @@ With the lease in place, the provider pulls the Docker image defined in the SDL 
 
 For the person deploying, the workflow stays familiar: containers, Docker images, YAML, logs, endpoints, and domain configuration. The difference is that the infrastructure is distributed across a global network instead of being locked into a single centralized cloud.
 
+---
+
+## Security Under the Hood: Protecting Workloads on Third-Party Hardware
+
+The biggest technical question for anyone migrating to Akash — especially those who manage their own infrastructure clusters — is: *"If my container runs on someone else's server, can the machine owner access my secrets and data?"*
+
+Because the ecosystem is built on Kubernetes and the Cosmos SDK, security operates through robust layers at both the runtime execution level and the network architecture level.
+
+### Container Isolation and gVisor
+
+By default, providers use native Kubernetes isolation via Namespaces, *cgroups*, and RBAC restrictions to separate tenants. However, to prevent *Container Escape* attacks — where malicious code attempts to access the host Kernel — Akash supports and strongly encourages the use of **[gVisor](https://gvisor.dev/)** or **[Kata Containers](https://katacontainers.io/)**. gVisor intercepts system calls (syscalls), acting as a "mini-kernel" inside the Sandbox. This prevents a workload from compromising the host node or accessing data from neighboring containers.
+
+### Secrets and Communication (mTLS)
+
+Communication between the client (your CLI or CI/CD pipeline), the blockchain, and the provider agent (*Provider Daemon*) is fully protected by **mTLS (Mutual TLS)**.
+When you define sensitive data, those variables are encrypted and injected into the container only at runtime using *Kubernetes Secrets*. The provider cannot capture that information in plain text through logs. In addition, ports not explicitly exposed in the SDL remain closed behind an Ingress Controller, shielding the application from external network scans.
+
+### Secure Data Persistence (CSI and Ceph)
+
+For storage volumes (Persistent Storage), Akash interacts with the Container Storage Interface (CSI). Most serious providers run **[Rook coupled with Ceph](https://rook.io/)**, creating a highly available and distributed block storage system within their own data center. For demanding workloads, it is possible to look for providers that implement *Encryption at Rest*, ensuring that unauthorized access to physical disks (SSD/NVMe) does not expose raw data blocks.
+
+### Auditing and Financial Protection (Escrow)
+
+Akash does not rely on blind trust. Trusted entities audit providers to validate real attributes (such as GPU type and available bandwidth) and issue cryptographic badges. You can configure your SDL to run only on "Audited Providers". In addition, payment does not go directly to the provider — it is held in on-chain *Escrow Accounts* and released block by block. If the provider goes down, the deployment is cancelled and funds are returned instantly, preventing exit scams.
+
+### The Physical Memory Boundary (Confidential Computing)
+
+The core challenge of isolation in any cloud provider — including AWS or Google — is direct access to physical RAM by someone with root privileges on the host machine. To mitigate this for hyper-critical workloads, the community is already working with **Confidential Computing (TEE — Trusted Execution Environments)**. Using features such as *AMD SEV* or *Intel SGX*, data is kept encrypted directly in processor memory, preventing inspection via *memory dump*.
+
+---
+
 ## Why developers and SaaS builders are paying attention
 
 The first reason is cost. Because many providers are monetizing idle capacity, prices can be far lower than traditional cloud providers. In some scenarios, savings can reach the **70% to 80%** range compared with centralized clouds.
@@ -137,3 +168,15 @@ Akash is not asking developers to throw away the DevOps workflow they already kn
 For anyone already working with Docker, the entry curve is surprisingly short. You write an SDL, publish demand, choose a provider, and bring the application online.
 
 If you want to try this model through a self-custodial experience, start with our post about [Akash Console Air on Brenon.Cloud](/blog/console-air-on-brenon-cloud). It explains the entry point we published for permissionless deployments using a Keplr wallet and AKT, precisely to bring more people closer to this decentralized infrastructure.
+
+---
+
+## References and Useful Links
+
+- **[Akash Network Whitepapers](https://gist.github.com/gosuri/56b10e12bc8d1ed4979fa893572abc8c)**: Foundational documentation on the network's economy and architecture.
+- **[Akash Official Documentation](https://akash.network/docs/)**: Official guides for Tenants and Providers.
+- **[Akash Stats (Dashboard)](https://stats.akash.network/)**: Real-time metrics on usage, leases, and network capacity.
+- **[gVisor](https://gvisor.dev/)**: Security-focused container runtime developed by Google.
+- **[Kata Containers](https://katacontainers.io/)**: Open-source project that builds lightweight virtual machines for container isolation.
+- **[Cosmos Network](https://cosmos.network/)**: Ecosystem of interoperable blockchains that serves as the Layer 1 foundation for Akash.
+- **[Rook](https://rook.io/) & [Ceph](https://ceph.com/)**: Open-source solutions for distributed storage orchestration in Cloud-Native environments.

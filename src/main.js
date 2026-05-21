@@ -10,6 +10,7 @@ import Home from './pages/Home.vue'
 import Service from './pages/Service.vue'
 import Blog from './pages/Blog.vue'
 import BlogPost from './pages/BlogPost.vue'
+import PathToGlory from './pages/PathToGlory.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
@@ -46,6 +47,11 @@ const router = createRouter({
       name: 'blog-post',
       component: BlogPost,
       props: true
+    },
+    {
+      path: '/path',
+      name: 'path-to-glory',
+      component: PathToGlory
     },
     {
       path: '/status',

@@ -4,19 +4,18 @@ description: Entenda como a Akash cria um marketplace descentralizado de computa
 date: 2026-05-20
 author: Brenon Araujo
 tags: [akash, depin, web3, kubernetes, decentralized-cloud, gpu]
-cover: https://logowik.com/content/uploads/images/akash-network-akt1389.jpg
-coverFallback: /images/blog/akash-network-akt1389.jpg
+cover: /images/blog/akash_network_about.png
+coverFallback: /images/blog/akash_network_about.png
 ---
-
 # Akash Network: o Airbnb da computação em nuvem para Web3
 
 Pense na Akash Network como o **Airbnb da computação em nuvem**: de um lado estão desenvolvedores, startups SaaS, projetos Web3 e times de IA que precisam de capacidade computacional; do outro estão data centers, mineradores e operadores independentes com servidores ociosos que podem vender essa capacidade em um mercado aberto.
 
-A diferença é que esse mercado não depende de uma única empresa decidindo preço, acesso ou regras de conta. A Akash é uma rede **DePIN** (Decentralized Physical Infrastructure Network) construída sobre o ecossistema Cosmos, com deploys containerizados orquestrados por Kubernetes por baixo dos panos.
+A diferença é que esse mercado não depende de uma única empresa decidindo preço, acesso ou regras de conta. A Akash é uma rede **DePIN** (Decentralized Physical Infrastructure Network) construída sobre o ecossistema [Cosmos](https://www.google.com/search?q=https://cosmos.network/), com deploys containerizados orquestrados por [Kubernetes](https://www.google.com/search?q=https://kubernetes.io/) por baixo dos panos.
 
 Em vez de alugar uma máquina virtual diretamente de AWS, Google Cloud ou Azure, você publica uma demanda de infraestrutura na rede. Provedores competem para atender essa demanda, e o preço é formado por oferta e demanda.
 
-Este artigo nasce do mesmo motivo que nos levou a publicar o [Akash Console Air no Brenon.Cloud](/blog/console-air-on-brenon-cloud): temos enorme apreço pela proposta da Akash de democratizar infraestrutura cloud descentralizada. Não é apenas sobre pagar menos por compute. É também sobre privacidade, autonomia operacional e a possibilidade de qualquer pessoa ou organização oferecer ao mundo capacidade ociosa dos seus próprios servidores.
+Este artigo nasce do mesmo motivo que me levou a publicar o [Akash Console Air no Brenon.Cloud](https://www.google.com/search?q=/blog/console-air-on-brenon-cloud): tenho enorme apreço pela proposta da Akash de democratizar infraestrutura cloud descentralizada. Não é apenas sobre pagar menos por compute. É também sobre privacidade, autonomia operacional e a possibilidade de qualquer pessoa ou organização oferecer ao mundo capacidade ociosa dos seus próprios servidores.
 
 ## Como o ecossistema funciona na prática
 
@@ -26,7 +25,7 @@ O fluxo normalmente passa por quatro etapas.
 
 ## 1. A definição do deployment com SDL
 
-Como desenvolvedor, chamado na rede de **tenant** ou inquilino, você descreve sua aplicação em um arquivo YAML chamado **SDL** (Stack Definition Language). A experiência lembra bastante um `docker-compose`: você informa a imagem do container, portas, variáveis de ambiente, CPU, memória, storage, GPUs quando necessário e o preço máximo que aceita pagar.
+Como desenvolvedor, chamado na rede de **tenant** ou inquilino, você descreve sua aplicação em um arquivo YAML chamado **[SDL (Stack Definition Language)](https://www.google.com/search?q=https://akash.network/docs/getting-started/stack-definition-language/)**. A experiência lembra bastante um `docker-compose`: você informa a imagem do container, portas, variáveis de ambiente, CPU, memória, storage, GPUs quando necessário e o preço máximo que aceita pagar.
 
 Um exemplo simples de SDL para uma API HTTP ficaria assim:
 
@@ -66,6 +65,7 @@ deployment:
     dcloud:
       profile: api
       count: 1
+
 ```
 
 Esse arquivo diz para a rede: "quero rodar esta imagem, expor esta porta, usar estes recursos e pagar até este valor". Para workloads de IA, o mesmo modelo pode incluir requisitos de GPU, como famílias específicas de Nvidia A100 ou H100 quando disponíveis nos provedores.
@@ -84,9 +84,40 @@ Quando a escolha é feita, a rede cria um **lease**: o acordo entre tenant e pro
 
 ## 4. O deploy sobre Kubernetes
 
-Com o lease fechado, o provedor puxa a imagem Docker indicada no SDL e executa a aplicação na própria infraestrutura. Por baixo dos panos, a Akash usa Kubernetes para orquestrar containers, rede, recursos e ciclo de vida dos workloads.
+Com o lease fechado, o provedor puxa a imagem [Docker](https://www.google.com/search?q=https://www.docker.com/) indicada no SDL e executa a aplicação na própria infraestrutura. Por baixo dos panos, a Akash usa Kubernetes para orquestrar containers, rede, recursos e ciclo de vida dos workloads.
 
 Para quem está fazendo deploy, a experiência continua familiar: containers, imagens Docker, YAML, logs, endpoints e configuração de domínio. A diferença é que a infraestrutura está distribuída em uma rede global, e não presa a uma única nuvem centralizada.
+
+---
+
+## A Segurança sob o Capô: Protegendo Workloads em Hardware de Terceiros
+
+A maior dúvida técnica de quem migra para a Akash — especialmente para quem gerencia seus próprios clusters de infraestrutura — é: *"Se o meu container roda no servidor de um terceiro, o dono da máquina pode acessar minhas chaves e dados?"*
+
+Como o ecossistema é baseado no Kubernetes e no Cosmos SDK, a segurança opera em camadas robustas, tanto no nível da execução (Runtime) quanto na arquitetura da rede.
+
+### Isolamento de Containers e gVisor
+
+Por padrão, os provedores utilizam o isolamento nativo do Kubernetes via Namespaces, *cgroups* e restrições de RBAC para separar os tenants. Porém, para evitar ataques de *Container Escape* (onde um código malicioso tenta acessar o Kernel do hospedeiro), a Akash suporta e incentiva fortemente o uso de **[gVisor](https://www.google.com/search?q=https://gvisor.dev/)** ou **[Kata Containers](https://www.google.com/search?q=https://katacontainers.io/)**. O gVisor intercepta as chamadas de sistema (syscalls), atuando como um "mini-kernel" na Sandbox. Isso impede que o seu workload comprometa o nó ou acesse dados de containers vizinhos.
+
+### Segredos e Comunicação (mTLS)
+
+A comunicação entre o cliente (sua CLI ou pipeline CI/CD), a blockchain e o agente do provedor (*Provider Daemon*) é totalmente protegida por **mTLS (Mutual TLS)**.
+Quando você define dados sensíveis, essas variáveis são encriptadas e injetadas no container apenas em tempo de execução usando *Kubernetes Secrets*. O provedor não consegue capturar essas informações em texto limpo via logs. Além disso, as portas não expostas explicitamente no SDL permanecem fechadas por trás de um Ingress Controller, blindando a aplicação contra varreduras externas de rede.
+
+### Persistência Segura de Dados (CSI e Ceph)
+
+Para volumes de armazenamento (Persistent Storage), a Akash interage com a Container Storage Interface (CSI). A maioria dos provedores sérios roda **[Rook acoplado ao Ceph](https://www.google.com/search?q=https://rook.io/)**, criando um sistema de armazenamento em bloco (*Block Storage*) altamente disponível e distribuído dentro do próprio data center. Para sistemas exigentes, é possível buscar provedores que implementam *Encryption at Rest* (criptografia em repouso), garantindo que um acesso indevido aos discos físicos (SSD/NVMe) não exponha os blocos de dados brutos.
+
+### Auditoria e Proteção Financeira (Escrow)
+
+A Akash não depende de confiança cega. Entidades confiáveis realizam auditorias nos provedores para validar atributos reais (como tipo de GPU e banda disponível) e emitem selos criptográficos. Você pode configurar seu SDL para rodar apenas em "Provedores Auditados". Além disso, o pagamento não vai diretamente para o provedor; ele fica retido em *Escrow Accounts* (contas de garantia) on-chain e é liberado bloco a bloco. Se o provedor cair, o deploy é cancelado e o dinheiro retorna instantaneamente, evitando golpes de saída (*exit scams*).
+
+### A Fronteira da Memória Física (Confidential Computing)
+
+O grande desafio do isolamento em qualquer provedor de nuvem (inclusive AWS ou Google) é o acesso direto à memória RAM física por alguém com privilégios de root na máquina hospedeira. Para mitigar isso em workloads hiper-críticos, a comunidade já está trabalhando com **Confidential Computing (TEE - Trusted Execution Environments)**. Utilizando recursos como *AMD SEV* ou *Intel SGX*, os dados são mantidos criptografados diretamente na memória do processador, impedindo inspeções via *memory dump*.
+
+---
 
 ## Por que desenvolvedores e criadores de SaaS estão olhando para a Akash
 
@@ -110,9 +141,9 @@ O cenário muda bastante em GPUs. A mesma página mostrava **170 GPUs alugadas**
 
 O token **AKT** move a economia da rede. Ele aparece em três frentes principais:
 
-- **Staking e segurança:** AKT ajuda a proteger a rede Proof-of-Stake do Cosmos.
-- **Governança:** holders podem votar em atualizações e decisões do protocolo.
-- **Pagamentos:** historicamente, AKT foi o principal meio de pagamento pelos leases. Hoje a rede também suporta liquidações em stablecoins como USDC, o que facilita previsibilidade de custos para empresas.
+* **Staking e segurança:** AKT ajuda a proteger a rede Proof-of-Stake do Cosmos.
+* **Governança:** holders podem votar em atualizações e decisões do protocolo.
+* **Pagamentos:** historicamente, AKT foi o principal meio de pagamento pelos leases. Hoje a rede também suporta liquidações em stablecoins como USDC, o que facilita previsibilidade de custos para empresas.
 
 Esse desenho conecta segurança, governança e uso real da infraestrutura em um mesmo sistema econômico.
 
@@ -136,4 +167,16 @@ A proposta da Akash não é pedir que desenvolvedores abandonem o fluxo DevOps q
 
 Para quem já trabalha com Docker, a curva de entrada é surpreendentemente curta. Você escreve um SDL, publica a demanda, escolhe um provedor e coloca a aplicação online.
 
-Se quiser testar esse modelo com uma experiência self-custodial, comece pelo nosso post sobre o [Akash Console Air no Brenon.Cloud](/blog/console-air-on-brenon-cloud). Ele mostra a porta de entrada que publicamos para deployments permissionless usando carteira Keplr e AKT, exatamente para aproximar mais pessoas dessa infraestrutura descentralizada.
+Se quiser testar esse modelo com uma experiência self-custodial, comece pelo nosso post sobre o [Akash Console Air no Brenon.Cloud](https://www.google.com/search?q=/blog/console-air-on-brenon-cloud). Ele mostra a porta de entrada que publicamos para deployments permissionless usando carteira Keplr e AKT, exatamente para aproximar mais pessoas dessa infraestrutura descentralizada.
+
+---
+
+## Referências e Links Úteis
+
+* **[Akash Network Whitepapers](https://gist.github.com/gosuri/56b10e12bc8d1ed4979fa893572abc8c)**: Documentação fundacional sobre a economia e arquitetura da rede.
+* **[Akash Official Documentation](https://www.google.com/search?q=https://akash.network/docs/)**: Guias oficiais para Tenants e Providers.
+* **[Akash Stats (Dashboard)](https://stats.akash.network/)**: Métricas em tempo real sobre uso, leases e capacidade da rede.
+* **[gVisor](https://www.google.com/search?q=https://gvisor.dev/)**: Runtime de container focado em segurança desenvolvido pelo Google.
+* **[Kata Containers](https://www.google.com/search?q=https://katacontainers.io/)**: Projeto de código aberto que constrói máquinas virtuais leves para isolamento de containers.
+* **[Cosmos Network](https://www.google.com/search?q=https://cosmos.network/)**: Ecossistema de blockchains interoperáveis que serve como base (Layer 1) para a Akash.
+* **[Rook](https://www.google.com/search?q=https://rook.io/) & [Ceph**](https://www.google.com/search?q=https://ceph.com/): Soluções open-source para orquestração de armazenamento distribuído em ambientes Cloud-Native.
