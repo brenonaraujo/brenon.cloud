@@ -1601,6 +1601,177 @@ graph TD
     class J,K,L integration
     `,
         demoUrl: 'http://minio-console.brenon.cloud'
+      },
+      {
+        id: 'console-air',
+        title: {
+          en: 'Console Air - Akash Network Self-Custodial Deployments',
+          pt: 'Console Air - Deployments Self-Custodial na Akash Network'
+        },
+        shortName: {
+          en: 'Console Air',
+          pt: 'Console Air'
+        },
+        description: {
+          en: 'A self-hosted Akash Network Console Air deployment that lets anyone connect a decentralized wallet, swap AKT for ACTs (10 AKT minimum), and run permissionless cloud deployments — no email signup, no credit card required.',
+          pt: 'Um deployment self-hosted do Console Air da Akash Network que permite conectar uma carteira descentralizada, trocar AKT por ACTs (mínimo de 10 AKT) e executar deployments permissionless na nuvem — sem cadastro por e-mail, sem cartão de crédito.'
+        },
+        icon: 'bolt',
+        color: 'red',
+        learnMoreUrl: '/service?service=console-air',
+        image: 'https://avatars.githubusercontent.com/u/41277739?v=4',
+        features: [
+          {
+            en: 'Wallet-only access via Keplr and compatible Cosmos wallets',
+            pt: 'Acesso somente por carteira via Keplr e carteiras Cosmos compatíveis'
+          },
+          {
+            en: 'Swap AKT for ACTs in-app (10 AKT minimum) to fund deployments',
+            pt: 'Troca de AKT por ACTs no próprio app (mínimo de 10 AKT) para custear deployments'
+          },
+          {
+            en: 'Full SDL editor with provider bidding and lease management',
+            pt: 'Editor SDL completo com seleção de providers via bid e gerenciamento de leases'
+          },
+          {
+            en: 'Logs, shell access and live updates for running deployments',
+            pt: 'Logs, acesso shell e atualizações ao vivo para deployments ativos'
+          },
+          {
+            en: 'No email, password, KYC or credit card required',
+            pt: 'Sem e-mail, senha, KYC ou cartão de crédito'
+          },
+          {
+            en: 'Open to any Akash provider — no gatekeeping layer',
+            pt: 'Aberto a qualquer provider Akash — sem camada de gatekeeping'
+          },
+          {
+            en: 'Multi-depositor escrow support (AEP-75)',
+            pt: 'Suporte a escrow multi-depositor (AEP-75)'
+          },
+          {
+            en: 'On-chain deployment history tied to your wallet address',
+            pt: 'Histórico de deployments on-chain vinculado ao seu endereço de carteira'
+          }
+        ],
+        useCases: [
+          {
+            title: {
+              en: 'Permissionless Cloud for Builders',
+              pt: 'Nuvem Permissionless para Builders'
+            },
+            description: {
+              en: 'Spin up containerized workloads on the Akash Network without creating yet another SaaS account. Connect Keplr, fund your wallet with AKT, and deploy in minutes — ideal for indie hackers, OSS maintainers and anyone who wants to ship without a billing relationship.',
+              pt: 'Suba workloads containerizados na Akash Network sem criar mais uma conta SaaS. Conecte o Keplr, financie sua carteira com AKT e faça o deploy em minutos — ideal para indie hackers, mantenedores de OSS e qualquer um que queira publicar sem relação de billing.'
+            }
+          },
+          {
+            title: {
+              en: 'AKT → ACT Swaps for Deployment Credits',
+              pt: 'Trocas AKT → ACT para Crédito de Deployment'
+            },
+            description: {
+              en: 'Convert AKT directly into ACTs from inside the app — minimum 10 AKT — to keep your active leases topped up. The whole flow stays self-custodial: every transaction is signed by your wallet against on-chain escrow.',
+              pt: 'Converta AKT diretamente em ACTs dentro do app — mínimo de 10 AKT — para manter seus leases ativos abastecidos. Todo o fluxo permanece self-custodial: cada transação é assinada pela sua carteira contra o escrow on-chain.'
+            }
+          },
+          {
+            title: {
+              en: 'A Public, Free-to-Use Deployment Endpoint',
+              pt: 'Um Endpoint de Deployment Público e Gratuito'
+            },
+            description: {
+              en: 'After Akash split Console into a managed (KYC + credit card) platform and Console Air (AEP-84), Brenon.Cloud hosts an open Console Air instance so anyone can keep deploying to Akash with zero registration friction. Currently in testing — feedback welcome.',
+              pt: 'Após a Akash dividir o Console em uma plataforma gerenciada (KYC + cartão) e o Console Air (AEP-84), o Brenon.Cloud hospeda uma instância aberta do Console Air para quem quiser continuar fazendo deploy na Akash sem nenhum atrito de cadastro. Atualmente em testes — feedback é bem-vindo.'
+            }
+          }
+        ],
+        integrations: [
+          {
+            name: 'Keplr Wallet',
+            description: {
+              en: 'Self-custodial signing for every on-chain action',
+              pt: 'Assinatura self-custodial para toda ação on-chain'
+            }
+          },
+          {
+            name: 'Akash Network',
+            description: {
+              en: 'Direct connection to providers, escrow and SDL lifecycle',
+              pt: 'Conexão direta com providers, escrow e ciclo de vida do SDL'
+            }
+          },
+          {
+            name: 'Kong Gateway',
+            description: {
+              en: 'TLS termination and rate limiting in front of the app',
+              pt: 'Terminação TLS e rate limiting na frente do app'
+            }
+          },
+          {
+            name: 'Uptime Kuma',
+            description: {
+              en: 'Availability monitoring for the public endpoint',
+              pt: 'Monitoramento de disponibilidade do endpoint público'
+            }
+          }
+        ],
+        quickStart: [
+          {
+            title: {
+              en: 'Open Console Air',
+              pt: 'Abrir o Console Air'
+            },
+            description: {
+              en: 'Visit the Brenon.Cloud-hosted instance — no signup required',
+              pt: 'Acesse a instância hospedada no Brenon.Cloud — sem cadastro'
+            }
+          },
+          {
+            title: {
+              en: 'Connect Keplr & Fund AKT',
+              pt: 'Conectar Keplr e Financiar AKT'
+            },
+            description: {
+              en: 'Approve the Keplr connection and load AKT into your wallet',
+              pt: 'Aprove a conexão Keplr e carregue AKT na sua carteira'
+            }
+          },
+          {
+            title: {
+              en: 'Swap AKT → ACT and Deploy',
+              pt: 'Trocar AKT → ACT e Deployar'
+            },
+            description: {
+              en: 'Convert at least 10 AKT to ACTs, paste your SDL and lease a provider',
+              pt: 'Converta no mínimo 10 AKT em ACTs, cole seu SDL e arremate um provider'
+            }
+          }
+        ],
+        gettingStarted: {
+          en: 'Console Air is the permissionless front door to the Akash Network — and Brenon.Cloud now runs a public instance of it. Bring a Keplr wallet, swap a minimum of 10 AKT into ACTs, and ship containers to a real decentralized cloud without ever leaving a custodial account behind. The instance is in testing; expect rapid iterations. Read the rationale for the split in the official Akash <a href="https://akash.network/roadmap/aep-84/" class="text-red-400 hover:underline" target="_blank" rel="noopener noreferrer">AEP-84 roadmap entry</a>.',
+          pt: 'O Console Air é a porta de entrada permissionless da Akash Network — e o Brenon.Cloud agora roda uma instância pública dele. Use uma carteira Keplr, troque no mínimo 10 AKT por ACTs e suba containers para uma nuvem realmente descentralizada sem deixar nenhum cadastro custodial pelo caminho. A instância está em testes; espere iterações rápidas. Leia o racional da divisão na entrada oficial <a href="https://akash.network/roadmap/aep-84/" class="text-red-400 hover:underline" target="_blank" rel="noopener noreferrer">AEP-84 do roadmap da Akash</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Keplr Wallet] -->|signs txs| B[Console Air on Brenon.Cloud]
+    B -->|AKT to ACT swap| C[On-chain Escrow]
+    B -->|SDL submit| D[Akash Network]
+    D --> E[Providers Bid]
+    E --> F[Lease Created]
+    F --> G[Containers Running]
+    B --> H[Logs and Shell]
+    G --> H
+    I[Kong Gateway] --> B
+    J[Uptime Kuma] --> B
+
+    style A fill:#3b82f6,stroke:#2563eb,color:#fff
+    style B fill:#dc2626,stroke:#b91c1c,color:#fff
+    style C fill:#f59e0b,stroke:#d97706,color:#fff
+    style D fill:#9333ea,stroke:#7c3aed,color:#fff
+    style G fill:#059669,stroke:#047857,color:#fff
+        `,
+        demoUrl: 'https://console-air.brenon.cloud'
       }
     ]
   }
