@@ -9,11 +9,16 @@ body:
         ## ✍️ Write a Brenon.Cloud blog post
 
         Fill in the fields below. A maintainer will review the proposal and turn it
-        into a Markdown file at `src/content/blog/<slug>.md`. The site will pick it
-        up automatically on the next deploy.
+        into a Markdown file at `src/content/blog/<slug>.<locale>.md`. The site will
+        pick it up automatically on the next deploy.
 
-        > Tip: keep the description short — it shows up on the blog listing card
-        > and in social previews.
+        > Filename convention:
+        > - `my-post.en.md` → English
+        > - `my-post.pt.md` → Portuguese
+        > - `my-post.md` → fallback shown when a localized version is missing
+        >
+        > To publish the same article in multiple languages, open one issue per
+        > language sharing the same `slug`.
   - type: input
     id: title
     attributes:
@@ -22,11 +27,22 @@ body:
       placeholder: e.g. Hardening Docker Swarm with rootless nodes
     validations:
       required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      description: Locale this content is written in. Drives the filename suffix.
+      options:
+        - English (en)
+        - Português (pt)
+        - Language-neutral (no suffix, used as fallback)
+    validations:
+      required: true
   - type: input
     id: slug
     attributes:
       label: Slug (optional)
-      description: URL-safe identifier. If empty, a maintainer will derive one from the title.
+      description: URL-safe identifier shared across translations. If empty, a maintainer will derive one from the title.
       placeholder: hardening-docker-swarm
   - type: textarea
     id: description

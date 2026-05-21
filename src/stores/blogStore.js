@@ -3,37 +3,34 @@ import { ref, computed } from 'vue'
 
 /**
  * Blog Store
- * Caches the parsed blog posts so listing and detail pages share state.
+ * Caches parsed posts per locale so listing and detail pages share state.
  */
 export const useBlogStore = defineStore('blog', () => {
-  const posts = ref([])
+  // Map<locale, BlogPost[]>
+  const postsByLocale = ref({})
   const loading = ref(false)
   const error = ref(null)
-  const loaded = ref(false)
 
-  const allPosts = computed(() => posts.value)
   const isLoading = computed(() => loading.value)
   const hasError = computed(() => error.value !== null)
 
-  const getPostBySlug = computed(() => {
-    return (slug) => posts.value.find(p => p.slug === slug) || null
-  })
+  const getPosts = (locale) => postsByLocale.value[locale] || []
 
-  async function fetchPosts(blogService, force = false) {
+  async function fetchPosts(blogService, locale, force = false) {
     if (!blogService) {
       error.value = 'BlogService not available'
       return []
     }
-    if (loaded.value && !force) {
-      return posts.value
+    if (!force && postsByLocale.value[locale]) {
+      return postsByLocale.value[locale]
     }
 
     loading.value = true
     error.value = null
     try {
-      posts.value = await blogService.getAllPosts()
-      loaded.value = true
-      return posts.value
+      const posts = await blogService.getAllPosts(locale)
+      postsByLocale.value = { ...postsByLocale.value, [locale]: posts }
+      return posts
     } catch (err) {
       error.value = err?.message || 'Failed to load posts'
       return []
@@ -42,23 +39,18 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  async function fetchPostBySlug(blogService, slug) {
+  async function fetchPostBySlug(blogService, slug, locale) {
     if (!blogService) {
       error.value = 'BlogService not available'
       return null
     }
-    // Prefer the cache when available.
-    const cached = posts.value.find(p => p.slug === slug)
+    const cached = (postsByLocale.value[locale] || []).find(p => p.slug === slug)
     if (cached) return cached
 
     loading.value = true
     error.value = null
     try {
-      const post = await blogService.getPostBySlug(slug)
-      if (post && !posts.value.find(p => p.slug === post.slug)) {
-        posts.value = [...posts.value, post]
-      }
-      return post
+      return await blogService.getPostBySlug(slug, locale)
     } catch (err) {
       error.value = err?.message || 'Failed to load post'
       return null
@@ -68,13 +60,12 @@ export const useBlogStore = defineStore('blog', () => {
   }
 
   return {
-    posts,
+    postsByLocale,
     loading,
     error,
-    allPosts,
     isLoading,
     hasError,
-    getPostBySlug,
+    getPosts,
     fetchPosts,
     fetchPostBySlug
   }

@@ -59,6 +59,13 @@
             <span v-if="post.date">{{ formatDate(post.date) }}</span>
             <span v-if="post.date && post.readingTime" class="text-gray-600">•</span>
             <span v-if="post.readingTime">{{ t('blog.readingTime', { min: post.readingTime }) }}</span>
+            <span
+              v-if="post.locale && post.locale !== locale"
+              class="ml-auto px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20 uppercase tracking-wide"
+              :title="t('blog.translationFallback')"
+            >
+              {{ post.locale }}
+            </span>
           </div>
           <h2 class="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
             {{ post.title }}
@@ -88,12 +95,13 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBlog } from '../composables/useBlog'
 
 const { t } = useI18n()
-const { posts, loading, error, loadPosts, formatDate } = useBlog()
+const { posts, loading, error, locale, loadPosts, formatDate } = useBlog()
 
 onMounted(() => loadPosts())
+watch(locale, () => loadPosts())
 </script>

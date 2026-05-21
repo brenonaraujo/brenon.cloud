@@ -164,6 +164,8 @@
     "readingTime": "{min} min de leitura",
     "backToList": "Voltar para todos os posts",
     "by": "por",
+    "translationFallback": "Disponível apenas neste idioma",
+    "translationNotice": "Este post ainda não foi traduzido. Exibindo a versão em {locale}.",
     "empty": {
       "title": "Nenhum post ainda",
       "description": "Volte em breve — os primeiros artigos estão a caminho."

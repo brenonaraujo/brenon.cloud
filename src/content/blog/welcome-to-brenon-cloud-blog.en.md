@@ -39,4 +39,15 @@ tags: [docker, swarm]
 ---
 ```
 
+### Multi-language posts
+
+The filename decides which language a post belongs to:
+
+- `my-post.md` → fallback for every language
+- `my-post.en.md` → English version
+- `my-post.pt.md` → Portuguese version
+
+The site automatically picks the variant for the active language and
+falls back to another available locale when a translation is missing.
+
 That is all you need to get started. Stay tuned!

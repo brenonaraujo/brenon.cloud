@@ -112,14 +112,37 @@ export class BlogService {
   }
 
   /**
-   * Returns all posts sorted from newest to oldest.
+   * Returns the post list resolved for a given locale, sorted from
+   * newest to oldest. For each slug we pick the variant in this order:
+   *   1. exact locale match
+   *   2. neutral file (no locale suffix)
+   *   3. any other available locale
+   *
+   * Posts that exist in other locales are still listed (using the
+   * fallback variant) so readers always see the full catalogue.
+   *
+   * @param {string} locale
    * @returns {Promise<import('../types/blogPost').BlogPost[]>}
    */
-  async getAllPosts() {
+  async getAllPosts(locale = 'en') {
     const raw = await this.apiClient.getRawPosts()
-    const posts = raw
-      .map(({ slug, raw }) => this._toPost(slug, raw))
-      .filter(Boolean)
+    const grouped = new Map()
+    for (const entry of raw) {
+      if (!grouped.has(entry.slug)) grouped.set(entry.slug, [])
+      grouped.get(entry.slug).push(entry)
+    }
+
+    const posts = []
+    for (const [slug, variants] of grouped) {
+      const picked = this._pickVariant(variants, locale)
+      if (!picked) continue
+      const post = this._toPost(slug, picked.raw, picked.locale)
+      if (!post) continue
+      post.availableLocales = variants
+        .map(v => v.locale)
+        .filter(Boolean)
+      posts.push(post)
+    }
 
     posts.sort((a, b) => {
       const da = a.date ? Date.parse(a.date) : 0
@@ -131,22 +154,40 @@ export class BlogService {
   }
 
   /**
-   * Returns a single post by slug or null when not found.
+   * Returns a single post by slug for the requested locale (with the
+   * same fallback strategy as `getAllPosts`).
+   *
    * @param {string} slug
+   * @param {string} locale
    * @returns {Promise<import('../types/blogPost').BlogPost | null>}
    */
-  async getPostBySlug(slug) {
-    const raw = await this.apiClient.getRawPostBySlug(slug)
-    if (!raw) return null
-    return this._toPost(raw.slug, raw.raw)
+  async getPostBySlug(slug, locale = 'en') {
+    const variants = await this.apiClient.getRawPostsBySlug(slug)
+    if (!variants.length) return null
+    const picked = this._pickVariant(variants, locale)
+    if (!picked) return null
+    const post = this._toPost(slug, picked.raw, picked.locale)
+    if (!post) return null
+    post.availableLocales = variants.map(v => v.locale).filter(Boolean)
+    return post
   }
 
-  _toPost(slug, raw) {
+  _pickVariant(variants, locale) {
+    return (
+      variants.find(v => v.locale === locale) ||
+      variants.find(v => v.locale === null) ||
+      variants[0] ||
+      null
+    )
+  }
+
+  _toPost(slug, raw, locale) {
     if (typeof raw !== 'string' || !raw.trim()) return null
     const { data, body } = parseFrontmatter(raw)
     const content = body.trim()
     return {
       slug,
+      locale: locale || null,
       title: data.title || slug,
       description: data.description || '',
       date: data.date || '',
@@ -155,7 +196,8 @@ export class BlogService {
       cover: data.cover || '',
       content,
       html: md.render(content),
-      readingTime: estimateReadingTime(content)
+      readingTime: estimateReadingTime(content),
+      availableLocales: []
     }
   }
 }

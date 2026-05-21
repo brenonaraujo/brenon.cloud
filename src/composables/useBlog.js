@@ -4,17 +4,21 @@ import { useI18n } from 'vue-i18n'
 
 /**
  * Blog Composable
- * Clean entry point for components to read blog state and load posts.
+ * Reactive entry point for components. Posts are resolved against the
+ * active i18n locale; switching language re-fetches the correct variant.
  */
 export function useBlog() {
   const store = useBlogStore()
   const blogService = inject('blogService')
   const { locale } = useI18n()
 
-  const loadPosts = (force = false) => store.fetchPosts(blogService, force)
-  const loadPost = (slug) => store.fetchPostBySlug(blogService, slug)
+  const loadPosts = (force = false) =>
+    store.fetchPosts(blogService, locale.value, force)
 
-  const posts = computed(() => store.allPosts)
+  const loadPost = (slug) =>
+    store.fetchPostBySlug(blogService, slug, locale.value)
+
+  const posts = computed(() => store.getPosts(locale.value))
   const loading = computed(() => store.isLoading)
   const error = computed(() => store.error)
 
@@ -37,6 +41,7 @@ export function useBlog() {
     posts,
     loading,
     error,
+    locale,
     loadPosts,
     loadPost,
     formatDate

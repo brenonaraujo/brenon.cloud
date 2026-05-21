@@ -22,6 +22,17 @@
     </div>
 
     <article v-else-if="post" class="space-y-8">
+      <div
+        v-if="post.locale && post.locale !== locale"
+        class="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-200 flex items-center gap-3"
+      >
+        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+        </svg>
+        <span>
+          {{ t('blog.translationNotice', { locale: post.locale.toUpperCase() }) }}
+        </span>
+      </div>
       <header class="space-y-4 text-center border-b border-gray-800 pb-8">
         <div class="flex items-center justify-center gap-3 text-sm text-gray-400">
           <span v-if="post.date">{{ formatDate(post.date) }}</span>
@@ -79,7 +90,7 @@ import { useBlog } from '../composables/useBlog'
 
 const route = useRoute()
 const { t } = useI18n()
-const { loadPost, loading, error, formatDate } = useBlog()
+const { loadPost, loading, error, locale, formatDate } = useBlog()
 const post = ref(null)
 
 const fetch = async (slug) => {
@@ -89,5 +100,8 @@ const fetch = async (slug) => {
 onMounted(() => fetch(route.params.slug))
 watch(() => route.params.slug, (slug) => {
   if (slug) fetch(slug)
+})
+watch(locale, () => {
+  if (route.params.slug) fetch(route.params.slug)
 })
 </script>
