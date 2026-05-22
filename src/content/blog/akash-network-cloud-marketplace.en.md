@@ -129,6 +129,8 @@ The third reason is censorship resistance. No single corporation controls the ac
 
 ## The current challenge: adoption
 
+![Capacity](/images/blog/akash-capacity.png)
+
 Akash's biggest challenge today is not only proving that the technology works. It is growing adoption. The network's [public stats page](https://stats.akash.network/) makes that visible by comparing leased resources with available capacity.
 
 In the May 21, 2026 snapshot, the network showed about **3.47k leased CPUs** against **12.34k available CPUs**, **9.03 TB of leased memory** against **75.37 TB available**, and **58.58 TB of leased storage** against **787.38 TB available**. In other words: there is far more CPU, memory, and storage capacity ready to be used than workloads actually running on it.
@@ -149,6 +151,8 @@ This design connects security, governance, and real infrastructure usage in one 
 
 ## How to become a provider
 
+![Network](/images/blog/network.png)
+
 From the provider side, the idea is simple: you operate physical capacity and make it available to Akash. In practice, that requires a working Kubernetes cluster, public connectivity, the ability to expose endpoints, a wallet to operate on the network, and the Akash provider stack configured to receive bids and run deployments.
 
 A typical path looks like this:
@@ -159,7 +163,10 @@ A typical path looks like this:
 4. Configure certificates, wallet, pricing, attributes, and public endpoints.
 5. Monitor workloads, availability, capacity, and revenue.
 
-It is more operationally involved than using the network as a tenant, but it is exactly what turns idle hardware into sellable capacity.
+For more details, including a calculator to estimate how much you could earn as a provider, visit the official site at [Akash Providers](https://akash.network/providers/).
+
+- [Provider Calculator](https://akash.network/pricing/provider-calculator/)
+- [Current Network Capacity](https://akash.network/ecosystem/network-capacity/)
 
 ## The biggest advantage
 

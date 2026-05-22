@@ -15,7 +15,7 @@ A diferença é que esse mercado não depende de uma única empresa decidindo pr
 
 Em vez de alugar uma máquina virtual diretamente de AWS, Google Cloud ou Azure, você publica uma demanda de infraestrutura na rede. Provedores competem para atender essa demanda, e o preço é formado por oferta e demanda.
 
-Este artigo nasce do mesmo motivo que me levou a publicar o [Akash Console Air no Brenon.Cloud](https://www.google.com/search?q=/blog/console-air-on-brenon-cloud): tenho enorme apreço pela proposta da Akash de democratizar infraestrutura cloud descentralizada. Não é apenas sobre pagar menos por compute. É também sobre privacidade, autonomia operacional e a possibilidade de qualquer pessoa ou organização oferecer ao mundo capacidade ociosa dos seus próprios servidores.
+Este artigo nasce do mesmo motivo que me levou a publicar o [Akash Console Air no Brenon.Cloud](https://brenon.cloud/blog/console-air-on-brenon-cloud): tenho enorme apreço pela proposta da Akash de democratizar infraestrutura cloud descentralizada. Não é apenas sobre pagar menos por compute. É também sobre privacidade, autonomia operacional e a possibilidade de qualquer pessoa ou organização oferecer ao mundo capacidade ociosa dos seus próprios servidores.
 
 ## Como o ecossistema funciona na prática
 
@@ -129,6 +129,8 @@ O terceiro motivo é resistência à censura. Nenhuma corporação central contr
 
 ## O desafio atual: adoção
 
+![Capacity](/images/blog/akash-capacity.png)
+
 O grande desafio da Akash hoje não é apenas provar que a tecnologia funciona. É aumentar adoção. A [página pública de estatísticas da rede](https://stats.akash.network/) deixa isso bem visível ao comparar recursos alugados com capacidade disponível.
 
 No retrato de 21 de maio de 2026, a rede mostrava cerca de **3,47 mil CPUs alugadas** contra **12,34 mil CPUs disponíveis**, **9,03 TB de memória alugada** contra **75,37 TB disponíveis** e **58,58 TB de storage alugado** contra **787,38 TB disponíveis**. Ou seja: existe muito mais capacidade de CPU, memória e storage pronta para ser usada do que workloads efetivamente rodando nela.
@@ -149,6 +151,8 @@ Esse desenho conecta segurança, governança e uso real da infraestrutura em um 
 
 ## Como ser um provedor na rede
 
+![Network](/images/blog/network.png)
+
 Do lado do provider, a lógica é: você opera capacidade física e a disponibiliza para a Akash. Na prática, isso exige um cluster Kubernetes funcional, conectividade pública, capacidade de expor endpoints, uma carteira para operar na rede e o stack de provider da Akash configurado para receber bids e executar deployments.
 
 O caminho típico envolve:
@@ -159,7 +163,10 @@ O caminho típico envolve:
 4. Configurar certificados, wallet, preços, atributos e endpoints públicos.
 5. Monitorar workloads, disponibilidade, capacidade e faturamento.
 
-É um papel mais operacional do que usar a rede como tenant, mas é justamente o que transforma hardware parado em capacidade vendável.
+Para mais detalhes caso tenha interesse por exemplo em calcular quanto daria pra ganhar como provider acesse o site oficial em [Akash Providers](https://akash.network/providers/).
+
+* [Calculadora](https://akash.network/pricing/provider-calculator/)
+* [Capacidade Atual da rede](https://akash.network/ecosystem/network-capacity/)
 
 ## O grande trunfo
 
