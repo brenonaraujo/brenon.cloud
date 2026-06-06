@@ -1,0 +1,1 @@
+Este Pull Request adiciona a análise fundamentalista sobre o ecossistema XRP/Ripple, contemplando o cenário regulatório e de adoção institucional em 2026. Versões em PT e EN incluídas.
