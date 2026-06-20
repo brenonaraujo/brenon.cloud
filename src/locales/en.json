@@ -213,6 +213,7 @@
     "services": "Services",
     "about": "Infrastructure",
     "blog": "Blog",
+    "games": "Games",
     "pathToGlory": "Path to Glory",
     "status": "Status"
   },
@@ -236,6 +237,35 @@
     "notFound": {
       "title": "Post not found",
       "description": "This article does not exist or was moved."
+    }
+  },
+  "games": {
+    "title": "Browser Games",
+    "subtitle": "Small games built for the browser. Play, chase a high score, and keep your best runs.",
+    "play": "Play now",
+    "backToList": "Back to all games",
+    "translationFallback": "Available in this language only",
+    "scoreStoredHint": "Best scores and history are kept locally in your browser ({unit}).",
+    "empty": {
+      "title": "No games yet",
+      "description": "The first games are on the way — check back soon."
+    },
+    "notFound": {
+      "title": "Game not found",
+      "description": "This game does not exist or was removed."
+    },
+    "playersSingle": "Single player",
+    "playersMulti": "Local multiplayer",
+    "categories": {
+      "puzzle": "Puzzle",
+      "arcade": "Arcade",
+      "action": "Action",
+      "casual": "Casual"
+    },
+    "units": {
+      "points": "points",
+      "lines": "lines",
+      "ms": "milliseconds"
     }
   }
 }

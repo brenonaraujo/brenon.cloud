@@ -11,12 +11,16 @@ import Service from './pages/Service.vue'
 import Blog from './pages/Blog.vue'
 import BlogPost from './pages/BlogPost.vue'
 import PathToGlory from './pages/PathToGlory.vue'
+import Games from './pages/Games.vue'
+import GamePlayer from './pages/GamePlayer.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
 import { ServiceService } from './services/serviceService'
 import { blogApi } from './api/blogApi'
 import { BlogService } from './services/blogService'
+import { gamesApi } from './api/gamesApi'
+import { GamesService } from './services/gamesService'
 
 // i18n translations
 import en from './locales/en.json'
@@ -54,6 +58,17 @@ const router = createRouter({
       component: PathToGlory
     },
     {
+      path: '/games',
+      name: 'games',
+      component: Games
+    },
+    {
+      path: '/games/:slug',
+      name: 'game-player',
+      component: GamePlayer,
+      props: true
+    },
+    {
       path: '/status',
       beforeEnter: (to, from, next) => {
         window.location.href = 'https://uptime.brenon.cloud/status/services';
@@ -88,6 +103,7 @@ const i18n = createI18n({
 // Dependency Injection: Service Layer
 const serviceService = new ServiceService(servicesApi)
 const blogService = new BlogService(blogApi)
+const gamesService = new GamesService(gamesApi)
 
 // Create and configure app
 const app = createApp(App)
@@ -100,5 +116,6 @@ app.use(i18n)
 // Provide dependencies (Dependency Injection)
 app.provide('serviceService', serviceService)
 app.provide('blogService', blogService)
+app.provide('gamesService', gamesService)
 
 app.mount('#app')
