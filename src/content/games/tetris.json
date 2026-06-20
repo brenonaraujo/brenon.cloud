@@ -1,0 +1,10 @@
+{
+  "title": "Tetris",
+  "description": "Stack blocks, clear lines, chase your high score. The classic falling-block puzzle.",
+  "category": "puzzle",
+  "players": "single",
+  "scoreUnit": "points",
+  "iframe": "/games/tetris.html",
+  "width": 760,
+  "height": 720
+}

@@ -124,6 +124,7 @@ const isMobileMenuOpen = ref(false)
 
 const menuItems = computed(() => [
   { to: '/blog', text: t('navbar.blog'), route: true },
+  { to: '/games', text: t('navbar.games'), route: true },
   { to: '/path', text: t('navbar.pathToGlory'), route: true },
   { to: 'infrastructure', text: t('navbar.about') },
   { to: 'https://uptime.brenon.cloud/status/services', text: t('navbar.status'), external: true }

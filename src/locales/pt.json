@@ -213,6 +213,7 @@
     "services": "Serviços",
     "about": "Infraestrutura",
     "blog": "Blog",
+    "games": "Jogos",
     "pathToGlory": "Caminho para a Glória",
     "status": "Status"
   },
@@ -236,6 +237,35 @@
     "notFound": {
       "title": "Post não encontrado",
       "description": "Este artigo não existe ou foi movido."
+    }
+  },
+  "games": {
+    "title": "Jogos no Navegador",
+    "subtitle": "Pequenos jogos feitos para o navegador. Jogue, persiga pontuações e guarde suas melhores partidas.",
+    "play": "Jogar agora",
+    "backToList": "Voltar para todos os jogos",
+    "translationFallback": "Disponível apenas neste idioma",
+    "scoreStoredHint": "Pontuações e histórico ficam guardados localmente no seu navegador ({unit}).",
+    "empty": {
+      "title": "Nenhum jogo ainda",
+      "description": "Os primeiros jogos estão a caminho — volte em breve."
+    },
+    "notFound": {
+      "title": "Jogo não encontrado",
+      "description": "Este jogo não existe ou foi removido."
+    },
+    "playersSingle": "Um jogador",
+    "playersMulti": "Multijogador local",
+    "categories": {
+      "puzzle": "Puzzle",
+      "arcade": "Arcade",
+      "action": "Ação",
+      "casual": "Casual"
+    },
+    "units": {
+      "points": "pontos",
+      "lines": "linhas",
+      "ms": "milissegundos"
     }
   }
 }

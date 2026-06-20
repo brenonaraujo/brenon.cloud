@@ -8,6 +8,15 @@
   NODE_VERSION = "22"
   NPM_FLAGS    = "--legacy-peer-deps"
 
+# /games/* holds the standalone game files (iframes). They must be served
+# as static assets, not handed to the SPA. Everything else falls back to
+# the Vue app so deep links like /games/tetris still resolve to the player.
+[[redirects]]
+  from = "/games/*"
+  to   = "/games/:splat"
+  status = 200
+  force = false
+
 [[redirects]]
   from = "/*"
   to   = "/index.html"
