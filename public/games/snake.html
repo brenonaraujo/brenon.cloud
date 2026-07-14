@@ -155,6 +155,16 @@
     box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
   }
 
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .overlay input.shake {
+    animation: shake 0.3s ease-in-out;
+    border-color: var(--danger) !important;
+  }
+
   .btn-row { display: flex; gap: 12px; margin-top: 16px; }
 
   .overlay button.primary,
@@ -289,8 +299,11 @@
       <!-- START MODE -->
       <div id="overlay-start">
         <h1>SNAKE</h1>
-        <p id="start-hint">Pressione <span class="key">Espaço</span> ou qualquer seta para começar</p>
-        <p style="margin-top: 16px; font-size: 11px;">
+        <input type="text" id="start-name-input" maxlength="12" placeholder="Digite seu nome" autocomplete="off" spellcheck="false">
+        <div class="btn-row">
+          <button class="primary" id="start-btn">Jogar</button>
+        </div>
+        <p style="margin-top: 14px; font-size: 11px;">
           <span class="key">↑ ↓ ← →</span> ou <span class="key">W A S D</span> para mover ·
           <span class="key">P</span> pausa
         </p>
@@ -319,7 +332,6 @@
       <div class="ctrl-row"><span>Mover</span><span>← → ↑ ↓</span></div>
       <div class="ctrl-row"><span>Alt</span><span>W A S D</span></div>
       <div class="ctrl-row"><span>Pausa</span><span>P</span></div>
-      <div class="ctrl-row"><span>Iniciar</span><span>Espaço</span></div>
     </div>
   </div>
 </div>
@@ -640,39 +652,35 @@ function showStartOverlay() {
   overlayEnd.style.display = 'none';
   overlayStart.style.display = '';
   overlay.classList.add('active');
-  // clean board
   drawBackground();
+  const nameInput = document.getElementById('start-name-input');
+  if (nameInput) {
+    nameInput.value = playerName;
+    setTimeout(() => { nameInput.focus(); nameInput.select(); }, 50);
+  }
 }
 
 function showGameOverOverlay(finalScore) {
   overlayStart.style.display = 'none';
-  const nameVal = escapeHtml(playerName);
+  const savedMsg = (finalScore > 0 && playerName)
+    ? '<p style="margin-top: 10px; font-size: 13px; color: var(--accent);">✓ Score salvo no ranking</p>'
+    : '';
   overlayEnd.innerHTML = `
     <h1 style="color: var(--danger); text-shadow: 0 0 12px rgba(255,85,119,0.6);">GAME OVER</h1>
     <p style="margin: 6px 0 2px; color: var(--muted);">Pontuação final</p>
     <p style="font-size: 34px; margin: 4px 0 0; color: var(--accent); text-shadow: var(--glow); font-weight: bold;">${finalScore.toLocaleString('pt-BR')}</p>
-    <input type="text" id="name-input" maxlength="12" placeholder="Seu nome" autocomplete="off" spellcheck="false" value="${nameVal}">
+    ${savedMsg}
     <div class="btn-row">
-      <button class="primary" id="save-btn">Salvar Score</button>
-      <button class="secondary" id="again-btn">Jogar de novo</button>
+      <button class="primary" id="again-btn">Jogar de novo</button>
     </div>
-    <p style="margin-top: 10px; font-size: 11px; color: var(--muted);">ou pressione <span class="key">Enter</span> para jogar de novo</p>
+    <p style="margin-top: 10px; font-size: 11px; color: var(--muted);">ou pressione <span class="key">Enter</span> / <span class="key">Espaço</span></p>
   `;
   overlayEnd.style.display = '';
   overlay.classList.add('active');
-  const nameInput = document.getElementById('name-input');
-  const saveBtn = document.getElementById('save-btn');
-  // disable save if finalScore is 0 (nothing worth saving) or already saved
-  if (finalScore <= 0) saveBtn.disabled = true;
-  saveBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    saveScore(finalScore, nameInput);
-  });
   document.getElementById('again-btn').addEventListener('click', (e) => {
     e.preventDefault();
     startGame();
   });
-  setTimeout(() => { nameInput.focus(); nameInput.select(); }, 50);
 }
 
 function saveScore(finalScore, nameInput) {
@@ -697,6 +705,23 @@ function hideOverlay() {
 }
 
 function startGame() {
+  // Require name from start screen input
+  const nameInput = document.getElementById('start-name-input');
+  if (nameInput) {
+    const typed = (nameInput.value || '').trim().slice(0, 12);
+    if (!typed) {
+      nameInput.focus();
+      nameInput.classList.add('shake');
+      setTimeout(() => nameInput.classList.remove('shake'), 400);
+      return;
+    }
+    playerName = typed;
+    localStorage.setItem(STORAGE_NAME, playerName);
+  }
+  if (!playerName) {
+    showStartOverlay();
+    return;
+  }
   resetState();
   updateUI();
   renderRankingLive();
@@ -715,6 +740,11 @@ function endGame() {
   cancelAnimationFrame(rafId);
   // draw final frame
   draw(performance.now());
+  // Auto-save score to ranking
+  if (score > 0 && playerName) {
+    saveRankingEntry(playerName, score);
+    lastSavedRun = {name: playerName, score: score};
+  }
   bestScore = getBestScore();
   updateUI();
   renderRankingLive();
@@ -749,16 +779,11 @@ function setDirection(d) {
 }
 
 document.addEventListener('keydown', (e) => {
-  // If focus is on a text input, only Enter submits
+  // If focus is on a text input (start screen name), only Enter submits
   const tag = document.activeElement && document.activeElement.tagName;
   if (tag === 'INPUT' && document.activeElement.type === 'text') {
     if (e.code === 'Enter') {
       e.preventDefault();
-      // If on game-over screen with save button: save then restart
-      const saveBtn = document.getElementById('save-btn');
-      if (saveBtn && !saveBtn.disabled) {
-        saveScore(score, document.getElementById('name-input'));
-      }
       startGame();
     }
     return;
@@ -794,6 +819,12 @@ document.addEventListener('keydown', (e) => {
     case 'Space':
       e.preventDefault(); break;
   }
+});
+
+// Start button
+document.getElementById('start-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  startGame();
 });
 
 // Mobile directional buttons
