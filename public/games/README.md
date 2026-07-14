@@ -8,6 +8,7 @@ Small browser games embedded in Brenon.Cloud under `/games`.
 | --- | --- | --- | --- | --- |
 | `tetris` | Puzzle | Single | Points | 760 × 720 |
 | `snake` | Arcade | Single | Points | 600 × 700 |
+| `space-invaders` | Arcade | Single | Points | 760 × 720 |
 
 ## How scoring works
 

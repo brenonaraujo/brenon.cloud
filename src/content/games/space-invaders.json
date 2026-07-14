@@ -1,0 +1,10 @@
+{
+  "title": "Space Invaders",
+  "description": "Defend Earth from waves of descending aliens. Move, shoot, and dodge bombs in this classic arcade shooter.",
+  "category": "arcade",
+  "players": "single",
+  "scoreUnit": "points",
+  "iframe": "/games/space-invaders.html",
+  "width": 760,
+  "height": 720
+}

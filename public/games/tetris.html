@@ -35,28 +35,57 @@
   }
   body.embedded .game {
     min-height: 100%;
-    padding: 12px;
-    gap: 16px;
+    padding: 10px;
+    gap: 12px;
+    align-items: flex-start;
   }
   body.embedded .side-panel {
-    width: 150px;
+    width: 125px;
+    gap: 8px;
+    flex-shrink: 0;
   }
-  body.embedded .side-panel .panel-box {
-    padding: 10px;
+  body.embedded .side-panel .panel-box,
+  body.embedded .controls-panel {
+    padding: 8px 10px;
+  }
+  body.embedded .panel-title {
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
   }
   body.embedded .player-name {
-    font-size: 14px;
+    font-size: 12px;
   }
   body.embedded .panel-value {
-    font-size: 20px;
+    font-size: 18px;
   }
   body.embedded .next-canvas,
   body.embedded .hold-canvas {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
   body.embedded .next-canvas {
-    height: 240px;
+    height: 100px;
+  }
+  body.embedded .controls-panel h3 {
+    font-size: 9px;
+    margin: 0 0 6px;
+  }
+  body.embedded .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 10px;
+  }
+  body.embedded .ctrl-row {
+    font-size: 9px;
+    padding: 2px 0;
+  }
+  body.embedded .board-wrap {
+    padding: 10px;
+  }
+  body.embedded #board {
+    width: 270px;
+    height: 540px;
   }
 
   .game {
@@ -256,6 +285,12 @@
     text-transform: uppercase;
   }
 
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 14px;
+  }
+
   .ctrl-row {
     display: flex;
     justify-content: space-between;
@@ -309,8 +344,11 @@
   }
 
   @media (max-width: 720px) {
+    .game { flex-direction: column; padding: 12px; gap: 12px; }
     .side-panel { width: 100%; flex-direction: row; flex-wrap: wrap; }
+    .side-panel:first-child, .side-panel:last-child { justify-content: center; }
     .panel-box, .controls-panel { flex: 1; min-width: 120px; }
+    .controls-grid { grid-template-columns: 1fr 1fr 1fr; }
     .mobile-controls { display: block; }
     body { overflow-y: auto; padding-bottom: 200px; }
   }
@@ -366,20 +404,22 @@
   <div class="side-panel">
     <div class="panel-box">
       <div class="panel-title">Next</div>
-      <canvas id="next" class="next-canvas" width="100" height="300"></canvas>
+      <canvas id="next" class="next-canvas" width="100" height="140"></canvas>
     </div>
     <div class="panel-box">
       <div class="panel-title">Best</div>
       <div class="panel-value" id="best">0</div>
     </div>
     <div class="controls-panel">
-      <h3>Controles</h3>
-      <div class="ctrl-row"><span>Mover</span><span>← →</span></div>
-      <div class="ctrl-row"><span>Girar</span><span>↑ / X</span></div>
-      <div class="ctrl-row"><span>Descer</span><span>↓</span></div>
-      <div class="ctrl-row"><span>Hard drop</span><span>Espaço</span></div>
-      <div class="ctrl-row"><span>Hold</span><span>C / Shift</span></div>
-      <div class="ctrl-row"><span>Pausa</span><span>P</span></div>
+      <h3>Controls</h3>
+      <div class="controls-grid">
+        <div class="ctrl-row"><span>Move</span><span>← →</span></div>
+        <div class="ctrl-row"><span>Rotate</span><span>↑ / X</span></div>
+        <div class="ctrl-row"><span>Down</span><span>↓</span></div>
+        <div class="ctrl-row"><span>Drop</span><span>Space</span></div>
+        <div class="ctrl-row"><span>Hold</span><span>C</span></div>
+        <div class="ctrl-row"><span>Pause</span><span>P</span></div>
+      </div>
     </div>
   </div>
 </div>
