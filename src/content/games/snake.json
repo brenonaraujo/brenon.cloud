@@ -1,0 +1,10 @@
+{
+  "title": "Snake",
+  "description": "Eat, grow, and don't crash into yourself. The timeless arcade classic with a local high-score table.",
+  "category": "arcade",
+  "players": "single",
+  "scoreUnit": "points",
+  "iframe": "/games/snake.html",
+  "width": 600,
+  "height": 700
+}

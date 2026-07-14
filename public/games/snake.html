@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Snake</title>
+<style>
+  :root {
+    --bg: #0f0f1e;
+    --panel: #161830;
+    --grid: #1c1e3a;
+    --border: #2a2e52;
+    --text: #e6e9f2;
+    --muted: #8087a3;
+    --accent: #4ade80;
+    --danger: #ff5577;
+    --food: #ff7a45;
+    --glow: 0 0 12px rgba(74, 222, 128, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at top, #1a1f3a 0%, var(--bg) 70%);
+    color: var(--text);
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    height: 100%;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  /* When embedded inside an iframe the viewport IS the iframe, so we
+     collapse the outer padding and let the layout fill it. */
+  body.embedded {
+    overflow: hidden;
+  }
+  body.embedded .game {
+    min-height: 100%;
+    padding: 10px;
+    gap: 12px;
+  }
+  body.embedded .side-panel { width: 168px; }
+  body.embedded .panel-box { padding: 10px; }
+  body.embedded .panel-value { font-size: 20px; }
+  body.embedded .ranking { width: 100%; }
+
+  .game {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+    flex-wrap: wrap;
+  }
+
+  /* SIDE PANEL */
+  .side-panel {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .panel-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .panel-title {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .panel-value {
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--accent);
+    text-shadow: var(--glow);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* BOARD */
+  .board-wrap {
+    position: relative;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  #board {
+    display: block;
+    background: var(--grid);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 12px;
+    background: rgba(15, 15, 30, 0.94);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 4px;
+    z-index: 10;
+  }
+  .overlay.active { display: flex; }
+
+  .overlay h1 {
+    font-size: 38px;
+    margin: 0 0 10px;
+    color: var(--accent);
+    text-shadow: var(--glow);
+    letter-spacing: 6px;
+  }
+  .overlay p { margin: 4px 0; color: var(--muted); }
+
+  .overlay .key {
+    display: inline-block;
+    background: var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin: 0 2px;
+    color: var(--text);
+    font-weight: bold;
+  }
+
+  /* NAME INPUT + BUTTON (in overlay) */
+  .overlay input[type="text"] {
+    background: var(--grid);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 18px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    width: 260px;
+    text-align: center;
+    margin-top: 18px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .overlay input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+  }
+
+  .btn-row { display: flex; gap: 12px; margin-top: 16px; }
+
+  .overlay button.primary,
+  .overlay button.secondary {
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.1s, box-shadow 0.15s;
+  }
+  .overlay button.primary {
+    background: var(--accent);
+    color: #0f0f1e;
+  }
+  .overlay button.secondary {
+    background: var(--border);
+    color: var(--text);
+  }
+  .overlay button.primary:hover { box-shadow: var(--glow); }
+  .overlay button.secondary:hover { box-shadow: 0 0 12px rgba(128,135,163,0.4); }
+  .overlay button:active { transform: scale(0.97); }
+  .overlay button:disabled { opacity: 0.5; cursor: default; }
+
+  .overlay .last-player {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* RANKING TABLE */
+  .ranking {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .ranking th, .ranking td {
+    padding: 6px 6px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .ranking th {
+    color: var(--muted);
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .ranking td:nth-child(1) { color: var(--muted); width: 22px; }
+  .ranking td:nth-child(2) { color: var(--text); }
+  .ranking td:nth-child(3) { color: var(--accent); text-align: right; font-variant-numeric: tabular-nums; }
+  .ranking td:nth-child(4) { color: var(--muted); font-size: 10px; text-align: right; }
+  .ranking tr.you td { background: rgba(74, 222, 128, 0.12); }
+  .ranking tr.you td:nth-child(2) { color: var(--accent); font-weight: bold; }
+  .ranking-empty { color: var(--muted); font-size: 12px; padding: 8px 0; }
+
+  /* CONTROLS PANEL */
+  .controls-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 12px;
+  }
+  .controls-panel h3 {
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .ctrl-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    color: var(--muted);
+  }
+  .ctrl-row span:last-child { color: var(--text); font-weight: bold; }
+
+  /* MOBILE */
+  .mobile-controls {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px;
+    background: rgba(15, 15, 30, 0.95);
+    border-top: 1px solid var(--border);
+    z-index: 20;
+  }
+  .mobile-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .mobile-btn {
+    flex: 1;
+    max-width: 80px;
+    padding: 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: bold;
+    touch-action: manipulation;
+    user-select: none;
+  }
+  .mobile-btn:active { background: var(--border); transform: scale(0.95); }
+
+  @media (max-width: 760px) {
+    .side-panel { width: 100%; flex-direction: row; flex-wrap: wrap; }
+    .panel-box, .controls-panel { flex: 1; min-width: 140px; }
+    .mobile-controls { display: block; }
+    body { overflow-y: auto; padding-bottom: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="game">
+  <!-- LEFT: BOARD -->
+  <div class="board-wrap">
+    <canvas id="board" width="560" height="560"></canvas>
+    <div id="overlay" class="overlay active">
+      <!-- START MODE -->
+      <div id="overlay-start">
+        <h1>SNAKE</h1>
+        <p id="start-hint">Pressione <span class="key">Espaço</span> ou qualquer seta para começar</p>
+        <p style="margin-top: 16px; font-size: 11px;">
+          <span class="key">↑ ↓ ← →</span> ou <span class="key">W A S D</span> para mover ·
+          <span class="key">P</span> pausa
+        </p>
+      </div>
+      <!-- GAME OVER MODE (filled by JS) -->
+      <div id="overlay-end" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SCORE + BEST + RANKING + CONTROLS -->
+  <div class="side-panel">
+    <div class="panel-box">
+      <div class="panel-title">Score</div>
+      <div class="panel-value" id="score">0</div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-title">Best</div>
+      <div class="panel-value" id="best">0</div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-title">Ranking</div>
+      <div id="ranking-live"></div>
+    </div>
+    <div class="controls-panel">
+      <h3>Controles</h3>
+      <div class="ctrl-row"><span>Mover</span><span>← → ↑ ↓</span></div>
+      <div class="ctrl-row"><span>Alt</span><span>W A S D</span></div>
+      <div class="ctrl-row"><span>Pausa</span><span>P</span></div>
+      <div class="ctrl-row"><span>Iniciar</span><span>Espaço</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE -->
+<div class="mobile-controls">
+  <div class="mobile-row">
+    <button class="mobile-btn" data-action="up">↑</button>
+  </div>
+  <div class="mobile-row">
+    <button class="mobile-btn" data-action="left">←</button>
+    <button class="mobile-btn" data-action="down">↓</button>
+    <button class="mobile-btn" data-action="right">→</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  SNAKE — vanilla JS
+// ============================================================
+
+const COLS = 20;
+const ROWS = 20;
+const CELL = 28;             // 20 * 28 = 560px
+const BASE_INTERVAL = 140;   // ms per move at start
+const MIN_INTERVAL = 60;     // fastest
+
+// ============================================================
+//  STATE
+// ============================================================
+
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const rankingLiveEl = document.getElementById('ranking-live');
+const overlay = document.getElementById('overlay');
+const overlayStart = document.getElementById('overlay-start');
+const overlayEnd = document.getElementById('overlay-end');
+
+let snake;            // array of {x, y}, head = [0]
+let dir;              // {x, y}
+let nextDir;          // queued direction (buffered)
+let food;             // {x, y}
+let score;
+let gameOver;
+let running;          // game loop running
+let paused;
+let lastStep;
+let stepInterval;     // current ms per step
+let rafId;
+let justAte;          // animation flag for food pulse / grow
+
+// ============================================================
+//  PLAYER NAME + RANKING (localStorage)
+// ============================================================
+
+const STORAGE_NAME = 'snake.playerName';
+const STORAGE_RANKING = 'snake.ranking';
+let playerName = localStorage.getItem(STORAGE_NAME) || '';
+let bestScore = 0;
+let lastSavedRun = null; // {name, score} marks the "you" row
+
+function loadRanking() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_RANKING) || '[]');
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
+}
+
+function saveRankingEntry(name, sc) {
+  const ranking = loadRanking();
+  ranking.push({name, score: sc, when: Date.now()});
+  ranking.sort((a, b) => b.score - a.score);
+  const top = ranking.slice(0, 10);
+  localStorage.setItem(STORAGE_RANKING, JSON.stringify(top));
+  return top;
+}
+
+function getBestScore() {
+  return loadRanking().reduce((m, e) => Math.max(m, e.score), 0);
+}
+
+function formatDate(ts) {
+  try {
+    const d = new Date(ts);
+    return d.toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'});
+  } catch { return ''; }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function rankingRowsHtml(highlight) {
+  const ranking = loadRanking();
+  if (ranking.length === 0) {
+    return '<div class="ranking-empty">Nenhum score salvo ainda.</div>';
+  }
+  let youIndex = -1;
+  if (highlight && lastSavedRun) {
+    youIndex = ranking.findIndex(e =>
+      e.name === lastSavedRun.name && e.score === lastSavedRun.score);
+  }
+  let rows = '';
+  ranking.forEach((e, i) => {
+    const isYou = (i === youIndex);
+    rows += `<tr class="${isYou ? 'you' : ''}">
+      <td>${i + 1}</td>
+      <td>${escapeHtml(e.name)}</td>
+      <td>${e.score.toLocaleString('pt-BR')}</td>
+      <td>${formatDate(e.when)}</td>
+    </tr>`;
+  });
+  return `<table class="ranking">
+    <thead><tr><th>#</th><th>Player</th><th>Score</th><th>Data</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function renderRankingLive() {
+  rankingLiveEl.innerHTML = rankingRowsHtml(false);
+}
+
+// ============================================================
+//  GAME CORE
+// ============================================================
+
+function resetState() {
+  snake = [];
+  const mid = Math.floor(COLS / 2);
+  const my = Math.floor(ROWS / 2);
+  for (let i = 0; i < 4; i++) snake.push({x: mid - i, y: my});
+  dir = {x: 1, y: 0};
+  nextDir = {x: 1, y: 0};
+  score = 0;
+  gameOver = false;
+  paused = false;
+  justAte = false;
+  stepInterval = BASE_INTERVAL;
+  spawnFood();
+}
+
+function spawnFood() {
+  const occupied = new Set(snake.map(s => s.x + ',' + s.y));
+  const free = [];
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      if (!occupied.has(x + ',' + y)) free.push({x, y});
+    }
+  }
+  if (free.length === 0) { // board full = win
+    food = null;
+    return;
+  }
+  food = free[Math.floor(Math.random() * free.length)];
+}
+
+function stepSpeed() {
+  // speed up gently with score: -2ms per point eaten, floored
+  return Math.max(MIN_INTERVAL, BASE_INTERVAL - score * 2);
+}
+
+function step() {
+  dir = nextDir;
+  const head = snake[0];
+  const nx = head.x + dir.x;
+  const ny = head.y + dir.y;
+
+  // Wall collision
+  if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) {
+    endGame();
+    return;
+  }
+  // Self collision (ignore tail tip if not growing, since it will move away)
+  const willGrow = food && nx === food.x && ny === food.y;
+  const bodyToCheck = willGrow ? snake : snake.slice(0, snake.length - 1);
+  for (const seg of bodyToCheck) {
+    if (seg.x === nx && seg.y === ny) {
+      endGame();
+      return;
+    }
+  }
+
+  snake.unshift({x: nx, y: ny});
+  if (willGrow) {
+    score += 1;
+    justAte = true;
+    stepInterval = stepSpeed();
+    spawnFood();
+    updateUI();
+  } else {
+    snake.pop();
+    justAte = false;
+  }
+}
+
+// ============================================================
+//  RENDERING
+// ============================================================
+
+function drawBackground() {
+  ctx.fillStyle = getCss('--grid');
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // subtle grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i < COLS; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * CELL + 0.5, 0);
+    ctx.lineTo(i * CELL + 0.5, canvas.height);
+    ctx.stroke();
+  }
+  for (let i = 1; i < ROWS; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, i * CELL + 0.5);
+    ctx.lineTo(canvas.width, i * CELL + 0.5);
+    ctx.stroke();
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  const rad = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rad);
+  ctx.arcTo(x + w, y + h, x, y + h, rad);
+  ctx.arcTo(x, y + h, x, y, rad);
+  ctx.arcTo(x, y, x + w, y, rad);
+  ctx.closePath();
+}
+
+function drawSnake() {
+  const headColor = '#86efac';
+  const bodyColor = getCss('--accent');
+  for (let i = snake.length - 1; i >= 0; i--) {
+    const seg = snake[i];
+    const px = seg.x * CELL;
+    const py = seg.y * CELL;
+    const pad = 2;
+    // glow for head
+    if (i === 0) {
+      ctx.shadowColor = 'rgba(74,222,128,0.7)';
+      ctx.shadowBlur = 14;
+    } else {
+      ctx.shadowBlur = 0;
+    }
+    ctx.fillStyle = i === 0 ? headColor : bodyColor;
+    roundRect(ctx, px + pad, py + pad, CELL - pad * 2, CELL - pad * 2, 8);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    // inner highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    roundRect(ctx, px + pad + 2, py + pad + 2, CELL - pad * 2 - 6, (CELL - pad * 2) / 2.4, 6);
+    ctx.fill();
+  }
+}
+
+function drawFood(t) {
+  if (!food) return;
+  const px = food.x * CELL + CELL / 2;
+  const py = food.y * CELL + CELL / 2;
+  // pulse
+  const pulse = 0.5 + 0.5 * Math.sin(t / 200);
+  const baseR = CELL * 0.34;
+  const r = baseR + pulse * 2;
+  // glow
+  ctx.shadowColor = getCss('--food');
+  ctx.shadowBlur = 16 + pulse * 8;
+  ctx.fillStyle = getCss('--food');
+  ctx.beginPath();
+  ctx.arc(px, py, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  // highlight
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath();
+  ctx.arc(px - r * 0.3, py - r * 0.3, r * 0.3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function getCss(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#4ade80';
+}
+
+function draw(t) {
+  drawBackground();
+  drawFood(t);
+  drawSnake();
+}
+
+// ============================================================
+//  GAME LOOP
+// ============================================================
+
+function loop(t) {
+  if (!running) return;
+  if (!paused && !gameOver) {
+    if (t - lastStep >= stepInterval) {
+      step();
+      lastStep = t;
+    }
+  }
+  draw(t);
+  rafId = requestAnimationFrame(loop);
+}
+
+function updateUI() {
+  scoreEl.textContent = score.toLocaleString('pt-BR');
+  bestEl.textContent = bestScore.toLocaleString('pt-BR');
+}
+
+// ============================================================
+//  OVERLAY / STATE TRANSITIONS
+// ============================================================
+
+function showStartOverlay() {
+  overlayEnd.style.display = 'none';
+  overlayStart.style.display = '';
+  overlay.classList.add('active');
+  // clean board
+  drawBackground();
+}
+
+function showGameOverOverlay(finalScore) {
+  overlayStart.style.display = 'none';
+  const nameVal = escapeHtml(playerName);
+  overlayEnd.innerHTML = `
+    <h1 style="color: var(--danger); text-shadow: 0 0 12px rgba(255,85,119,0.6);">GAME OVER</h1>
+    <p style="margin: 6px 0 2px; color: var(--muted);">Pontuação final</p>
+    <p style="font-size: 34px; margin: 4px 0 0; color: var(--accent); text-shadow: var(--glow); font-weight: bold;">${finalScore.toLocaleString('pt-BR')}</p>
+    <input type="text" id="name-input" maxlength="12" placeholder="Seu nome" autocomplete="off" spellcheck="false" value="${nameVal}">
+    <div class="btn-row">
+      <button class="primary" id="save-btn">Salvar Score</button>
+      <button class="secondary" id="again-btn">Jogar de novo</button>
+    </div>
+    <p style="margin-top: 10px; font-size: 11px; color: var(--muted);">ou pressione <span class="key">Enter</span> para jogar de novo</p>
+  `;
+  overlayEnd.style.display = '';
+  overlay.classList.add('active');
+  const nameInput = document.getElementById('name-input');
+  const saveBtn = document.getElementById('save-btn');
+  // disable save if finalScore is 0 (nothing worth saving) or already saved
+  if (finalScore <= 0) saveBtn.disabled = true;
+  saveBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    saveScore(finalScore, nameInput);
+  });
+  document.getElementById('again-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    startGame();
+  });
+  setTimeout(() => { nameInput.focus(); nameInput.select(); }, 50);
+}
+
+function saveScore(finalScore, nameInput) {
+  const typed = (nameInput.value || '').trim().slice(0, 12);
+  const name = typed || playerName || 'Player';
+  playerName = name;
+  localStorage.setItem(STORAGE_NAME, playerName);
+  saveRankingEntry(name, finalScore);
+  lastSavedRun = {name, score: finalScore};
+  bestScore = getBestScore();
+  updateUI();
+  renderRankingLive();
+  const saveBtn = document.getElementById('save-btn');
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Salvo ✓';
+  }
+}
+
+function hideOverlay() {
+  overlay.classList.remove('active');
+}
+
+function startGame() {
+  resetState();
+  updateUI();
+  renderRankingLive();
+  running = true;
+  gameOver = false;
+  paused = false;
+  lastStep = performance.now();
+  hideOverlay();
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(loop);
+}
+
+function endGame() {
+  gameOver = true;
+  running = false;
+  cancelAnimationFrame(rafId);
+  // draw final frame
+  draw(performance.now());
+  bestScore = getBestScore();
+  updateUI();
+  renderRankingLive();
+  showGameOverOverlay(score);
+}
+
+function togglePause() {
+  if (gameOver || !running) return;
+  paused = !paused;
+  if (paused) {
+    overlayStart.style.display = 'none';
+    overlayEnd.innerHTML = `
+      <h1 style="color: var(--accent); text-shadow: var(--glow);">PAUSADO</h1>
+      <p style="margin-top: 16px;">Pressione <span class="key">P</span> para continuar</p>
+    `;
+    overlayEnd.style.display = '';
+    overlay.classList.add('active');
+  } else {
+    hideOverlay();
+    lastStep = performance.now();
+  }
+}
+
+// ============================================================
+//  INPUT
+// ============================================================
+
+function setDirection(d) {
+  // Prevent reversing directly into self
+  if (d.x === -dir.x && d.y === -dir.y) return;
+  nextDir = d;
+}
+
+document.addEventListener('keydown', (e) => {
+  // If focus is on a text input, only Enter submits
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (tag === 'INPUT' && document.activeElement.type === 'text') {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+      // If on game-over screen with save button: save then restart
+      const saveBtn = document.getElementById('save-btn');
+      if (saveBtn && !saveBtn.disabled) {
+        saveScore(score, document.getElementById('name-input'));
+      }
+      startGame();
+    }
+    return;
+  }
+
+  // Start / restart from overlay
+  if (!running || gameOver) {
+    if (e.code === 'Space' || e.code === 'Enter' ||
+        e.code === 'ArrowUp' || e.code === 'ArrowDown' ||
+        e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+      e.preventDefault();
+      startGame();
+      return;
+    }
+  }
+
+  if (!running || paused || gameOver) {
+    if (e.code === 'KeyP' && running && !gameOver) togglePause();
+    return;
+  }
+
+  switch (e.code) {
+    case 'ArrowUp': case 'KeyW':
+      setDirection({x: 0, y: -1}); e.preventDefault(); break;
+    case 'ArrowDown': case 'KeyS':
+      setDirection({x: 0, y: 1}); e.preventDefault(); break;
+    case 'ArrowLeft': case 'KeyA':
+      setDirection({x: -1, y: 0}); e.preventDefault(); break;
+    case 'ArrowRight': case 'KeyD':
+      setDirection({x: 1, y: 0}); e.preventDefault(); break;
+    case 'KeyP':
+      togglePause(); e.preventDefault(); break;
+    case 'Space':
+      e.preventDefault(); break;
+  }
+});
+
+// Mobile directional buttons
+document.querySelectorAll('.mobile-btn').forEach(btn => {
+  const action = btn.dataset.action;
+  const fire = (ev) => {
+    ev.preventDefault();
+    if (!running || gameOver) { startGame(); return; }
+    if (paused) return;
+    switch (action) {
+      case 'up':    setDirection({x: 0, y: -1}); break;
+      case 'down':  setDirection({x: 0, y: 1}); break;
+      case 'left':  setDirection({x: -1, y: 0}); break;
+      case 'right': setDirection({x: 1, y: 0}); break;
+    }
+  };
+  btn.addEventListener('touchstart', fire, {passive: false});
+  btn.addEventListener('mousedown', fire);
+});
+
+// Detect iframe embedding. When loaded inside the Brenon.Cloud Games
+// page, switch to a compact layout that fits the 600x700 iframe box.
+try {
+  if (window.self !== window.top) {
+    document.body.classList.add('embedded');
+  }
+} catch (err) {
+  // Cross-origin frame access can throw — safe to ignore.
+}
+
+// Init
+bestScore = getBestScore();
+updateUI();
+renderRankingLive();
+showStartOverlay();
+</script>
+</body>
+</html>

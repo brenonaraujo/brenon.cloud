@@ -7,6 +7,7 @@ Small browser games embedded in Brenon.Cloud under `/games`.
 | Slug | Category | Players | Score unit | Size |
 | --- | --- | --- | --- | --- |
 | `tetris` | Puzzle | Single | Points | 760 × 720 |
+| `snake` | Arcade | Single | Points | 600 × 700 |
 
 ## How scoring works
 
@@ -14,6 +15,8 @@ Scores are kept **per-game** in `localStorage`, scoped to the current browser:
 
 - `tetris.playerName` — last name the player used
 - `tetris.ranking` — top 10 runs as JSON (`[{name, score, when}]`)
+- `snake.playerName` — last name the player used
+- `snake.ranking` — top 10 runs as JSON (`[{name, score, when}]`)
 
 Each game should pick its own key prefix (e.g. `snake.ranking`) so different games don't collide.
 
