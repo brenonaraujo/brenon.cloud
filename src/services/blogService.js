@@ -34,6 +34,22 @@ const defaultImageRender =
     return self.renderToken(tokens, idx, options)
   }
 
+const defaultFenceRender =
+  md.renderer.rules.fence ||
+  function (tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options)
+  }
+
+md.renderer.rules.fence = function (tokens, idx, options, env, self) {
+  const token = tokens[idx]
+  const lang = token.info.trim()
+  if (lang === 'mermaid') {
+    const code = token.content
+    return `<div class="mermaid">${code}</div>`
+  }
+  return defaultFenceRender(tokens, idx, options, env, self)
+}
+
 md.renderer.rules.image = function (tokens, idx, options, env, self) {
   const src = tokens[idx].attrGet('src') || ''
   tokens[idx].attrSet('loading', 'lazy')
