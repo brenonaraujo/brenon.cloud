@@ -71,7 +71,7 @@
         @error="handleCoverError"
       />
 
-      <div class="prose-blog" v-html="post.html"></div>
+      <div ref="blogContent" class="prose-blog" v-html="post.html"></div>
     </article>
 
     <div v-else class="text-center py-12">
@@ -88,15 +88,54 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useBlog } from '../composables/useBlog'
+import mermaid from 'mermaid'
 
 const route = useRoute()
 const { t } = useI18n()
 const { loadPost, loading, error, locale, formatDate } = useBlog()
 const post = ref(null)
+const blogContent = ref(null)
+
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'dark',
+  themeVariables: {
+    darkMode: true,
+    primaryColor: '#3B82F6',
+    primaryTextColor: '#FFFFFF',
+    primaryBorderColor: '#1F2937',
+    lineColor: '#6B7280',
+    secondaryColor: '#1F2937',
+    secondaryTextColor: '#FFFFFF',
+    tertiaryColor: '#374151',
+    tertiaryTextColor: '#FFFFFF',
+    background: '#111827',
+    mainBkg: '#1F2937',
+    secondBkg: '#374151',
+    tertiaryBkg: '#4B5563',
+    textColor: '#FFFFFF',
+    nodeTextColor: '#FFFFFF',
+    c0: '#3B82F6',
+    c1: '#10B981',
+    c2: '#F59E0B',
+    c3: '#EF4444',
+    c4: '#8B5CF6',
+    c5: '#06B6D4',
+    c6: '#84CC16',
+    c7: '#F97316'
+  },
+  flowchart: {
+    useMaxWidth: true,
+    htmlLabels: true,
+    curve: 'basis'
+  },
+  securityLevel: 'loose',
+  suppressErrorRendering: false
+})
 
 function handleCoverError(event) {
   const image = event.currentTarget
@@ -110,8 +149,37 @@ function handleCoverError(event) {
   image.style.display = 'none'
 }
 
+async function renderMermaid() {
+  if (!blogContent.value) return
+  const mermaidDivs = blogContent.value.querySelectorAll('.mermaid')
+  if (mermaidDivs.length === 0) return
+
+  for (let i = 0; i < mermaidDivs.length; i++) {
+    const el = mermaidDivs[i]
+    const code = el.textContent
+    if (!code.trim()) continue
+    try {
+      const id = `mermaid-blog-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 6)}`
+      const { svg } = await mermaid.render(id, code)
+      el.innerHTML = svg
+      const svgEl = el.querySelector('svg')
+      if (svgEl) {
+        svgEl.style.display = 'block'
+        svgEl.style.background = 'transparent'
+        svgEl.style.maxWidth = '100%'
+      }
+      el.classList.add('bg-gray-800/30', 'backdrop-blur-sm', 'rounded-xl', 'p-6', 'border', 'border-gray-700/50', 'overflow-x-auto')
+    } catch (err) {
+      console.error('Mermaid render error:', err)
+      el.innerHTML = `<div class="text-red-400 p-4 text-center text-sm"><p>Diagram render error</p><p class="text-gray-500 mt-2 text-xs">${err.message}</p></div>`
+    }
+  }
+}
+
 const fetch = async (slug) => {
   post.value = await loadPost(slug)
+  await nextTick()
+  renderMermaid()
 }
 
 onMounted(() => fetch(route.params.slug))
