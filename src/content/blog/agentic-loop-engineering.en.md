@@ -247,6 +247,18 @@ We use both models in complementary roles:
 
 The result: a full agentic loop — planning, implementation, review, and deployment — costs **under $1 per feature** on average. That is cheap enough to run multiple iterations, try alternative approaches, and still come out ahead.
 
+### Going further: MiniMax subscription plans
+
+For teams that run agent loops constantly — daily deployments, automated routines, continuous integration — pay-per-token pricing still adds up. MiniMax offers **monthly subscription plans** that make this dramatically cheaper:
+
+| Plan | Price/month | Tokens/month | Effective cost per 1M tokens |
+|------|-------------|-------------|------------------------------|
+| Starter | ~$20 | ~1B | ~$0.02/M |
+| Pro | ~$50 | ~5B | ~$0.01/M |
+| Max | ~$110 | ~12B | ~$0.009/M |
+
+At the Max tier, the effective cost drops to roughly **$0.009 per million tokens** — that is **30x cheaper** than the pay-per-token price on OpenRouter, and **300x+ cheaper** than frontier models. For our use case, where we run agentic loops daily across multiple projects, the subscription pays for itself within the first few days of the month. When your harness is shipping features autonomously and the marginal cost of each additional iteration approaches zero, the economics of automation compound in your favor.
+
 ---
 
 ## Case studies: oficina.brenon.cloud and ai.brenon.cloud
@@ -411,6 +423,19 @@ Here is what we are exploring next:
 The promise of loop engineering is not that agents replace engineers. It is that agents handle the mechanical work — the implementation, the testing, the deployment — so that engineers can focus on the parts that matter: the architecture, the product vision, and the human context that no model can replicate.
 
 That is the loop we are building. And it is just getting started.
+
+---
+
+## Coming next: beyond code — Hermes as a daily autonomous companion
+
+The same harness that ships software is also the backbone of our daily automation routine. In the next post, we will dive into how we use Hermes Agent beyond software engineering:
+
+- **Investment news aggregation** — Hermes runs on a cron schedule, pulls market data, summarizes key movements, and delivers a personalized briefing every morning before the market opens
+- **Smart home control** — connected to our Home Assistant setup, Hermes controls lights, sensors, and devices through natural language commands and automated routines triggered by time, events, or conditions
+- **Podcast production** — Hermes researches topics, writes scripts, generates audio via TTS, and produces complete podcast episodes autonomously — from idea to publishable audio file
+- **Day-to-day task automation** — from managing reminders and calendar events to monitoring infrastructure and sending alerts, Hermes runs dozens of small automations that compound into hours of saved time every week
+
+When the marginal cost of an agent run approaches zero — thanks to subscription pricing on models like MiniMax M3 — the question stops being "can I afford to automate this?" and becomes "what *can't* I automate?" That is the world we are building toward, and the next post will show it in practice.
 
 ---
 
