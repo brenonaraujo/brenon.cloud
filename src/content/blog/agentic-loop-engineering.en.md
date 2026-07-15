@@ -287,9 +287,9 @@ Both projects are live and serving real traffic. They are not demos or proofs of
 
 ---
 
-## Mermaid: visualizing the agent loop
+## Visualizing the agent loop
 
-The Hermes Kanban ecosystem supports Mermaid diagrams natively. Here is the loop engineering cycle as a Mermaid flowchart:
+The loop engineering cycle as a flowchart:
 
 ```mermaid
 flowchart TD
@@ -313,7 +313,7 @@ flowchart TD
     L --> A
 ```
 
-And here is the harness architecture as a Mermaid sequence diagram:
+And here is the harness architecture as a sequence diagram:
 
 ```mermaid
 sequenceDiagram

@@ -287,9 +287,9 @@ Ambos os projetos estão no ar e servindo tráfego real. Não são demos ou prov
 
 ---
 
-## Mermaid: visualizando o loop do agente
+## Visualizando o loop do agente
 
-O ecossistema Hermes Kanban suporta diagramas Mermaid nativamente. Aqui está o ciclo de loop engineering como um flowchart:
+O ciclo de loop engineering como um flowchart:
 
 ```mermaid
 flowchart TD
