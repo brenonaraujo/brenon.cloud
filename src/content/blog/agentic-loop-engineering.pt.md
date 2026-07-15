@@ -119,7 +119,9 @@ O loop é o que faz o sistema *melhorar* com o tempo. Sem ele, toda tarefa come�
 
 ## Construindo o harness: Hermes + Kanban + GitHub
 
-Não adotamos essas técnicas no abstrato — construímos um harness funcional em cima do **Hermes Agent** e seu plugin nativo de **Kanban**. Veja como as peças se encaixam.
+Antes de mergulhar na arquitetura, uma rápida introdução ao **Hermes Agent**. O Hermes é um framework de agente de IA open-source criado pela Nous Research que roda no terminal, num app desktop nativo, em plataformas de mensageria e em IDEs. É provider-agnostic — você pode alternar entre OpenRouter, Anthropic, OpenAI, MiniMax, Z.ai e 20+ outros providers no meio de um workflow sem mudar mais nada. Ele aprende com a experiência salvando procedimentos reutilizáveis como skills, lembra de quem você é e das suas preferências across sessões, e pode rodar no Telegram, Discord, Slack, WhatsApp e mais uma dúzia de plataformas com acesso total a ferramentas — não apenas chat.
+
+Não adotamos técnicas agentic no abstrato — construímos um harness funcional em cima do Hermes e seu plugin nativo de **Kanban**. Veja como as peças se encaixam.
 
 ![Arquitetura do Harness](/images/blog/agentic-harness-architecture.svg)
 
@@ -257,7 +259,19 @@ Para times que rodam loops de agentes constantemente — deployments diários, r
 | Pro | ~$50 | ~5B | ~$0.01/M |
 | Max | ~$110 | ~12B | ~$0.009/M |
 
-No tier Max, o custo efetivo cai para aproximadamente **$0.009 por milhão de tokens** — isso é **30x mais barato** que o preço pay-per-token no OpenRouter, e **300x+ mais barato** que modelos frontier. Para o nosso caso de uso, onde rodamos loops agentic diariamente across múltiplos projetos, a assinatura se paga nos primeiros dias do mês. Quando seu harness está shipping features autonomamente e o custo marginal de cada iteração adicional se aproxima de zero, a economia da automação compõe a seu favor.
+A integração com GitHub é o que torna o loop *verificável*. Um agente pode escrever código, mas CI/CD diz se funciona. O PR é o artefato. O merge é o portão.
+
+### Discord e Telegram: relatórios de status em tempo real
+
+Uma das adições mais valiosas ao nosso harness é o **monitoramento event-driven via Discord e Telegram**. O Hermes tem um gateway embutido que se conecta a ambas as plataformas com acesso total a ferramentas — então configuramos ele para enviar relatórios de status conforme o trabalho avança:
+
+- **Tarefa claimed** — quando um worker pega uma tarefa, uma mensagem vai pro canal com o título da tarefa, assignee e escopo estimado
+- **PR aberto** — quando um worker abre um PR, o canal recebe a URL do PR, sumário do diff e link do CI
+- **Resultado do CI** — quando o CI passa ou falha, o canal recebe uma notificação verde/vermelha com logs
+- **Review necessária** — quando o orquestrador flagge um PR para revisão humana, o canal recebe um ping com o diff e o motivo da escalada
+- **Tarefa concluída** — quando uma tarefa termina e é mergeada, o canal recebe um sumário do que foi entregue
+
+Isso significa que não precisamos ficar vigiando o Kanban board. O board vem até a gente. Quando algo precisa de atenção — um teste falhando, um portão de review, uma tarefa bloqueada — recebemos uma notificação no celular ou desktop. Podemos intervir, tomar uma decisão e deixar o loop continuar. É isso que faz o harness parecer um *time* em vez de um script: ele se comunica.
 
 ---
 
@@ -265,23 +279,66 @@ No tier Max, o custo efetivo cai para aproximadamente **$0.009 por milhão de to
 
 ### oficina.brenon.cloud
 
-**Oficina** é um playground de codificação criativa — uma coleção de mini-apps, experimentos e ferramentas construída com Vue 3 + Vite + Tailwind, deployada no Netlify. Foi construído quase inteiramente através de loops agentic:
+**Oficina Cloud** é um SaaS ERP para oficinas mecânicas — não é um playground criativo, mas uma plataforma de negócios multi-tenant completa. Ele gerencia:
 
-1. **Planejamento** — o orquestrador decompôs o projeto em tarefas: scaffold do projeto, roteamento, biblioteca de componentes, mini-apps individuais, config de deployment
-2. **Execução paralela** — 3 workers construíram mini-apps independentes simultaneamente, cada um num contexto isolado com sua própria branch
-3. **Integração** — o orquestrador mergeou os PRs, resolveu conflitos, e rodou a suíte de testes completa
-4. **Deployment** — Netlify auto-deployou no merge para `main`
+- **Clientes e veículos** — um banco de dados pesquisável onde oficinas cadastram clientes e seus veículos, com histórico que segue o veículo mesmo quando ele troca de oficina
+- **Ordens de serviço (OS)** — gerenciamento completo de work-orders com itens de serviço, peças, baixa automática no estoque e cálculo de valor total
+- **Estoque e catálogo** — inventário de peças com entrada manual e baixa automática quando uma OS é concluída
+- **Histórico compartilhado de veículos** — o veículo é uma entidade de nível plataforma. Toda oficina que o atendeu vê o histórico consolidado, mantendo a integridade das informações e controle de acesso entre oficinas
+- **Arquitetura multi-tenant** — cada oficina tem seu próprio schema dedicado no banco, com isolamento total entre tenants e zero vazamento de dados
 
-O projeto inteiro — de repo vazio a site deployado — levou **uma sessão**. O orquestrador spawn workers, workers abriram PRs, CI rodou testes, e o orquestrador mergeou. Zero codificação manual além do goal statement inicial.
+A arquitetura é um verdadeiro sistema SaaS multi-tenant com backend e banco de dados dedicados. Cada tenant (oficina) tem dados isolados, mas a entidade veículo é compartilhada no nível da plataforma — então quando um carro muda de uma oficina para outra, a nova oficina vê o histórico completo de service de todas as oficinas anteriores, com controles de acesso adequados. Esse é um design que exigiu pensamento cuidadoso sobre propriedade de dados, isolamento de tenant e acesso de leitura cross-tenant para a entidade veículo compartilhada.
+
+A arquitetura multi-tenant pode ser visualizada como:
+
+```mermaid
+flowchart TB
+    subgraph Platform
+        DB[Shared Vehicle Registry]
+    end
+    subgraph Tenant A - Shop 1
+        S1[Shop 1 Schema]
+        S1 --- DB
+    end
+    subgraph Tenant B - Shop 2
+        S2[Shop 2 Schema]
+        S2 --- DB
+    end
+    subgraph Tenant C - Shop 3
+        S3[Shop 3 Schema]
+        S3 --- DB
+    end
+    S1 -.->|reads vehicle history| DB
+    S2 -.->|reads vehicle history| DB
+    S3 -.->|reads vehicle history| DB
+```
+
+Construído através de loops agentic:
+
+1. **Planejamento** — o orquestrador decompôs o projeto em tarefas: scaffold do backend, camada de banco multi-tenant, registro de veículos, ordens de serviço, gerenciamento de estoque, frontend, config de deployment
+2. **Execução paralela** — workers construíram módulos independentes simultaneamente: um no isolamento de schema multi-tenant, um no CRUD de ordens de serviço, um no frontend
+3. **Integração** — o orquestrador mergeou os PRs, resolveu conflitos cross-module (especialmente em torno da entidade veículo compartilhada), e rodou a suíte de testes completa
+4. **Deployment** — Netlify auto-deployou o frontend no merge para `main`
+
+O projeto inteiro — de repo vazio a SaaS deployado — foi construído em **uma sessão agentic**. O orquestrador spawn workers, workers abriram PRs, CI rodou testes, e o orquestrador mergeou. Zero codificação manual além do goal statement inicial e da decisão de arquitetura.
 
 ### ai.brenon.cloud
 
-**AI** é um playground de IA que permite visitantes conversarem com múltiplos providers de LLM (OpenRouter, MiniMax, Z.ai) a partir de uma interface única. Foi construído usando o mesmo padrão de harness:
+**brnnaicloud** é um gateway unificado de API de IA — uma plataforma que permite desenvolvedores acessarem múltiplos providers de LLM (GPT-4o, Claude 3.5 Sonnet, Gemini 1.5, Llama 3.1, Mistral, e mais) através de um único endpoint OpenAI-compatible. Features principais:
 
-- **Decomposição de tarefas**: camada de API (roteamento de modelo, gerenciamento de chaves), frontend (UI de chat, seletor de modelo, respostas streaming), deployment (config do Netlify, variáveis de ambiente)
+- **Uma API** — endpoint OpenAI-compatible; migre mudando a base URL
+- **Tracking de custo em tempo real** — veja o gasto atualizar no momento que a requisição chega
+- **Isolamento por chave** — crie chaves separadas por app, por ambiente, por time
+- **Preço transparente** — taxas per-token sem markup no preço do provider
+- **Analytics de uso** — breakdowns por modelo, por dia, por chave
+- **BYOK friendly** — traga suas próprias chaves de provider, roteie pela plataforma
+
+Construído usando o mesmo padrão de harness:
+
+- **Decomposição de tarefas**: camada de API (roteamento de modelo, gerenciamento de chaves, tracking de uso), frontend (UI de chat, seletor de modelo, página de preços), deployment (config do Netlify, variáveis de ambiente)
 - **Workers paralelos**: um construiu a API, um construiu o frontend, um escreveu testes
 - **Verificação em loop**: o orquestrador rodou a suíte de testes depois de cada merge de PR, pegou um bug de streaming na primeira passada, e dispatchou uma tarefa de fix automaticamente
-- **Resultado**: um playground de chat de IA funcionando e deployado em menos de 20 minutos de wall-clock time
+- **Resultado**: um gateway de API de IA funcionando e deployado em menos de 20 minutos de wall-clock time
 
 Ambos os projetos estão no ar e servindo tráfego real. Não são demos ou provas de conceito — são deployments de produção que foram construídos por agentes de IA e verificados por CI/CD.
 

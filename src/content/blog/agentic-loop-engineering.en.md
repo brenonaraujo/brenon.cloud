@@ -119,7 +119,9 @@ The loop is what makes the system *improve* over time. Without it, every task st
 
 ## Building the harness: Hermes + Kanban + GitHub
 
-We did not adopt these techniques in the abstract — we built a working harness on top of **Hermes Agent** and its native **Kanban** plugin. Here is how the pieces fit.
+Before diving into the architecture, a quick introduction to **Hermes Agent**. Hermes is an open-source AI agent framework created by Nous Research that runs in your terminal, a native desktop app, messaging platforms, and IDEs. It is provider-agnostic — you can swap between OpenRouter, Anthropic, OpenAI, MiniMax, Z.ai, and 20+ other providers mid-workflow without changing anything else. It learns from experience by saving reusable procedures as skills, remembers who you are and your preferences across sessions, and can run on Telegram, Discord, Slack, WhatsApp, and a dozen more platforms with full tool access — not just chat.
+
+We did not adopt agentic techniques in the abstract — we built a working harness on top of Hermes and its native **Kanban** plugin. Here is how the pieces fit.
 
 ![Harness Architecture](/images/blog/agentic-harness-architecture.svg)
 
@@ -257,7 +259,19 @@ For teams that run agent loops constantly — daily deployments, automated routi
 | Pro | ~$50 | ~5B | ~$0.01/M |
 | Max | ~$110 | ~12B | ~$0.009/M |
 
-At the Max tier, the effective cost drops to roughly **$0.009 per million tokens** — that is **30x cheaper** than the pay-per-token price on OpenRouter, and **300x+ cheaper** than frontier models. For our use case, where we run agentic loops daily across multiple projects, the subscription pays for itself within the first few days of the month. When your harness is shipping features autonomously and the marginal cost of each additional iteration approaches zero, the economics of automation compound in your favor.
+The GitHub integration is what makes the loop *verifiable*. An agent can write code, but CI/CD tells you whether it works. The PR is the artifact. The merge is the gate.
+
+### Discord and Telegram: real-time status reports
+
+One of the most valuable additions to our harness is **event-driven monitoring via Discord and Telegram**. Hermes has a built-in gateway that connects to both platforms with full tool access — so we configured it to send status reports as work progresses:
+
+- **Task claimed** — when a worker picks up a task, a message goes to the channel with the task title, assignee, and estimated scope
+- **PR opened** — when a worker opens a PR, the channel gets the PR URL, diff summary, and CI status link
+- **CI result** — when CI passes or fails, the channel gets a green/red notification with logs
+- **Review needed** — when the orchestrator flags a PR for human review, the channel pings with the diff and the reason for escalation
+- **Task completed** — when a task is done and merged, the channel gets a summary of what was shipped
+
+This means we do not have to sit watching the Kanban board. The board comes to us. When something needs attention — a failing test, a review gate, a blocked task — we get a notification on our phone or desktop. We can step in, make a decision, and let the loop continue. This is what makes the harness feel like a *team* rather than a script: it communicates.
 
 ---
 
@@ -265,23 +279,66 @@ At the Max tier, the effective cost drops to roughly **$0.009 per million tokens
 
 ### oficina.brenon.cloud
 
-**Oficina** ("workshop" in Portuguese) is a creative coding playground — a collection of mini-apps, experiments, and tools built with Vue 3 + Vite + Tailwind, deployed on Netlify. It was built almost entirely through agentic loops:
+**Oficina Cloud** is a SaaS ERP for automotive repair shops — not a creative playground, but a full multi-tenant business platform. It handles:
 
-1. **Planning** — the orchestrator decomposed the project into tasks: project scaffold, routing, component library, individual mini-apps, deployment config
-2. **Parallel execution** — 3 workers built independent mini-apps simultaneously, each in an isolated context with its own branch
-3. **Integration** — the orchestrator merged the PRs, resolved conflicts, and ran the full test suite
-4. **Deployment** — Netlify auto-deployed on merge to `main`
+- **Clients and vehicles** — a searchable database where shops register customers and their vehicles, with history that follows the vehicle even when it changes shops
+- **Service orders (OS)** — full work-order management with service items, parts, automatic stock deduction, and total value calculation
+- **Stock and catalog** — parts inventory with manual entry and automatic deduction when a service order is completed
+- **Shared vehicle history** — the vehicle is a platform-level entity. Every shop that serviced it sees the consolidated history, maintaining information integrity and access control across shops
+- **Multi-tenant architecture** — each shop gets its own dedicated database schema, with total isolation between tenants and zero data leakage
 
-The entire project — from empty repo to deployed site — took **one session**. The orchestrator spawned workers, workers opened PRs, CI ran tests, and the orchestrator merged. No manual coding beyond the initial goal statement.
+The architecture is a true SaaS multi-tenant system with a dedicated backend and database. Each tenant (shop) has isolated data, but the vehicle entity is shared at the platform level — so when a car moves from one shop to another, the new shop sees the full service history from all previous shops, with proper access controls. This is a design that required careful thinking about data ownership, tenant isolation, and cross-tenant read access for the shared vehicle entity.
+
+The multi-tenant architecture can be visualized as:
+
+```mermaid
+flowchart TB
+    subgraph Platform
+        DB[Shared Vehicle Registry]
+    end
+    subgraph Tenant A - Shop 1
+        S1[Shop 1 Schema]
+        S1 --- DB
+    end
+    subgraph Tenant B - Shop 2
+        S2[Shop 2 Schema]
+        S2 --- DB
+    end
+    subgraph Tenant C - Shop 3
+        S3[Shop 3 Schema]
+        S3 --- DB
+    end
+    S1 -.->|reads vehicle history| DB
+    S2 -.->|reads vehicle history| DB
+    S3 -.->|reads vehicle history| DB
+```
+
+Built through agentic loops:
+
+1. **Planning** — the orchestrator decomposed the project into tasks: backend scaffold, multi-tenant database layer, vehicle registry, service orders, stock management, frontend, deployment config
+2. **Parallel execution** — workers built independent modules simultaneously: one on the multi-tenant schema isolation, one on the service orders CRUD, one on the frontend
+3. **Integration** — the orchestrator merged the PRs, resolved cross-module conflicts (especially around the shared vehicle entity), and ran the full test suite
+4. **Deployment** — Netlify auto-deployed the frontend on merge to `main`
+
+The entire project — from empty repo to deployed SaaS — was built in **one agentic session**. The orchestrator spawned workers, workers opened PRs, CI ran tests, and the orchestrator merged. No manual coding beyond the initial goal statement and architecture decision.
 
 ### ai.brenon.cloud
 
-**AI** is an AI playground that lets visitors chat with multiple LLM providers (OpenRouter, MiniMax, Z.ai) from a single interface. It was built using the same harness pattern:
+**brnnaicloud** is a unified AI API gateway — a platform that lets developers access multiple LLM providers (GPT-4o, Claude 3.5 Sonnet, Gemini 1.5, Llama 3.1, Mistral, and more) through a single OpenAI-compatible endpoint. Key features:
 
-- **Task decomposition**: API layer (model routing, key management), frontend (chat UI, model selector, streaming responses), deployment (Netlify config, environment variables)
+- **One API** — OpenAI-compatible endpoint; migrate by changing the base URL
+- **Real-time cost tracking** — see spend update the moment a request lands
+- **Per-key isolation** — mint separate keys per app, per environment, per team
+- **Transparent pricing** — per-token rates with no markup on provider prices
+- **Usage analytics** — breakdowns by model, by day, by key
+- **BYOK friendly** — bring your own provider keys, route through the platform
+
+Built using the same harness pattern:
+
+- **Task decomposition**: API layer (model routing, key management, usage tracking), frontend (chat UI, model selector, pricing page), deployment (Netlify config, environment variables)
 - **Parallel workers**: one built the API, one built the frontend, one wrote tests
 - **Loop verification**: the orchestrator ran the test suite after each PR merge, caught a streaming bug on the first pass, and dispatched a fix task automatically
-- **Result**: a working AI chat playground deployed in under 20 minutes of wall-clock time
+- **Result**: a working AI API gateway deployed in under 20 minutes of wall-clock time
 
 Both projects are live and serving real traffic. They are not demos or proofs of concept — they are production deployments that were built by AI agents and verified by CI/CD.
 
