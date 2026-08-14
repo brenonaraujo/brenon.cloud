@@ -29,8 +29,8 @@
       "cta": "Visitar o blog"
     },
     "docker": {
-      "title": "O que roda na minha home cloud",
-      "description": "Estes são os blocos que uso para implantar, rotear, proteger e observar tudo o que roda no Brenon.Cloud — e sobre o que mais escrevo por aqui.",
+      "title": "Blocos da plataforma",
+      "description": "A stack open-source que uso para implantar, rotear, proteger e observar tudo no Swarm home — Authentik, Kong, Docker, monitoramento, automação e mais.",
       "learnMore": "Saiba mais sobre implantações Docker",
       "howWeUse": "Como uso o Portainer",
       "openPortainer": "Abrir Portainer",
@@ -50,61 +50,105 @@
       }
     },
     "howItWorks": {
-      "title": "Implante Qualquer Serviço com Docker",
-      "description": "Rodo Docker Swarm em um cluster de mini‑computadores e gerencio com Portainer. Stacks Compose entram, réplicas escalam e atualizações sem downtime acontecem por uma interface simples."
+      "title": "Como o Swarm home roda",
+      "description": "Um Docker Swarm de 3 nós gerenciado com Portainer: stacks Compose entram, réplicas agenda entre os nós e rolling updates saem por uma UI simples — com Cloudflare na borda para os hostnames públicos."
     },
     "about": {
       "title": "A infraestrutura por trás disso",
-      "description": "Um olhar por dentro da home cloud que sustenta este site",
-      "vision": "O Brenon.Cloud nasceu de uma pergunta simples: até onde chegam alguns mini‑computadores em casa? Virou uma pequena (mas real) plataforma — e o playground onde escrevo, experimento e aprendo em público.",
+      "description": "Snapshot ao vivo do cluster Docker Swarm do Brenon.Cloud",
+      "vision": "O Brenon.Cloud é um home lab de verdade virado plataforma: três nós, dezenas de stacks, produtos públicos no Cloudflare e um caderno aberto de tudo que se aprende no caminho.",
+      "cluster": {
+        "title": "Snapshot do cluster Swarm",
+        "subtitle": "Ambiente Portainer brenon.cloud — Docker Swarm multi-nó",
+        "stats": {
+          "nodes": "3 nós",
+          "cpu": "18 CPU",
+          "ram": "92,2 GB RAM",
+          "stacks": "23 stacks",
+          "services": "38 serviços",
+          "containers": "120 containers",
+          "volumes": "77 volumes",
+          "images": "126 imagens"
+        },
+        "nodesTitle": "Nós",
+        "nodes": [
+          {
+            "name": "home101",
+            "role": "manager",
+            "cpu": "4 CPU",
+            "memory": "16,7 GB",
+            "engine": "Docker 29.1.3"
+          },
+          {
+            "name": "fedora",
+            "role": "worker",
+            "cpu": "12 CPU",
+            "memory": "67,4 GB",
+            "engine": "Docker 29.7.0"
+          },
+          {
+            "name": "server102",
+            "role": "worker",
+            "cpu": "2 CPU",
+            "memory": "8,1 GB",
+            "engine": "Docker 29.7.0"
+          }
+        ]
+      },
       "stack": {
-        "title": "Stack de Infraestrutura",
+        "title": "Stack de infraestrutura",
         "items": [
-          "Orquestração Docker Swarm",
-          "Gateway de API Kong",
-          "Gerenciamento de Identidade Authentik",
-          "Pipeline CI/CD Automatizado"
+          "Orquestração Docker Swarm multi-nó",
+          "Kong API Gateway + borda Cloudflare",
+          "Identidade / SSO com Authentik",
+          "Portainer para operação do dia a dia",
+          "GitHub Actions → GHCR → deploy de stack"
         ]
       },
       "security": {
-        "title": "Segurança e Confiabilidade",
+        "title": "Segurança e confiabilidade",
         "items": [
-          "Arquitetura Zero-Trust",
-          "Criptografia SSL/TLS",
-          "Backups Automatizados",
-          "Configuração de Alta Disponibilidade"
+          "Acesso no estilo zero-trust com Authentik",
+          "TLS na borda (Cloudflare)",
+          "Health checks + monitoramento de uptime",
+          "Rolling updates nos serviços Swarm"
         ]
       },
       "automation": {
-        "title": "Automação e Escalabilidade",
+        "title": "Automação e observabilidade",
         "items": [
-          "Serviços de Auto-escalabilidade",
-          "Monitoramento e Alertas",
-          "Otimização de Recursos",
-          "Balanceamento de Carga"
+          "Workflows n8n para cola e alertas",
+          "Grafana + pipelines de métricas",
+          "Status público com Uptime Kuma",
+          "Stacks Compose com políticas de deploy"
         ]
       },
       "flow": {
-        "title": "Como as requisições fluem pelo cluster",
+        "title": "Como o tráfego público chega numa stack",
         "edge": {
-          "title": "Gateway de Borda",
-          "description": "Roteamento de tráfego, terminação SSL e camada de segurança inicial"
+          "title": "Borda Cloudflare",
+          "description": "DNS, TLS e tunnel/proxy para os hostnames do lab (*.brenon.cloud e domínios de produto)."
         },
         "auth": {
-          "title": "Autenticação",
-          "description": "Verificação de identidade e controle de acesso"
+          "title": "Auth e gateway",
+          "description": "Authentik para identidade quando precisa; Kong roteia e protege HTTP interno."
         },
         "service": {
-          "title": "Camada de Serviço",
-          "description": "Aplicações e serviços em contêineres"
+          "title": "Camada de serviços Swarm",
+          "description": "Containers agendados em home101 / fedora / server102 com volumes, secrets e health checks."
         }
       },
       "cta": {
         "title": "Curioso pra saber como é construído?",
-        "description": "Acompanhe os textos, navegue pelo código ou dê uma olhada no caminho que estou trilhando.",
-        "getStarted": "Começar com Docker",
+        "description": "Leia o blog, abra um produto ou confira a página pública de status.",
+        "getStarted": "Ver serviços da plataforma",
         "viewGithub": "Ver no GitHub"
       }
+    },
+    "products": {
+      "title": "Produtos que criamos e disponibilizamos",
+      "description": "Apps e plataformas que nós construímos e publicamos — hospedados no Brenon.Cloud / Cloudflare, não só ferramentas de terceiros que operamos.",
+      "eyebrow": "Feito por nós"
     }
   },
   "pathToGlory": {
@@ -172,6 +216,31 @@
       "title": "Akash Console Air",
       "shortName": "Console Air",
       "description": "Deployments self-custodial na Akash Network — conecte uma carteira, troque AKT por ACTs e faça deploy sem e-mail ou cartão de crédito."
+    },
+    "brnn-ai": {
+      "title": "BRNN AI",
+      "shortName": "BRNN AI",
+      "description": "APIs de IA para devs — STT no ar, TTS e LLMs a seguir."
+    },
+    "oficina-cloud": {
+      "title": "OficinaCloud",
+      "shortName": "OficinaCloud",
+      "description": "SaaS para oficinas: clientes, veículos, OS e estoque."
+    },
+    "tibiapixel": {
+      "title": "TibiaPixel",
+      "shortName": "TibiaPixel",
+      "description": "Sim Tibia-like onde agentes de IA e humanos dividem o shard."
+    },
+    "devdojo-mentoring": {
+      "title": "Mentoria DevDojo",
+      "shortName": "Mentoria DevDojo",
+      "description": "Mentoria técnica gamificada ligada ao GitHub e Discord."
+    },
+    "draw": {
+      "title": "Draw",
+      "shortName": "Draw",
+      "description": "Whiteboard Excalidraw self-hosted no Brenon.Cloud."
     }
   },
   "servicePage": {
@@ -215,7 +284,9 @@
     "blog": "Blog",
     "games": "Jogos",
     "pathToGlory": "Caminho para a Glória",
-    "status": "Status"
+    "status": "Status",
+    "products": "Produtos",
+    "platform": "Plataforma"
   },
   "footer": {
     "tagline": "Engenheiro de backend, entusiasta de Inteligência Artificial, construtor de home‑cloud.",
@@ -267,5 +338,9 @@
       "lines": "linhas",
       "ms": "milissegundos"
     }
+  },
+  "serviceCard": {
+    "learnMore": "Saiba mais",
+    "open": "Abrir"
   }
 }

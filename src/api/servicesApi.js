@@ -36,6 +36,7 @@ export class ServicesApiClient {
     return [
       {
         id: 'authentik',
+        category: 'platform',
         title: {
           en: 'Authentik - Identity Provider',
           pt: 'Authentik - Provedor de Identidade'
@@ -207,6 +208,7 @@ graph TD
       },
       {
         id: 'kong',
+        category: 'platform',
         title: {
           en: 'Kong API Gateway',
           pt: 'Kong API Gateway'
@@ -386,6 +388,7 @@ graph LR
       },
       {
         id: 'docker',
+        category: 'platform',
         title: {
           en: 'Docker Swarm Orchestration',
           pt: 'Orquestração Docker Swarm'
@@ -395,8 +398,8 @@ graph LR
           pt: 'Docker'
         },
         description: {
-          en: 'The infrastructure building block that provides enterprise-grade container orchestration using commodity hardware, delivering 90% cost savings compared to managed Kubernetes platforms',
-          pt: 'O bloco de construção de infraestrutura que fornece orquestração de contêineres de nível empresarial usando hardware comum, entregando 90% de economia de custos comparado a plataformas Kubernetes gerenciadas'
+          en: 'The infrastructure building block: a real 3-node Docker Swarm at home (home101 manager + fedora + server102 workers) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates, and Portainer ops without a managed K8s bill',
+          pt: 'O bloco de infraestrutura: um Docker Swarm real de 3 nós em casa (home101 manager + workers fedora e server102) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates e operação via Portainer sem conta de K8s gerenciado'
         },
         icon: 'CubeIcon',
         color: 'cyan',
@@ -453,8 +456,8 @@ graph LR
               pt: 'Estratégia de Dimensionamento Eficiente'
             },
             description: {
-              en: 'Run 10+ microservices on 2 mini PCs using efficient resource allocation. Each Golang service uses ~50MB RAM, Python APIs use ~100MB. Docker Swarm automatically schedules containers across nodes for optimal resource utilization.',
-              pt: 'Execute mais de 10 microsserviços em 2 mini PCs usando alocação eficiente de recursos. Cada serviço Golang usa ~50MB de RAM, APIs Python usam ~100MB. Docker Swarm agenda automaticamente contêineres entre nós para utilização otimizada de recursos.'
+              en: 'Run dozens of containers across 3 nodes (18 CPU / 92.2 GB RAM pooled). Swarm schedules stacks across home101, fedora, and server102; Portainer shows live service health, volumes, and rolling updates.',
+              pt: 'Rode dezenas de containers em 3 nós (18 CPU / 92,2 GB RAM no pool). O Swarm agenda stacks entre home101, fedora e server102; o Portainer mostra saúde dos serviços, volumes e rolling updates ao vivo.'
             }
           },
           {
@@ -541,14 +544,15 @@ graph TB
     C --> D[Docker Build]
     D --> E[Container Registry]
     
-    E --> F[Docker Swarm Manager]
-    F --> G[Node 1 - Mini PC]
-    F --> H[Node 2 - Mini PC]
+    E --> F[Docker Swarm Manager<br/>home101]
+    F --> G[home101 manager<br/>4 CPU / 16.7 GB]
+    F --> H[fedora worker<br/>12 CPU / 67.4 GB]
+    F --> P[server102 worker<br/>2 CPU / 8.1 GB]
     
-    G --> I[Golang Service<br/>~50MB RAM]
-    G --> J[Python API<br/>~100MB RAM]
-    H --> K[Web App<br/>~30MB RAM]
-    H --> L[Database<br/>~200MB RAM]
+    G --> I[Control plane + stacks]
+    H --> J[Heavy workloads]
+    P --> K[Edge / light services]
+    H --> L[Databases + apps]
     
     M[Portainer] --> F
     N[Kong] --> I
@@ -573,6 +577,7 @@ graph TB
       },
       {
         id: 'uptime-kuma',
+        category: 'platform',
         title: {
           en: 'Uptime Kuma - Service Monitor',
           pt: 'Uptime Kuma - Monitor de Serviços'
@@ -784,6 +789,7 @@ graph TB
       },
       {
         id: 'grafana',
+        category: 'platform',
         title: {
           en: 'Grafana - Observability Platform',
           pt: 'Grafana - Plataforma de Observabilidade'
@@ -1006,6 +1012,7 @@ graph TB
       },
       {
         id: 'n8n',
+        category: 'platform',
         title: {
           en: 'n8n - Automation Engine',
           pt: 'n8n - Motor de Automação'
@@ -1204,6 +1211,7 @@ graph TB
       },
       {
         id: 'portainer',
+        category: 'platform',
         title: {
           en: 'Portainer - Container Management',
           pt: 'Portainer - Gerenciamento de Contêineres'
@@ -1416,6 +1424,7 @@ graph TB
       },
       {
         id: 'minio',
+        category: 'platform',
         title: {
           en: 'MinIO - Object Storage',
           pt: 'MinIO - Armazenamento de Objetos'
@@ -1604,6 +1613,7 @@ graph TD
       },
       {
         id: 'console-air',
+        category: 'platform',
         title: {
           en: 'Console Air - Akash Network Self-Custodial Deployments',
           pt: 'Console Air - Deployments Self-Custodial na Akash Network'
@@ -1772,7 +1782,349 @@ graph TD
     style G fill:#059669,stroke:#047857,color:#fff
         `,
         demoUrl: 'https://akash.brenon.cloud'
+      },
+      {
+        id: 'brnn-ai',
+        category: 'product',
+        title: {
+          en: 'BRNN AI — Developer AI APIs',
+          pt: 'BRNN AI — APIs de IA para devs'
+        },
+        shortName: {
+          en: 'BRNN AI',
+          pt: 'BRNN AI'
+        },
+        description: {
+          en: 'Our own AI APIs for builders: Speech-to-Text is live (free tier), with TTS and LLMs on the roadmap. Sign up, create a key, try the sandbox.',
+          pt: 'Nossas próprias APIs de IA para builders: Speech-to-Text já está no ar (tier grátis), com TTS e LLMs no roadmap. Crie conta, gere uma key e teste no sandbox.'
+        },
+        icon: 'bolt',
+        color: 'purple',
+        learnMoreUrl: '/service?service=brnn-ai',
+        image: 'https://ai.brenon.cloud/favicon.ico',
+        hostname: 'ai.brenon.cloud',
+        features: [
+          { en: 'Speech-to-Text API live (Whisper STT)', pt: 'API de Speech-to-Text no ar (Whisper STT)' },
+          { en: '15 free STT minutes/month, no card required', pt: '15 minutos grátis de STT/mês, sem cartão' },
+          { en: 'API keys + sandbox for quick trials', pt: 'API keys + sandbox para testes rápidos' },
+          { en: 'TTS and LLMs coming soon', pt: 'TTS e LLMs em breve' },
+          { en: 'Built for developers, simple onboarding', pt: 'Feito para desenvolvedores, onboarding simples' },
+          { en: 'Hosted on the Brenon.Cloud Swarm', pt: 'Hospedado no Swarm do Brenon.Cloud' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Add voice input to your product', pt: 'Adicionar voz ao seu produto' },
+            description: {
+              en: 'Drop Whisper STT into apps, bots, and agent pipelines with a simple API key — start free and grow as usage grows.',
+              pt: 'Encaixe Whisper STT em apps, bots e pipelines de agentes com uma API key simples — comece grátis e cresça conforme o uso.'
+            }
+          },
+          {
+            title: { en: 'Agent and automation pipelines', pt: 'Pipelines de agentes e automação' },
+            description: {
+              en: 'Feed live transcripts into n8n, Hermes agents, or your own backend without wiring a full ML stack yourself.',
+              pt: 'Alimente transcripts ao vivo no n8n, agentes Hermes ou no seu backend sem montar um stack ML inteiro sozinho.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Docker Swarm', description: { en: 'Runs as a stack on the home cluster', pt: 'Roda como stack no cluster home' } },
+          { name: 'Cloudflare', description: { en: 'Public edge at ai.brenon.cloud', pt: 'Borda pública em ai.brenon.cloud' } },
+          { name: 'API keys', description: { en: 'Developer self-serve access', pt: 'Acesso self-serve para devs' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open BRNN AI', pt: 'Abrir BRNN AI' }, description: { en: 'Visit ai.brenon.cloud', pt: 'Acesse ai.brenon.cloud' } },
+          { title: { en: 'Create an account', pt: 'Criar conta' }, description: { en: 'Sign up and generate an API key', pt: 'Cadastre-se e gere uma API key' } },
+          { title: { en: 'Try the STT sandbox', pt: 'Testar o sandbox STT' }, description: { en: 'Upload a short clip and transcribe', pt: 'Envie um áudio curto e transcreva' } }
+        ],
+        gettingStarted: {
+          en: 'BRNN AI is our developer-facing AI platform. Speech-to-Text is production-ready today; TTS and LLMs are next. <a href="https://ai.brenon.cloud" class="text-purple-400 hover:underline" target="_blank" rel="noopener noreferrer">Start free at ai.brenon.cloud</a>.',
+          pt: 'BRNN AI é nossa plataforma de IA voltada a devs. Speech-to-Text já está pronto; TTS e LLMs vêm a seguir. <a href="https://ai.brenon.cloud" class="text-purple-400 hover:underline" target="_blank" rel="noopener noreferrer">Comece grátis em ai.brenon.cloud</a>.'
+        },
+        mermaidDiagram: `
+graph LR
+    A[Developer App] -->|API key| B[BRNN AI]
+    B --> C[Whisper STT]
+    B -.-> D[TTS soon]
+    B -.-> E[LLMs soon]
+    B --> F[Brenon.Cloud Swarm]
+    style B fill:#9333ea,stroke:#7c3aed,color:#fff
+`,
+        demoUrl: 'https://ai.brenon.cloud'
+      },
+      {
+        id: 'oficina-cloud',
+        category: 'product',
+        title: {
+          en: 'OficinaCloud — SaaS for auto repair shops',
+          pt: 'OficinaCloud — SaaS para oficinas mecânicas'
+        },
+        shortName: {
+          en: 'OficinaCloud',
+          pt: 'OficinaCloud'
+        },
+        description: {
+          en: 'A simple multi-tenant SaaS for small and mid-size auto repair shops: customers, vehicles, service orders, and stock in one place — built to replace spreadsheets and WhatsApp chaos.',
+          pt: 'SaaS multi-tenant simples para oficinas de pequeno e médio porte: clientes, veículos, ordens de serviço e estoque num só lugar — feito para substituir planilha e bagunça no WhatsApp.'
+        },
+        icon: 'settings',
+        color: 'orange',
+        learnMoreUrl: '/service?service=oficina-cloud',
+        image: 'https://oficina.brenon.cloud/favicon.ico',
+        hostname: 'oficina.brenon.cloud',
+        features: [
+          { en: 'Customers, vehicles, and service orders', pt: 'Clientes, veículos e ordens de serviço' },
+          { en: 'Inventory / stock management', pt: 'Gestão de estoque' },
+          { en: 'Multi-tenant workshops (create your shop free)', pt: 'Oficinas multi-tenant (crie a sua grátis)' },
+          { en: 'Open beta with forever trial plan', pt: 'Beta aberto com plano trial para sempre' },
+          { en: 'Built for small/medium shops, not enterprise bloat', pt: 'Feito para PME, sem peso de enterprise' },
+          { en: 'Hosted on Brenon.Cloud + Cloudflare', pt: 'Hospedado no Brenon.Cloud + Cloudflare' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Replace the spreadsheet workshop', pt: 'Substituir a oficina na planilha' },
+            description: {
+              en: 'Track every service order, vehicle history, and stock movement without juggling notebooks, WhatsApp groups, and Excel files.',
+              pt: 'Acompanhe cada OS, histórico de veículo e movimentação de estoque sem malabarismo entre caderninho, WhatsApp e Excel.'
+            }
+          },
+          {
+            title: { en: 'Multi-tenant SaaS on home cloud', pt: 'SaaS multi-tenant na home cloud' },
+            description: {
+              en: 'Each workshop is isolated in a multi-tenant model running on the same Swarm that powers the rest of Brenon.Cloud.',
+              pt: 'Cada oficina fica isolada no modelo multi-tenant, rodando no mesmo Swarm que sustenta o resto do Brenon.Cloud.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Docker Swarm', description: { en: 'Production stacks on the home cluster', pt: 'Stacks de produção no cluster home' } },
+          { name: 'Cloudflare', description: { en: 'TLS and edge at oficina.brenon.cloud', pt: 'TLS e borda em oficina.brenon.cloud' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open OficinaCloud', pt: 'Abrir OficinaCloud' }, description: { en: 'Visit oficina.brenon.cloud', pt: 'Acesse oficina.brenon.cloud' } },
+          { title: { en: 'Create your shop', pt: 'Criar sua oficina' }, description: { en: 'Sign up free — no credit card', pt: 'Cadastre grátis — sem cartão' } },
+          { title: { en: 'Add first OS', pt: 'Abrir primeira OS' }, description: { en: 'Register a vehicle and open a service order', pt: 'Cadastre um veículo e abra uma OS' } }
+        ],
+        gettingStarted: {
+          en: 'OficinaCloud is our SaaS for auto repair shops — customers, vehicles, service orders, and stock. <a href="https://oficina.brenon.cloud" class="text-orange-400 hover:underline" target="_blank" rel="noopener noreferrer">Create your shop free</a>.',
+          pt: 'OficinaCloud é nosso SaaS para oficinas mecânicas — clientes, veículos, OS e estoque. <a href="https://oficina.brenon.cloud" class="text-orange-400 hover:underline" target="_blank" rel="noopener noreferrer">Crie sua oficina grátis</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Workshop Staff] --> B[OficinaCloud]
+    B --> C[Customers]
+    B --> D[Vehicles]
+    B --> E[Service Orders]
+    B --> F[Stock]
+    B --> G[Brenon.Cloud Swarm]
+    style B fill:#f59e0b,stroke:#d97706,color:#fff
+`,
+        demoUrl: 'https://oficina.brenon.cloud'
+      },
+      {
+        id: 'tibiapixel',
+        category: 'product',
+        title: {
+          en: 'TibiaPixel — live Tibia-like sim for agents & humans',
+          pt: 'TibiaPixel — simulação Tibia-like viva para agentes e humanos'
+        },
+        shortName: {
+          en: 'TibiaPixel',
+          pt: 'TibiaPixel'
+        },
+        description: {
+          en: 'An open-source Tibia-style survival/craft simulation where AI agents and humans share the same shard, rules, cities, and dungeons — built to train RL agents and open for humans to play.',
+          pt: 'Simulação open-source estilo Tibia com sobrevivência e craft, onde agentes de IA e humanos compartilham o mesmo shard, regras, cidades e dungeons — feita para treinar agentes RL e aberta para humanos jogarem.'
+        },
+        icon: 'cube',
+        color: 'green',
+        learnMoreUrl: '/service?service=tibiapixel',
+        image: 'https://tibiapixel.brenon.cloud/favicon.ico',
+        hostname: 'tibiapixel.brenon.cloud',
+        features: [
+          { en: 'Same rules for AI agents and humans', pt: 'Mesmas regras para agentes de IA e humanos' },
+          { en: 'Survival, craft, cities, and dungeons', pt: 'Sobrevivência, craft, cidades e dungeons' },
+          { en: 'Browser-based — no download', pt: 'No browser — sem download' },
+          { en: 'Open-source engine and agent CLI', pt: 'Engine open-source e CLI de agente' },
+          { en: 'Alpha with multi-server capacity', pt: 'Alpha com capacidade multi-servidor' },
+          { en: 'Designed for reinforcement learning research', pt: 'Desenhado para pesquisa de reinforcement learning' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Train RL agents in a living world', pt: 'Treinar agentes RL num mundo vivo' },
+            description: {
+              en: 'Agents face the same economy, combat, and navigation constraints as human players — ideal for multi-agent and survival RL experiments.',
+              pt: 'Agentes enfrentam a mesma economia, combate e navegação que jogadores humanos — ideal para experimentos multi-agente e RL de sobrevivência.'
+            }
+          },
+          {
+            title: { en: 'Play beside the agents', pt: 'Jogar ao lado dos agentes' },
+            description: {
+              en: 'Humans join the same shard in the browser, explore cities, craft, and compete or cooperate with autonomous agents.',
+              pt: 'Humanos entram no mesmo shard pelo browser, exploram cidades, craftam e competem ou cooperam com agentes autônomos.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Docker Swarm', description: { en: 'Game servers on the home cluster', pt: 'Game servers no cluster home' } },
+          { name: 'Cloudflare', description: { en: 'Public edge at tibiapixel.brenon.cloud', pt: 'Borda pública em tibiapixel.brenon.cloud' } },
+          { name: 'Agent CLI', description: { en: 'Headless agent clients against the shard', pt: 'Clientes headless de agente no shard' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open TibiaPixel', pt: 'Abrir TibiaPixel' }, description: { en: 'Visit tibiapixel.brenon.cloud', pt: 'Acesse tibiapixel.brenon.cloud' } },
+          { title: { en: 'Join the alpha', pt: 'Entrar no alpha' }, description: { en: 'Create a character on a live server', pt: 'Crie um personagem num servidor ao vivo' } },
+          { title: { en: 'Or run an agent', pt: 'Ou rode um agente' }, description: { en: 'Use the agent CLI against the same shard', pt: 'Use a CLI de agente no mesmo shard' } }
+        ],
+        gettingStarted: {
+          en: 'TibiaPixel is a living Tibia-like world for agents and humans. <a href="https://tibiapixel.brenon.cloud" class="text-emerald-400 hover:underline" target="_blank" rel="noopener noreferrer">Enter the alpha</a>.',
+          pt: 'TibiaPixel é um mundo Tibia-like vivo para agentes e humanos. <a href="https://tibiapixel.brenon.cloud" class="text-emerald-400 hover:underline" target="_blank" rel="noopener noreferrer">Entre no alpha</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Human Player] --> C[TibiaPixel Shard]
+    B[AI Agent CLI] --> C
+    C --> D[World / Cities]
+    C --> E[Survival + Craft]
+    C --> F[Brenon.Cloud Swarm]
+    style C fill:#10b981,stroke:#059669,color:#fff
+`,
+        demoUrl: 'https://tibiapixel.brenon.cloud'
+      },
+      {
+        id: 'devdojo-mentoring',
+        category: 'product',
+        title: {
+          en: 'DevDojo Mentoring',
+          pt: 'Mentoria DevDojo'
+        },
+        shortName: {
+          en: 'DevDojo Mentoring',
+          pt: 'Mentoria DevDojo'
+        },
+        description: {
+          en: 'Gamified technical mentoring for developers — cohorts with schedule, code review, and recognition, connected to GitHub and the DevDojo Discord community.',
+          pt: 'Mentoria técnica gamificada para devs — turmas com cronograma, revisão de código e reconhecimento, conectada ao GitHub e à comunidade DevDojo no Discord.'
+        },
+        icon: 'checkmark',
+        color: 'blue',
+        learnMoreUrl: '/service?service=devdojo-mentoring',
+        image: 'https://mentoria.devdojo.academy/favicon.ico',
+        hostname: 'mentoria.devdojo.academy',
+        features: [
+          { en: 'Cohorts with clear schedules', pt: 'Turmas com cronograma claro' },
+          { en: 'Code review and technical guidance', pt: 'Code review e acompanhamento técnico' },
+          { en: 'GitHub-connected progress', pt: 'Progresso conectado ao GitHub' },
+          { en: 'Discord community integration', pt: 'Integração com a comunidade no Discord' },
+          { en: 'Gamified recognition along the path', pt: 'Reconhecimento gamificado no caminho' },
+          { en: 'Tracks like Jr → Spec (backend, cloud, AI)', pt: 'Trilhas como Jr → Spec (backend, cloud, IA)' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Structured growth for junior/mid devs', pt: 'Crescimento estruturado para Jr/Pleno' },
+            description: {
+              en: 'Follow a mentored cohort instead of studying alone — real reviews, deadlines, and a community that keeps you accountable.',
+              pt: 'Siga uma turma mentoreada em vez de estudar sozinho — reviews reais, prazos e uma comunidade que cobra (no bom sentido).'
+            }
+          },
+          {
+            title: { en: 'GitHub-native mentoring loop', pt: 'Loop de mentoria nativo no GitHub' },
+            description: {
+              en: 'Progress ties back to real repositories and PRs, not just slides — the same craft you use at work.',
+              pt: 'O progresso volta para repositórios e PRs de verdade, não só slides — o mesmo ofício do dia a dia.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'GitHub OAuth', description: { en: 'Sign-in and progress linked to GitHub', pt: 'Login e progresso ligados ao GitHub' } },
+          { name: 'Discord', description: { en: 'DevDojo community channel', pt: 'Canal da comunidade DevDojo' } },
+          { name: 'Cloudflare', description: { en: 'Public site at mentoria.devdojo.academy', pt: 'Site público em mentoria.devdojo.academy' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open Mentoring', pt: 'Abrir Mentoria' }, description: { en: 'Visit mentoria.devdojo.academy', pt: 'Acesse mentoria.devdojo.academy' } },
+          { title: { en: 'Sign in with GitHub', pt: 'Entrar com GitHub' }, description: { en: 'Connect your developer identity', pt: 'Conecte sua identidade de dev' } },
+          { title: { en: 'Join an open cohort', pt: 'Entrar numa turma aberta' }, description: { en: 'Pick a track and start the cycle', pt: 'Escolha a trilha e comece o ciclo' } }
+        ],
+        gettingStarted: {
+          en: 'DevDojo Mentoring is gamified technical mentoring with real cohorts. <a href="https://mentoria.devdojo.academy" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">See open classes</a>.',
+          pt: 'A Mentoria DevDojo é mentoria técnica gamificada com turmas reais. <a href="https://mentoria.devdojo.academy" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">Veja turmas abertas</a>.'
+        },
+        mermaidDiagram: `
+graph LR
+    A[Dev + GitHub] --> B[DevDojo Mentoring]
+    B --> C[Cohorts]
+    B --> D[Code Review]
+    B --> E[Discord Community]
+    style B fill:#3b82f6,stroke:#2563eb,color:#fff
+`,
+        demoUrl: 'https://mentoria.devdojo.academy'
+      },
+      {
+        id: 'draw',
+        category: 'product',
+        title: {
+          en: 'Draw — Excalidraw whiteboard',
+          pt: 'Draw — whiteboard Excalidraw'
+        },
+        shortName: {
+          en: 'Draw',
+          pt: 'Draw'
+        },
+        description: {
+          en: 'A self-hosted Excalidraw whiteboard on Brenon.Cloud for hand-drawn diagrams, architecture sketches, and collaborative whiteboarding — no SaaS login wall.',
+          pt: 'Whiteboard Excalidraw self-hosted no Brenon.Cloud para diagramas hand-drawn, rascunhos de arquitetura e colaboração — sem muro de login de SaaS.'
+        },
+        icon: 'workflow',
+        color: 'cyan',
+        learnMoreUrl: '/service?service=draw',
+        image: 'https://draw.brenon.cloud/favicon.ico',
+        hostname: 'draw.brenon.cloud',
+        features: [
+          { en: 'Excalidraw virtual whiteboard', pt: 'Whiteboard virtual Excalidraw' },
+          { en: 'Hand-drawn style diagrams', pt: 'Diagramas com visual hand-drawn' },
+          { en: 'Self-hosted on the home Swarm', pt: 'Self-hosted no Swarm home' },
+          { en: 'Public HTTPS via Cloudflare', pt: 'HTTPS público via Cloudflare' },
+          { en: 'Great for architecture and teaching notes', pt: 'Ótimo para arquitetura e anotações de aula' },
+          { en: 'No third-party whiteboard account required', pt: 'Sem conta de whiteboard de terceiros' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Sketch systems before coding', pt: 'Esboçar sistemas antes de codar' },
+            description: {
+              en: 'Drop boxes and arrows for Swarm topologies, service maps, and mentoring diagrams without leaving Brenon.Cloud.',
+              pt: 'Jogue caixas e setas para topologias Swarm, mapas de serviço e diagramas de mentoria sem sair do Brenon.Cloud.'
+            }
+          },
+          {
+            title: { en: 'Teaching and pairing sessions', pt: 'Aulas e pair programming' },
+            description: {
+              en: 'Share a lightweight canvas during DevDojo sessions or design reviews.',
+              pt: 'Compartilhe um canvas leve em sessões DevDojo ou design reviews.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Docker Swarm', description: { en: 'Containerized Excalidraw stack', pt: 'Stack Excalidraw containerizada' } },
+          { name: 'Cloudflare', description: { en: 'Edge at draw.brenon.cloud', pt: 'Borda em draw.brenon.cloud' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open Draw', pt: 'Abrir Draw' }, description: { en: 'Visit draw.brenon.cloud', pt: 'Acesse draw.brenon.cloud' } },
+          { title: { en: 'Start sketching', pt: 'Começar a desenhar' }, description: { en: 'Use shapes, arrows, and text', pt: 'Use formas, setas e texto' } },
+          { title: { en: 'Export if needed', pt: 'Exportar se quiser' }, description: { en: 'Save PNG/SVG from the toolbar', pt: 'Salve PNG/SVG pela toolbar' } }
+        ],
+        gettingStarted: {
+          en: 'Draw is our self-hosted Excalidraw. <a href="https://draw.brenon.cloud" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Open the whiteboard</a>.',
+          pt: 'Draw é o nosso Excalidraw self-hosted. <a href="https://draw.brenon.cloud" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra o whiteboard</a>.'
+        },
+        mermaidDiagram: `
+graph LR
+    A[Browser] --> B[draw.brenon.cloud]
+    B --> C[Excalidraw]
+    C --> D[Brenon.Cloud Swarm]
+    style B fill:#06b6d4,stroke:#0891b2,color:#fff
+`,
+        demoUrl: 'https://draw.brenon.cloud'
       }
+
     ]
   }
 }
