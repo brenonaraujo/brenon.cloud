@@ -87,6 +87,14 @@ export function useServices() {
     return store.services.map(service => getLocalizedService(service))
   })
 
+  const platformServices = computed(() =>
+    localizedServices.value.filter((s) => (s?.category || 'platform') === 'platform')
+  )
+
+  const productServices = computed(() =>
+    localizedServices.value.filter((s) => s?.category === 'product')
+  )
+
   /**
    * Get a specific localized service by ID
    * @param {string} id - Service ID
@@ -113,6 +121,8 @@ export function useServices() {
     // State
     services: computed(() => store.allServices),
     localizedServices,
+    platformServices,
+    productServices,
     loading: computed(() => store.isLoading),
     error: computed(() => store.error),
     hasError: computed(() => store.hasError),

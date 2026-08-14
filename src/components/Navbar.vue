@@ -124,6 +124,8 @@ const isMobileMenuOpen = ref(false)
 
 const menuItems = computed(() => [
   { to: '/blog', text: t('navbar.blog'), route: true },
+  { to: 'products', text: t('navbar.products') },
+  { to: 'platform', text: t('navbar.platform') },
   { to: '/games', text: t('navbar.games'), route: true },
   { to: '/path', text: t('navbar.pathToGlory'), route: true },
   { to: 'infrastructure', text: t('navbar.about') },

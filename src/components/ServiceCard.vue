@@ -3,34 +3,37 @@
     <template #header>
       <div class="mb-4 flex items-center gap-4">
         <div :class="[`p-3 rounded-lg bg-${color}-400/10`]">
-          <component 
-            :is="iconComponent" 
+          <component
+            :is="iconComponent"
             :class="[`h-8 w-8 text-${color}-400`]"
           />
         </div>
-        <h3 class="text-lg font-semibold">{{ title }}</h3>
+        <div class="min-w-0">
+          <h3 class="text-lg font-semibold leading-snug">{{ title }}</h3>
+          <p v-if="hostname" class="text-xs text-gray-500 mt-1 truncate font-mono">{{ hostname }}</p>
+        </div>
       </div>
     </template>
-    
+
     <p class="text-gray-400 text-base leading-relaxed min-h-[4.5rem]">{{ truncatedDescription }}</p>
-    
+
     <template #footer>
       <div class="mt-6 flex items-center justify-between gap-4">
-        <a 
-          :href="learnMoreUrl" 
+        <a
+          :href="learnMoreUrl"
           :class="[
             'inline-flex items-center gap-2 text-sm font-medium',
             `text-${color}-400 hover:text-${color}-300 transition-colors`
           ]"
         >
-          Learn more
+          {{ t('serviceCard.learnMore') }}
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"/>
             <path d="M12 5l7 7-7 7"/>
           </svg>
         </a>
-        
-        <a 
+
+        <a
           v-if="demoUrl"
           :href="demoUrl"
           target="_blank"
@@ -45,7 +48,7 @@
             <polyline points="15,3 21,3 21,9"/>
             <line x1="10" y1="14" x2="21" y2="3"/>
           </svg>
-          Open
+          {{ t('serviceCard.open') }}
         </a>
       </div>
     </template>
@@ -54,8 +57,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Card from './ui/Card.vue'
 import { CheckmarkIcon, BoltIcon, CubeIcon, ChartIcon, SettingsIcon, WorkflowIcon, CloudStorageIcon } from './icons/Icons.js'
+
+const { t } = useI18n()
 
 const props = defineProps({
   title: {
@@ -81,6 +87,11 @@ const props = defineProps({
   demoUrl: {
     type: String,
     required: false
+  },
+  hostname: {
+    type: String,
+    required: false,
+    default: ''
   }
 })
 
@@ -92,7 +103,14 @@ const iconComponent = computed(() => {
     chart: ChartIcon,
     settings: SettingsIcon,
     workflow: WorkflowIcon,
-    cloudstorage: CloudStorageIcon
+    cloudstorage: CloudStorageIcon,
+    // legacy PascalCase ids from older mock data
+    ShieldCheckIcon: CheckmarkIcon,
+    ServerIcon: CubeIcon,
+    CubeIcon: CubeIcon,
+    ChartBarIcon: ChartIcon,
+    ChartLineIcon: ChartIcon,
+    CogIcon: SettingsIcon
   }
 
   return icons[props.icon] ?? icons.cube
@@ -102,17 +120,14 @@ const truncatedDescription = computed(() => {
   if (!props.description || props.description.length <= 150) {
     return props.description
   }
-  
-  // Find the last space before 150 characters to avoid cutting words
+
   const truncated = props.description.substring(0, 150)
   const lastSpaceIndex = truncated.lastIndexOf(' ')
-  
-  // If there's a space within reasonable distance, cut there
+
   if (lastSpaceIndex > 120) {
     return truncated.substring(0, lastSpaceIndex) + '...'
   }
-  
-  // Otherwise, cut at 150 and add ellipsis
+
   return truncated + '...'
 })
 </script>

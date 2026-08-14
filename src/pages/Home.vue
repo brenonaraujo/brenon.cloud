@@ -19,8 +19,8 @@
               <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
             </svg>
           </router-link>
-          <Button href="#about-me" variant="secondary" class="min-w-[160px]" withArrow>
-            {{ t('home.hero.exploreServices') }}
+          <Button href="#products" variant="secondary" class="min-w-[160px]" withArrow>
+            {{ t('navbar.products') }}
           </Button>
         </div>
       </div>
@@ -28,101 +28,6 @@
     </header>
 
     <main>
-      <Section
-        id="docker"
-        :title="t('home.docker.title')"
-        :description="t('home.docker.description')"
-        contentClass="space-y-12"
-      >
-        <!-- Loading state -->
-        <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-600 border-t-blue-500"></div>
-          <p class="mt-4 text-gray-400">{{ t('common.loading') }}</p>
-        </div>
-
-        <!-- Error state -->
-        <div v-else-if="error" class="text-center py-12">
-          <p class="text-red-400 mb-4">{{ t('common.error') }}: {{ error }}</p>
-          <Button @click="loadServices(true)" variant="primary">{{ t('common.retry') }}</Button>
-        </div>
-
-        <!-- Services grid -->
-        <template v-else>
-          <div v-if="validServices?.length > 0" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr">
-            <ServiceCard
-              v-for="service in validServices.slice(0, 3)"
-              :key="service.id"
-              :title="service.title"
-              :description="service.description"
-              :icon="service.icon"
-              :color="service.color"
-              :learnMoreUrl="service.learnMoreUrl"
-              :demoUrl="service.demoUrl"
-            />
-          </div>
-          <div v-if="validServices?.length > 3" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 auto-rows-fr">
-            <ServiceCard
-              v-for="service in validServices.slice(3)"
-              :key="service.id"
-              :title="service.title"
-              :description="service.description"
-              :icon="service.icon"
-              :color="service.color"
-              :learnMoreUrl="service.learnMoreUrl"
-              :demoUrl="service.demoUrl"
-            />
-          </div>
-          
-          <div v-if="!validServices?.length && !loading" class="text-center py-8">
-            <p class="text-gray-400">No services available</p>
-            <Button @click="loadServices(true)" variant="primary" class="mt-4">{{ t('common.retry') }}</Button>
-          </div>
-        </template>
-        
-        <FlowLine :steps="['Auth', 'Edge', 'Deploy', 'Monitor', 'Dashboards', 'Automate']" />
-      </Section>
-
-      <Section
-        id="how-it-works"
-        :title="t('home.howItWorks.title')"
-        :description="t('home.howItWorks.description')"
-      >
-        <div class="grid sm:grid-cols-3 gap-6 text-left mb-8">
-          <div class="bg-gray-800 rounded-lg p-5">
-            <h3 class="font-semibold mb-2">{{ t('home.docker.features.managed.title') }}</h3>
-            <p class="text-gray-400 text-sm">{{ t('home.docker.features.managed.description') }}</p>
-          </div>
-          <div class="bg-gray-800 rounded-lg p-5">
-            <h3 class="font-semibold mb-2">{{ t('home.docker.features.stacks.title') }}</h3>
-            <p class="text-gray-400 text-sm">{{ t('home.docker.features.stacks.description') }}</p>
-          </div>
-          <div class="bg-gray-800 rounded-lg p-5">
-            <h3 class="font-semibold mb-2">{{ t('home.docker.features.scalable.title') }}</h3>
-            <p class="text-gray-400 text-sm">{{ t('home.docker.features.scalable.description') }}</p>
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button href="/service?service=docker" variant="primary" withArrow>
-            {{ t('home.docker.learnMore') }}
-          </Button>
-          <Button href="/service?service=portainer" variant="secondary" withArrow>
-            {{ t('home.docker.howWeUse') }}
-          </Button>
-          <a href="http://portainer.home.server/" target="_blank" rel="noopener noreferrer" 
-             class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 transition text-white">
-            {{ t('home.docker.openPortainer') }}
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 3h7v7"></path>
-              <path d="M10 14L21 3"></path>
-              <path d="M21 14v7H3V3h7"></path>
-            </svg>
-          </a>
-        </div>
-
-        <FlowLine class="mt-6" :steps="['Write compose', 'Deploy as Swarm stack', 'Scale replicas', 'Rolling update', 'Monitor & dashboards']" />
-      </Section>
-
       <!-- About Me -->
       <section id="about-me" class="py-16 sm:py-20">
         <div class="grid md:grid-cols-[auto,1fr] gap-10 items-center max-w-5xl mx-auto">
@@ -187,6 +92,112 @@
         </div>
       </section>
 
+      <!-- Products we built -->
+      <Section
+        id="products"
+        :title="t('home.products.title')"
+        :description="t('home.products.description')"
+        contentClass="space-y-8"
+      >
+        <p class="text-sm uppercase tracking-widest text-emerald-400 -mt-4 mb-2">{{ t('home.products.eyebrow') }}</p>
+
+        <div v-if="loading" class="text-center py-12">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-600 border-t-blue-500"></div>
+          <p class="mt-4 text-gray-400">{{ t('common.loading') }}</p>
+        </div>
+
+        <div v-else-if="error" class="text-center py-12">
+          <p class="text-red-400 mb-4">{{ t('common.error') }}: {{ error }}</p>
+          <Button @click="loadServices(true)" variant="primary">{{ t('common.retry') }}</Button>
+        </div>
+
+        <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+          <ServiceCard
+            v-for="service in validProducts"
+            :key="service.id"
+            :title="service.shortName || service.title"
+            :description="service.description"
+            :icon="service.icon"
+            :color="service.color"
+            :learnMoreUrl="service.learnMoreUrl"
+            :demoUrl="service.demoUrl"
+            :hostname="service.hostname"
+          />
+        </div>
+      </Section>
+
+      <!-- Platform building blocks -->
+      <Section
+        id="platform"
+        :title="t('home.docker.title')"
+        :description="t('home.docker.description')"
+        contentClass="space-y-12"
+      >
+        <div v-if="loading" class="text-center py-12">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-600 border-t-blue-500"></div>
+          <p class="mt-4 text-gray-400">{{ t('common.loading') }}</p>
+        </div>
+
+        <div v-else-if="error" class="text-center py-12">
+          <p class="text-red-400 mb-4">{{ t('common.error') }}: {{ error }}</p>
+          <Button @click="loadServices(true)" variant="primary">{{ t('common.retry') }}</Button>
+        </div>
+
+        <template v-else>
+          <div v-if="validPlatform?.length" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr">
+            <ServiceCard
+              v-for="service in validPlatform"
+              :key="service.id"
+              :title="service.shortName || service.title"
+              :description="service.description"
+              :icon="service.icon"
+              :color="service.color"
+              :learnMoreUrl="service.learnMoreUrl"
+              :demoUrl="service.demoUrl"
+            />
+          </div>
+
+          <div v-if="!validPlatform?.length && !loading" class="text-center py-8">
+            <p class="text-gray-400">No services available</p>
+            <Button @click="loadServices(true)" variant="primary" class="mt-4">{{ t('common.retry') }}</Button>
+          </div>
+        </template>
+
+        <FlowLine :steps="['Auth', 'Edge', 'Deploy', 'Monitor', 'Dashboards', 'Automate']" />
+      </Section>
+
+      <Section
+        id="how-it-works"
+        :title="t('home.howItWorks.title')"
+        :description="t('home.howItWorks.description')"
+      >
+        <div class="grid sm:grid-cols-3 gap-6 text-left mb-8">
+          <div class="bg-gray-800 rounded-lg p-5">
+            <h3 class="font-semibold mb-2">{{ t('home.docker.features.managed.title') }}</h3>
+            <p class="text-gray-400 text-sm">{{ t('home.docker.features.managed.description') }}</p>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-5">
+            <h3 class="font-semibold mb-2">{{ t('home.docker.features.stacks.title') }}</h3>
+            <p class="text-gray-400 text-sm">{{ t('home.docker.features.stacks.description') }}</p>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-5">
+            <h3 class="font-semibold mb-2">{{ t('home.docker.features.scalable.title') }}</h3>
+            <p class="text-gray-400 text-sm">{{ t('home.docker.features.scalable.description') }}</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button href="/service?service=docker" variant="primary" withArrow>
+            {{ t('home.docker.learnMore') }}
+          </Button>
+          <Button href="/service?service=portainer" variant="secondary" withArrow>
+            {{ t('home.docker.howWeUse') }}
+          </Button>
+        </div>
+
+        <FlowLine class="mt-6" :steps="['Write compose', 'Deploy as Swarm stack', 'Schedule on 3 nodes', 'Rolling update', 'Monitor & dashboards']" />
+      </Section>
+
       <!-- Blog Teaser -->
       <section class="py-12">
         <div class="max-w-4xl mx-auto rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-emerald-500/10 ring-1 ring-white/10 p-8 sm:p-10 text-center">
@@ -209,11 +220,78 @@
         :description="t('home.about.description')"
       >
         <div class="space-y-16">
-          <!-- Vision and Mission -->
           <div class="text-center max-w-3xl mx-auto">
             <p class="text-lg text-gray-300 leading-relaxed">
               {{ t('home.about.vision') }}
             </p>
+          </div>
+
+          <!-- Live cluster snapshot -->
+          <div class="relative overflow-hidden rounded-2xl bg-gray-900/80 ring-1 ring-white/10">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-emerald-500/10 pointer-events-none"></div>
+            <div class="relative p-6 sm:p-8 space-y-8">
+              <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                <div>
+                  <p class="text-sm uppercase tracking-widest text-blue-400 mb-2">Docker Swarm</p>
+                  <h3 class="text-xl sm:text-2xl font-semibold">{{ t('home.about.cluster.title') }}</h3>
+                  <p class="text-sm text-gray-400 mt-1">{{ t('home.about.cluster.subtitle') }}</p>
+                </div>
+                <span class="inline-flex items-center gap-2 self-start rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-medium px-3 py-1 ring-1 ring-emerald-400/30">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Up
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div
+                  v-for="stat in clusterStats"
+                  :key="stat.key"
+                  class="rounded-xl bg-gray-800/70 ring-1 ring-white/5 px-4 py-3"
+                >
+                  <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">{{ stat.label }}</p>
+                  <p class="text-lg font-semibold text-white">{{ stat.value }}</p>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-sm font-medium text-gray-300 mb-3">{{ t('home.about.cluster.nodesTitle') }}</h4>
+                <div class="overflow-x-auto rounded-xl ring-1 ring-white/10">
+                  <table class="min-w-full text-sm">
+                    <thead class="bg-gray-800/80 text-gray-400 text-left">
+                      <tr>
+                        <th class="px-4 py-3 font-medium">Name</th>
+                        <th class="px-4 py-3 font-medium">Role</th>
+                        <th class="px-4 py-3 font-medium">CPU</th>
+                        <th class="px-4 py-3 font-medium">Memory</th>
+                        <th class="px-4 py-3 font-medium">Engine</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                      <tr
+                        v-for="node in clusterNodes"
+                        :key="node.name"
+                        class="bg-gray-900/40 hover:bg-gray-800/40 transition-colors"
+                      >
+                        <td class="px-4 py-3 font-mono text-blue-300">{{ node.name }}</td>
+                        <td class="px-4 py-3">
+                          <span
+                            class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium ring-1"
+                            :class="node.role === 'manager'
+                              ? 'bg-purple-500/15 text-purple-300 ring-purple-400/30'
+                              : 'bg-cyan-500/15 text-cyan-300 ring-cyan-400/30'"
+                          >
+                            {{ node.role }}
+                          </span>
+                        </td>
+                        <td class="px-4 py-3 text-gray-200">{{ node.cpu }}</td>
+                        <td class="px-4 py-3 text-gray-200">{{ node.memory }}</td>
+                        <td class="px-4 py-3 text-gray-400">{{ node.engine }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Key Features Grid -->
@@ -303,7 +381,7 @@
             <h3 class="text-xl font-semibold mb-4">{{ t('home.about.cta.title') }}</h3>
             <p class="text-gray-300 mb-6">{{ t('home.about.cta.description') }}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="#how-it-works" variant="primary" withArrow>
+              <Button href="#platform" variant="primary" withArrow>
                 {{ t('home.about.cta.getStarted') }}
               </Button>
               <Button href="https://github.com/brenonaraujo" variant="secondary" withArrow>
@@ -328,16 +406,38 @@ import { useServices } from '../composables/useServices'
 import { profile, visibleSocialLinks } from '../config/profile'
 
 const { t, tm } = useI18n()
-const { localizedServices, loading, error, loadServices } = useServices()
+const { platformServices, productServices, loading, error, loadServices } = useServices()
 const photoFailed = ref(false)
 
-// Create a computed that filters valid services
-const validServices = computed(() => {
-  const svc = localizedServices.value || []
+const validPlatform = computed(() => {
+  const svc = platformServices.value || []
   return svc.filter(service => service && service.id && service.title)
 })
 
-// Load services on component mount
+const validProducts = computed(() => {
+  const svc = productServices.value || []
+  return svc.filter(service => service && service.id && service.title)
+})
+
+const clusterStats = computed(() => {
+  const s = tm('home.about.cluster.stats') || {}
+  return [
+    { key: 'nodes', label: 'Nodes', value: s.nodes },
+    { key: 'cpu', label: 'CPU', value: s.cpu },
+    { key: 'ram', label: 'RAM', value: s.ram },
+    { key: 'stacks', label: 'Stacks', value: s.stacks },
+    { key: 'services', label: 'Services', value: s.services },
+    { key: 'containers', label: 'Containers', value: s.containers },
+    { key: 'volumes', label: 'Volumes', value: s.volumes },
+    { key: 'images', label: 'Images', value: s.images }
+  ]
+})
+
+const clusterNodes = computed(() => {
+  const nodes = tm('home.about.cluster.nodes')
+  return Array.isArray(nodes) ? nodes : []
+})
+
 onMounted(async () => {
   try {
     await loadServices()

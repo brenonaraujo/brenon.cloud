@@ -25,6 +25,7 @@
 /**
  * @typedef {Object} Service
  * @property {string} id - Unique service identifier
+ * @property {'platform'|'product'} [category] - platform building block vs product we built
  * @property {LocalizedText} title - Service full title
  * @property {LocalizedText} shortName - Service short name
  * @property {LocalizedText} description - Brief service description
@@ -35,6 +36,7 @@
  * @property {ServiceUseCase[]} useCases - List of use cases
  * @property {ServiceIntegration[]} [integrations] - Service integrations
  * @property {string} [image] - Optional logo image URL
+ * @property {string} [hostname] - Optional public hostname
  * @property {string} [mermaidDiagram] - Optional Mermaid diagram definition
  * @property {LocalizedText} [gettingStarted] - Getting started HTML content
  * @property {ServiceQuickStartStep[]} [quickStart] - Quick start steps
