@@ -59,7 +59,7 @@
       "vision": "O Brenon.Cloud é um home lab de verdade virado plataforma: três nós, dezenas de stacks, produtos públicos no Cloudflare e um caderno aberto de tudo que se aprende no caminho.",
       "cluster": {
         "title": "Snapshot do cluster Swarm",
-        "subtitle": "Ambiente Portainer brenon.cloud — Docker Swarm multi-nó",
+        "subtitle": "Ambiente Portainer — Docker Swarm multi-nó",
         "stats": {
           "nodes": "3 nós",
           "cpu": "18 CPU",
@@ -73,25 +73,22 @@
         "nodesTitle": "Nós",
         "nodes": [
           {
-            "name": "home101",
+            "name": "Server 1",
             "role": "manager",
             "cpu": "4 CPU",
-            "memory": "16,7 GB",
-            "engine": "Docker 29.1.3"
+            "memory": "16,7 GB"
           },
           {
-            "name": "fedora",
+            "name": "Server 2",
             "role": "worker",
             "cpu": "12 CPU",
-            "memory": "67,4 GB",
-            "engine": "Docker 29.7.0"
+            "memory": "67,4 GB"
           },
           {
-            "name": "server102",
+            "name": "Server 3",
             "role": "worker",
             "cpu": "2 CPU",
-            "memory": "8,1 GB",
-            "engine": "Docker 29.7.0"
+            "memory": "8,1 GB"
           }
         ]
       },
@@ -101,6 +98,7 @@
           "Orquestração Docker Swarm multi-nó",
           "Kong API Gateway + borda Cloudflare",
           "Identidade / SSO com Authentik",
+          "Dashboards de observabilidade com Grafana",
           "Portainer para operação do dia a dia",
           "GitHub Actions → GHCR → deploy de stack"
         ]
@@ -135,7 +133,7 @@
         },
         "service": {
           "title": "Camada de serviços Swarm",
-          "description": "Containers agendados em home101 / fedora / server102 com volumes, secrets e health checks."
+          "description": "Containers agendados em Server 1 / Server 2 / Server 3 com volumes, secrets e health checks — observados no Grafana."
         }
       },
       "cta": {

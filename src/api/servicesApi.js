@@ -398,8 +398,8 @@ graph LR
           pt: 'Docker'
         },
         description: {
-          en: 'The infrastructure building block: a real 3-node Docker Swarm at home (home101 manager + fedora + server102 workers) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates, and Portainer ops without a managed K8s bill',
-          pt: 'O bloco de infraestrutura: um Docker Swarm real de 3 nós em casa (home101 manager + workers fedora e server102) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates e operação via Portainer sem conta de K8s gerenciado'
+          en: 'The infrastructure building block: a real 3-node Docker Swarm at home (Server 1 manager + Server 2/3 workers) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates, Portainer ops, and Grafana observability without a managed K8s bill',
+          pt: 'O bloco de infraestrutura: um Docker Swarm real de 3 nós em casa (Server 1 manager + workers Server 2/3) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates, operação via Portainer e observabilidade com Grafana sem conta de K8s gerenciado'
         },
         icon: 'CubeIcon',
         color: 'cyan',
@@ -456,8 +456,8 @@ graph LR
               pt: 'Estratégia de Dimensionamento Eficiente'
             },
             description: {
-              en: 'Run dozens of containers across 3 nodes (18 CPU / 92.2 GB RAM pooled). Swarm schedules stacks across home101, fedora, and server102; Portainer shows live service health, volumes, and rolling updates.',
-              pt: 'Rode dezenas de containers em 3 nós (18 CPU / 92,2 GB RAM no pool). O Swarm agenda stacks entre home101, fedora e server102; o Portainer mostra saúde dos serviços, volumes e rolling updates ao vivo.'
+              en: 'Run dozens of containers across 3 nodes (18 CPU / 92.2 GB RAM pooled). Swarm schedules stacks across Server 1–3; Portainer shows live service health, volumes, and rolling updates, while Grafana tracks metrics.',
+              pt: 'Rode dezenas de containers em 3 nós (18 CPU / 92,2 GB RAM no pool). O Swarm agenda stacks entre Server 1–3; o Portainer mostra saúde dos serviços, volumes e rolling updates, e o Grafana acompanha as métricas.'
             }
           },
           {
@@ -544,10 +544,10 @@ graph TB
     C --> D[Docker Build]
     D --> E[Container Registry]
     
-    E --> F[Docker Swarm Manager<br/>home101]
-    F --> G[home101 manager<br/>4 CPU / 16.7 GB]
-    F --> H[fedora worker<br/>12 CPU / 67.4 GB]
-    F --> P[server102 worker<br/>2 CPU / 8.1 GB]
+    E --> F[Docker Swarm Manager<br/>Server 1]
+    F --> G[Server 1 manager<br/>4 CPU / 16.7 GB]
+    F --> H[Server 2 worker<br/>12 CPU / 67.4 GB]
+    F --> P[Server 3 worker<br/>2 CPU / 8.1 GB]
     
     G --> I[Control plane + stacks]
     H --> J[Heavy workloads]

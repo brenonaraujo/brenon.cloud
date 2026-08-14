@@ -59,7 +59,7 @@
       "vision": "Brenon.Cloud is a real home lab turned platform: three nodes, dozens of stacks, public products on Cloudflare, and an open notebook of everything learned along the way.",
       "cluster": {
         "title": "Swarm cluster snapshot",
-        "subtitle": "Portainer environment brenon.cloud — multi-node Docker Swarm",
+        "subtitle": "Portainer environment — multi-node Docker Swarm",
         "stats": {
           "nodes": "3 nodes",
           "cpu": "18 CPU",
@@ -73,25 +73,22 @@
         "nodesTitle": "Nodes",
         "nodes": [
           {
-            "name": "home101",
+            "name": "Server 1",
             "role": "manager",
             "cpu": "4 CPU",
-            "memory": "16.7 GB",
-            "engine": "Docker 29.1.3"
+            "memory": "16.7 GB"
           },
           {
-            "name": "fedora",
+            "name": "Server 2",
             "role": "worker",
             "cpu": "12 CPU",
-            "memory": "67.4 GB",
-            "engine": "Docker 29.7.0"
+            "memory": "67.4 GB"
           },
           {
-            "name": "server102",
+            "name": "Server 3",
             "role": "worker",
             "cpu": "2 CPU",
-            "memory": "8.1 GB",
-            "engine": "Docker 29.7.0"
+            "memory": "8.1 GB"
           }
         ]
       },
@@ -101,6 +98,7 @@
           "Docker Swarm multi-node orchestration",
           "Kong API Gateway + Cloudflare edge",
           "Authentik identity / SSO",
+          "Grafana observability dashboards",
           "Portainer for day-2 ops",
           "GitHub Actions → GHCR → stack deploy"
         ]
@@ -135,7 +133,7 @@
         },
         "service": {
           "title": "Swarm service layer",
-          "description": "Containers scheduled on home101 / fedora / server102 with volumes, secrets, and health checks."
+          "description": "Containers scheduled across Server 1 / Server 2 / Server 3 with volumes, secrets, and health checks — observed in Grafana."
         }
       },
       "cta": {
