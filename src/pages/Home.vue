@@ -263,7 +263,6 @@
                         <th class="px-4 py-3 font-medium">Role</th>
                         <th class="px-4 py-3 font-medium">CPU</th>
                         <th class="px-4 py-3 font-medium">Memory</th>
-                        <th class="px-4 py-3 font-medium">Engine</th>
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
@@ -285,7 +284,6 @@
                         </td>
                         <td class="px-4 py-3 text-gray-200">{{ node.cpu }}</td>
                         <td class="px-4 py-3 text-gray-200">{{ node.memory }}</td>
-                        <td class="px-4 py-3 text-gray-400">{{ node.engine }}</td>
                       </tr>
                     </tbody>
                   </table>
