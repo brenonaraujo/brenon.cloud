@@ -4,8 +4,8 @@ description: Subimos o Akash Console Air no Brenon.Cloud e liberamos para qualqu
 date: 2026-05-20
 author: Brenon Araujo
 tags: [akash, nuvem-descentralizada, console-air, web3, deployments]
-cover: https://logowik.com/content/uploads/images/akash-network-akt1389.jpg
-coverFallback: /images/blog/akash-network-akt1389.jpg
+cover: /images/blog/console-air-on-brenon-cloud-cover.svg
+coverFallback: /images/blog/console-air-on-brenon-cloud-cover.svg
 ---
 
 # Por que colocamos o Console Air no Brenon.Cloud

@@ -4,8 +4,8 @@ description: Learn how Akash creates a decentralized compute marketplace on Kube
 date: 2026-05-20
 author: Brenon Araujo
 tags: [akash, depin, web3, kubernetes, decentralized-cloud, gpu]
-cover: /images/blog/akash_network_about.png
-coverFallback: /images/blog/akash_network_about.png
+cover: /images/blog/akash-network-cloud-marketplace-cover.svg
+coverFallback: /images/blog/akash-network-cloud-marketplace-cover.svg
 ---
 
 # Akash Network: the Airbnb of cloud computing for Web3
