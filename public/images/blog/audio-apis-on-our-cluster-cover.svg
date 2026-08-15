@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g opacity="0.06" stroke="#8b5cf6" stroke-width="1">
+    <line x1="0" y1="126" x2="1200" y2="126"/>
+    <line x1="0" y1="252" x2="1200" y2="252"/>
+    <line x1="0" y1="378" x2="1200" y2="378"/>
+    <line x1="0" y1="504" x2="1200" y2="504"/>
+    <line x1="240" y1="0" x2="240" y2="630"/>
+    <line x1="480" y1="0" x2="480" y2="630"/>
+    <line x1="720" y1="0" x2="720" y2="630"/>
+    <line x1="960" y1="0" x2="960" y2="630"/>
+  </g>
+
+  <text x="600" y="110" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="18">ai.brenon.cloud</text>
+  <text x="600" y="188" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="56" font-weight="700">STT + TTS</text>
+  <text x="600" y="242" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="28">no nosso cluster</text>
+
+  <g transform="translate(420, 280)" fill="none" stroke="url(#wave)" stroke-width="3" stroke-linecap="round">
+    <path d="M0 40 L30 40 L46 8 L66 74 L86 18 L106 58 L126 40 L160 40 L176 10 L196 70 L216 24 L236 50 L260 40 L360 40"/>
+    <path d="M0 40 L360 40" stroke="#334155" stroke-width="1" opacity="0.7"/>
+  </g>
+
+  <g font-family="monospace">
+    <rect x="280" y="420" width="280" height="100" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="420" y="464" text-anchor="middle" fill="#c4b5fd" font-size="18" font-weight="700">WHISPER</text>
+    <text x="420" y="492" text-anchor="middle" fill="#94a3b8" font-size="14">STT · small</text>
+
+    <rect x="640" y="420" width="280" height="100" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
+    <text x="780" y="464" text-anchor="middle" fill="#67e8f9" font-size="18" font-weight="700">CHATTERBOX</text>
+    <text x="780" y="492" text-anchor="middle" fill="#94a3b8" font-size="14">TTS · cpu</text>
+  </g>
+</svg>
