@@ -1,7 +1,9 @@
 ---
 title: "Como rodar LLMs locais de forma eficiente: O Guia de Infraestrutura"
 slug: "como-rodar-llms-locais-de-forma-eficiente"
-coverImageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop"
+coverImageUrl: "/images/blog/llms-locais-cover.svg"
+cover: /images/blog/llms-locais-cover.svg
+coverFallback: /images/blog/llms-locais-cover.svg
 language: "pt"
 status: "published"
 tags: ["LLM", "MLX", "Infraestrutura", "Apple Silicon", "IA"]

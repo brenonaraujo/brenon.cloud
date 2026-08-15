@@ -4,7 +4,8 @@ description: Inaugurando o blog do Brenon.Cloud — o que esperar, como ele é c
 date: 2026-05-20
 author: Brenon Araujo
 tags: [anuncio, plataforma, brenon-cloud]
-cover: /brenon-cloud-logo.png
+cover: /images/blog/welcome-to-brenon-cloud-blog-cover.svg
+coverFallback: /images/blog/welcome-to-brenon-cloud-blog-cover.svg
 ---
 
 # Sejam bem-vindos

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g opacity="0.06" stroke="#fb7185" stroke-width="1">
+    <line x1="0" y1="126" x2="1200" y2="126"/>
+    <line x1="0" y1="252" x2="1200" y2="252"/>
+    <line x1="0" y1="378" x2="1200" y2="378"/>
+    <line x1="0" y1="504" x2="1200" y2="504"/>
+    <line x1="240" y1="0" x2="240" y2="630"/>
+    <line x1="480" y1="0" x2="480" y2="630"/>
+    <line x1="720" y1="0" x2="720" y2="630"/>
+    <line x1="960" y1="0" x2="960" y2="630"/>
+  </g>
+
+  <text x="600" y="108" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="18">akash.brenon.cloud</text>
+  <text x="600" y="184" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="52" font-weight="700">Console Air</text>
+  <text x="600" y="236" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="26">wallet, sem cadastro</text>
+
+  <g font-family="monospace">
+    <rect x="230" y="340" width="220" height="100" rx="8" fill="#1e293b" stroke="#fb7185" stroke-width="2"/>
+    <text x="340" y="384" text-anchor="middle" fill="#fda4af" font-size="16" font-weight="700">KEPLR</text>
+    <text x="340" y="412" text-anchor="middle" fill="#94a3b8" font-size="13">sem e-mail · sem KYC</text>
+
+    <rect x="490" y="340" width="220" height="100" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+    <text x="600" y="384" text-anchor="middle" fill="#fbbf24" font-size="16" font-weight="700">AKT → ACT</text>
+    <text x="600" y="412" text-anchor="middle" fill="#94a3b8" font-size="13">mint na plataforma</text>
+
+    <rect x="750" y="340" width="220" height="100" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
+    <text x="860" y="384" text-anchor="middle" fill="#86efac" font-size="16" font-weight="700">DEPLOY</text>
+    <text x="860" y="412" text-anchor="middle" fill="#94a3b8" font-size="13">SDL + lease</text>
+  </g>
+</svg>

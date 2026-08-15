@@ -4,8 +4,8 @@ description: We deployed Akash Console Air on Brenon.Cloud and opened it to anyo
 date: 2026-05-20
 author: Brenon Araujo
 tags: [akash, decentralized-cloud, console-air, web3, deployments]
-cover: https://logowik.com/content/uploads/images/akash-network-akt1389.jpg
-coverFallback: /images/blog/akash-network-akt1389.jpg
+cover: /images/blog/console-air-on-brenon-cloud-cover.svg
+coverFallback: /images/blog/console-air-on-brenon-cloud-cover.svg
 ---
 
 # Why we put Console Air on Brenon.Cloud

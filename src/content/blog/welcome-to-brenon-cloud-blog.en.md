@@ -4,7 +4,8 @@ description: Kicking off the Brenon.Cloud blog — what to expect, how it is bui
 date: 2026-05-20
 author: Brenon Araujo
 tags: [announcement, platform, brenon-cloud]
-cover: /brenon-cloud-logo.png
+cover: /images/blog/welcome-to-brenon-cloud-blog-cover.svg
+coverFallback: /images/blog/welcome-to-brenon-cloud-blog-cover.svg
 ---
 
 # Welcome aboard
