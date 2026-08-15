@@ -1,6 +1,6 @@
 ---
 title: Uptime Kuma on Akash — the monitor doesn't live on the cluster
-description: We put Uptime Kuma on Akash through Console Air. Container SDL, AKT-to-ACT swap inside the app, and an audited provider with 99.98% availability for US$ 0.57 a month.
+description: Uptime Kuma redeployed on Akash: audited provider at 99.99% availability, 0.5 CPU and 256 MB (the minimum Kuma actually needs), persistent disk, and the real SDL.
 date: 2026-08-16
 author: Brenon Araujo
 tags: [uptime-kuma, akash, console-air, monitoring, home-cloud]
@@ -32,45 +32,54 @@ The home cluster still serves product. Kuma just watches from outside, and pings
 
 On Akash a deployment is a YAML file called SDL, Stack Definition Language. It reads like a `docker-compose`: image, port, CPU, memory, disk, and the max price you will pay. In Console Air you build that in the editor or paste the YAML.
 
-Kuma fits in a small SDL. Official image, port 3001, a bit of CPU and memory, persistent disk so monitor history survives a restart.
+The first lease was too short on RAM. Kuma 2.5 nightly dies, and SQLite vanishes on restart if the disk is ephemeral. The floor that actually holds the dashboard, monitors, and history is **0.5 CPU + 256 MB + a persistent volume**. Below that the pod crashes or comes back at `/setup-database`.
+
+The SDL that is live now:
 
 ```yaml
 version: "2.0"
-
 services:
-  kuma:
-    image: louislam/uptime-kuma:1
+  service-1:
+    image: louislam/uptime-kuma:nightly2
     expose:
       - port: 3001
         as: 80
         to:
           - global: true
-
+    params:
+      storage:
+        data:
+          mount: /mnt/data
+          readOnly: false
 profiles:
   compute:
-    kuma:
+    service-1:
       resources:
         cpu:
           units: 0.5
         memory:
-          size: 512Mi
+          size: 256Mb
         storage:
-          - size: 2Gi
+          - size: 1Gi
+          - name: data
+            size: 1Gi
+            attributes:
+              persistent: true
+              class: beta3
   placement:
     dcloud:
       pricing:
-        kuma:
+        service-1:
           denom: uact
-          amount: 1000
-
+          amount: 100000
 deployment:
-  kuma:
+  service-1:
     dcloud:
-      profile: kuma
+      profile: service-1
       count: 1
 ```
 
-That tells the network: this image, this port, these resources, paid in ACT. Providers that can host it send a bid. You pick one and the lease closes on-chain.
+Image `nightly2`, port 3001, `beta3` disk at `/mnt/data`. Without that volume every restart wipes tags, monitors, and the status page.
 
 The wallet, SDL, and lease path is in [Console Air on Brenon.Cloud](/blog/console-air-on-brenon-cloud).
 
@@ -94,9 +103,9 @@ After the SDL, providers bid. The Console Air table shows, per bid, whether the 
 
 Audited is not a marketing badge. A network auditor signs the provider's attributes (region, host, persistent disk, GPU). Console Air reads that and marks `Audited`. You can also require an auditor in the SDL itself, under `signedBy`.
 
-We filtered to audited providers and looked at 7-day uptime. We took an audited provider with 99.98% availability, at the bid that comes to US$ 0.57 a month for this container.
+The first provider was too tight. We redeployed: another provider, audited, **99.99%** on 7-day uptime, with the 256 MB Kuma actually needs.
 
-We did not grab the cheapest bid blind. We grabbed the cheap one the network had already measured and signed.
+We did not grab the cheapest bid blind. We grabbed the one the network had already measured and signed, and that can run the process.
 
 ---
 
@@ -112,7 +121,7 @@ flowchart LR
     Akash --> Kuma
 ```
 
-The home cluster serves product. Kuma watches from outside. US$ 0.57 a month for a container that keeps checking what we publish. Not a monitoring plan. A small slice of a machine, audited, with 99.98% on the 7-day history.
+The home cluster serves product. Kuma watches from outside. 0.5 CPU and 256 MB on an audited provider with 99.99% on the 7-day history. The public status page is [uptime.brenon.cloud/status/services](https://uptime.brenon.cloud/status/services).
 
 ---
 
