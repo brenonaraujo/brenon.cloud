@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "devdojo-brasil",
+    "title": "DevDojo Brasil",
+    "tag": "Canal",
+    "why": "O canal que eu indico quando a pessoa quer Java, Spring e backend sem enrolação. Playlist atrás de playlist."
+  },
+  {
+    "slug": "uncle-bob-agility-architecture",
+    "title": "Agility and Software Architecture",
+    "tag": "Talk",
+    "why": "Uncle Bob sobre agilidade e arquitetura. O vídeo que eu mando quando alguém trata as duas coisas como opostas."
+  }
+]

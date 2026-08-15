@@ -21,6 +21,8 @@ import { blogApi } from './api/blogApi'
 import { BlogService } from './services/blogService'
 import { gamesApi } from './api/gamesApi'
 import { GamesService } from './services/gamesService'
+import { pathToGloryApi } from './api/pathToGloryApi'
+import { PathToGloryService } from './services/pathToGloryService'
 
 // i18n translations
 import en from './locales/en.json'
@@ -104,6 +106,7 @@ const i18n = createI18n({
 const serviceService = new ServiceService(servicesApi)
 const blogService = new BlogService(blogApi)
 const gamesService = new GamesService(gamesApi)
+const pathToGloryService = new PathToGloryService(pathToGloryApi)
 
 // Create and configure app
 const app = createApp(App)
@@ -117,5 +120,6 @@ app.use(i18n)
 app.provide('serviceService', serviceService)
 app.provide('blogService', blogService)
 app.provide('gamesService', gamesService)
+app.provide('pathToGloryService', pathToGloryService)
 
 app.mount('#app')

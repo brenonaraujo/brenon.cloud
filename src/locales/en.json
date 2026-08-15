@@ -152,7 +152,8 @@
   "pathToGlory": {
     "title": "Path to Glory",
     "subtitle": "The roadmaps and resources I follow on the way to becoming a better engineer.",
-    "intro": "This is the curated trail I'm walking — and recommend — for anyone aiming for a career like mine. Roadmaps from roadmap.sh that I keep coming back to, plus the books, courses, and channels that shaped how I think.",
+    "intro": "This is the curated trail I'm walking — and recommend — for anyone aiming for a career like mine. Roadmaps from roadmap.sh, plus the books and videos that actually stuck.",
+    "disclaimer": "We're digging up notes to translate everything we read, watched, and listened to over more than a decade to get here. This page is a first cut — it will grow.",
     "roadmaps": {
       "title": "Recommended roadmaps",
       "description": "Open trails from roadmap.sh I'd hand to my younger self.",
@@ -170,6 +171,16 @@
           "description": "Stepping back to design systems: trade‑offs, patterns, and the long view of a codebase."
         }
       }
+    },
+    "books": {
+      "title": "Books I recommend",
+      "description": "The ones that changed how I design systems — and a couple that have nothing to do with code.",
+      "technical": "Technical",
+      "nonTechnical": "Not technical"
+    },
+    "videos": {
+      "title": "Videos and playlists",
+      "description": "Channels and talks I send people to."
     },
     "resources": {
       "title": "Study resources",
