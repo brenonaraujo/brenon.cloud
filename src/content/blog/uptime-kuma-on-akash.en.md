@@ -1,7 +1,7 @@
 ---
 title: Uptime Kuma on Akash — the monitor doesn't live on the cluster
 description: We put Uptime Kuma on Akash through Console Air. Container SDL, AKT-to-ACT swap inside the app, and an audited provider with 99.98% availability for US$ 0.57 a month.
-date: 2026-08-15
+date: 2026-08-16
 author: Brenon Araujo
 tags: [uptime-kuma, akash, console-air, monitoring, home-cloud]
 cover: /images/blog/uptime-kuma-on-akash-cover.svg
