@@ -32,15 +32,19 @@ The home cluster still serves product. Kuma just watches from outside, and pings
 
 On Akash a deployment is a YAML file called SDL, Stack Definition Language. It reads like a `docker-compose`: image, port, CPU, memory, disk, and the max price you will pay. In Console Air you build that in the editor or paste the YAML.
 
-The first lease was too short on RAM. Kuma 2.5 nightly dies, and SQLite vanishes on restart if the disk is ephemeral. The floor that actually holds the dashboard, monitors, and history is **0.5 CPU + 256 MB + a persistent volume**. Below that the pod crashes or comes back at `/setup-database`.
+The first lease was too short on RAM. Kuma 2.5 nightly dies, and SQLite vanishes on restart if the disk is ephemeral. The floor that actually holds the dashboard, monitors, and history is **0.5 CPU + 256 MB + a persistent volume mounted at `/app/data`**. Below that the pod crashes or comes back at `/setup-database`.
 
-The SDL that is live now:
+The volume has to land on `/app/data`. The official image uses `WORKDIR /app` and writes `./data/` (`db-config.json`, `kuma.db`). If the persistent disk is at `/mnt/data`, Kuma writes on the container's ephemeral disk. Restart → `db-config.json is not found` → setup wizard again.
+
+The SDL that needs to stay live:
 
 ```yaml
 version: "2.0"
 services:
   service-1:
     image: louislam/uptime-kuma:nightly2
+    env:
+      - DATA_DIR=/app/data
     expose:
       - port: 3001
         as: 80
@@ -49,7 +53,7 @@ services:
     params:
       storage:
         data:
-          mount: /mnt/data
+          mount: /app/data
           readOnly: false
 profiles:
   compute:
@@ -79,7 +83,7 @@ deployment:
       count: 1
 ```
 
-Image `nightly2`, port 3001, `beta3` disk at `/mnt/data`. Without that volume every restart wipes tags, monitors, and the status page.
+Image `nightly2`, port 3001, `beta3` disk **at `/app/data`**, `DATA_DIR=/app/data`. Wrong path and every restart wipes tags, monitors, and the status page.
 
 The wallet, SDL, and lease path is in [Console Air on Brenon.Cloud](/blog/console-air-on-brenon-cloud).
 

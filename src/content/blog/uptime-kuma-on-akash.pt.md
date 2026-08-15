@@ -32,15 +32,19 @@ O cluster em casa continua servindo produto. O Kuma só assiste de fora, e pinga
 
 Na Akash o deployment é um YAML chamado SDL, Stack Definition Language. Parece um `docker-compose`: imagem, porta, CPU, memória, disco e o preço máximo que você aceita pagar. No Console Air você monta isso no builder ou cola o YAML direto.
 
-O primeiro lease era curto demais de memória. O Kuma 2.5 nightly estoura e o SQLite some no restart se o disco for efêmero. O mínimo que segura o dashboard, os monitores e o histórico é **0,5 CPU + 256 MB + volume persistente**. Abaixo disso o pod cai ou volta pro `/setup-database`.
+O primeiro lease era curto demais de memória. O Kuma 2.5 nightly estoura e o SQLite some no restart se o disco for efêmero. O mínimo que segura o dashboard, os monitores e o histórico é **0,5 CPU + 256 MB + volume persistente montado em `/app/data`**. Abaixo disso o pod cai ou volta pro `/setup-database`.
 
-O SDL que está no ar agora:
+O volume tem que cair em `/app/data`. A imagem oficial usa `WORKDIR /app` e grava `./data/` (`db-config.json`, `kuma.db`). Se o disco persistente for pra `/mnt/data`, o Kuma escreve no disco efêmero do container. Restart → `db-config.json is not found` → wizard de novo.
+
+O SDL que precisa ficar no ar:
 
 ```yaml
 version: "2.0"
 services:
   service-1:
     image: louislam/uptime-kuma:nightly2
+    env:
+      - DATA_DIR=/app/data
     expose:
       - port: 3001
         as: 80
@@ -49,7 +53,7 @@ services:
     params:
       storage:
         data:
-          mount: /mnt/data
+          mount: /app/data
           readOnly: false
 profiles:
   compute:
@@ -79,7 +83,7 @@ deployment:
       count: 1
 ```
 
-Imagem `nightly2`, porta 3001, disco `beta3` em `/mnt/data`. Sem esse volume, cada restart apaga tag, monitor e status page.
+Imagem `nightly2`, porta 3001, disco `beta3` **em `/app/data`**, `DATA_DIR=/app/data`. Sem esse caminho, cada restart apaga tag, monitor e status page.
 
 O caminho de carteira, SDL e lease está no post [Console Air no Brenon.Cloud](/blog/console-air-on-brenon-cloud).
 
