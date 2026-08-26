@@ -22,21 +22,21 @@
           </svg>
         </button>
         <!-- Desktop menu -->
-        <div class="hidden sm:flex items-center space-x-8">
-          <nav class="flex space-x-8">
+        <div class="hidden sm:flex items-center gap-6">
+          <nav class="flex items-center gap-6">
             <template v-for="item in menuItems" :key="item.to">
               <a v-if="item.external"
                 :href="item.to"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-300 hover:text-white transition-colors"
+                class="whitespace-nowrap text-gray-300 hover:text-white transition-colors"
               >
                 {{ item.text }}
               </a>
               <router-link
                 v-else-if="item.route"
                 :to="item.to"
-                class="text-gray-300 hover:text-white transition-colors"
+                class="whitespace-nowrap text-gray-300 hover:text-white transition-colors"
               >
                 {{ item.text }}
               </router-link>
@@ -44,12 +44,13 @@
                 v-else
                 href="#"
                 @click.prevent="scrollToSection(item.to)"
-                class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                class="whitespace-nowrap text-gray-300 hover:text-white transition-colors cursor-pointer"
               >
                 {{ item.text }}
               </a>
             </template>
           </nav>
+          <AuthMenu />
           <!-- Language Selector -->
           <LanguageSelector />
         </div>
@@ -101,8 +102,11 @@
                 </a>
               </template>
             </div>
-            <!-- Language Selector for Mobile -->
             <div class="mt-8 flex justify-center">
+              <AuthMenu />
+            </div>
+            <!-- Language Selector for Mobile -->
+            <div class="mt-6 flex justify-center">
               <LanguageSelector />
             </div>
           </nav>
@@ -117,6 +121,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LanguageSelector from './ui/LanguageSelector.vue'
+import AuthMenu from './AuthMenu.vue'
 
 const router = useRouter()
 const { t } = useI18n()
