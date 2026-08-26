@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g opacity="0.06" stroke="#8b5cf6" stroke-width="1">
+    <line x1="0" y1="126" x2="1200" y2="126"/>
+    <line x1="0" y1="252" x2="1200" y2="252"/>
+    <line x1="0" y1="378" x2="1200" y2="378"/>
+    <line x1="0" y1="504" x2="1200" y2="504"/>
+    <line x1="240" y1="0" x2="240" y2="630"/>
+    <line x1="480" y1="0" x2="480" y2="630"/>
+    <line x1="720" y1="0" x2="720" y2="630"/>
+    <line x1="960" y1="0" x2="960" y2="630"/>
+  </g>
+
+  <text x="600" y="92" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="18">git-meta-harness</text>
+  <text x="600" y="168" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="52" font-weight="700">Meta-Harness</text>
+  <text x="600" y="218" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="24">govern the loop, then ship</text>
+
+  <g font-family="monospace">
+    <rect x="250" y="300" width="210" height="110" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+    <text x="355" y="348" text-anchor="middle" fill="#93c5fd" font-size="18" font-weight="700">SPEC</text>
+    <text x="355" y="378" text-anchor="middle" fill="#94a3b8" font-size="13">functional contract</text>
+
+    <rect x="495" y="300" width="210" height="110" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="600" y="348" text-anchor="middle" fill="#c4b5fd" font-size="18" font-weight="700">TEAM</text>
+    <text x="600" y="378" text-anchor="middle" fill="#94a3b8" font-size="13">8 personas</text>
+
+    <rect x="740" y="300" width="210" height="110" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+    <text x="845" y="348" text-anchor="middle" fill="#6ee7b7" font-size="18" font-weight="700">GATES</text>
+    <text x="845" y="378" text-anchor="middle" fill="#94a3b8" font-size="13">13 sensors</text>
+  </g>
+
+  <rect x="330" y="470" width="540" height="72" rx="8" fill="#1e293b" stroke="url(#accent)" stroke-width="2"/>
+  <text x="600" y="502" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-size="16" font-weight="600">GitHub Issues · PRs · Actions</text>
+  <text x="600" y="526" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="13">human validates · then release</text>
+</svg>
