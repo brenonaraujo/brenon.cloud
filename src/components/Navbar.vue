@@ -50,6 +50,7 @@
               </a>
             </template>
           </nav>
+          <AuthMenu />
           <!-- Language Selector -->
           <LanguageSelector />
         </div>
@@ -101,8 +102,11 @@
                 </a>
               </template>
             </div>
-            <!-- Language Selector for Mobile -->
             <div class="mt-8 flex justify-center">
+              <AuthMenu />
+            </div>
+            <!-- Language Selector for Mobile -->
+            <div class="mt-6 flex justify-center">
               <LanguageSelector />
             </div>
           </nav>
@@ -117,6 +121,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LanguageSelector from './ui/LanguageSelector.vue'
+import AuthMenu from './AuthMenu.vue'
 
 const router = useRouter()
 const { t } = useI18n()

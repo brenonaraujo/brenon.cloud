@@ -284,7 +284,14 @@
     "pathToGlory": "Path to Glory",
     "status": "Status",
     "products": "Products",
-    "platform": "Platform"
+    "platform": "Platform",
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out"
+  },
+  "auth": {
+    "completing": "Signing you in…",
+    "continuing": "Finishing signup…"
   },
   "footer": {
     "tagline": "Backend engineer, content creator, home‑cloud builder.",

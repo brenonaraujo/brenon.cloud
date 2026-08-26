@@ -284,7 +284,14 @@
     "pathToGlory": "Caminho para a Glória",
     "status": "Status",
     "products": "Produtos",
-    "platform": "Plataforma"
+    "platform": "Plataforma",
+    "login": "Entrar",
+    "signup": "Criar conta",
+    "logout": "Sair"
+  },
+  "auth": {
+    "completing": "Entrando…",
+    "continuing": "Finalizando o cadastro…"
   },
   "footer": {
     "tagline": "Engenheiro de backend, entusiasta de Inteligência Artificial, construtor de home‑cloud.",

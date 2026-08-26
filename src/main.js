@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
+import { useAuthStore } from './stores/authStore'
 import App from './App.vue'
 import './style.css'
 
@@ -13,6 +14,8 @@ import BlogPost from './pages/BlogPost.vue'
 import PathToGlory from './pages/PathToGlory.vue'
 import Games from './pages/Games.vue'
 import GamePlayer from './pages/GamePlayer.vue'
+import AuthCallback from './pages/AuthCallback.vue'
+import AuthContinue from './pages/AuthContinue.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
@@ -69,6 +72,16 @@ const router = createRouter({
       props: true
     },
     {
+      path: '/auth/callback',
+      name: 'auth-callback',
+      component: AuthCallback
+    },
+    {
+      path: '/auth/continue',
+      name: 'auth-continue',
+      component: AuthContinue
+    },
+    {
       path: '/status',
       beforeEnter: (to, from, next) => {
         window.location.href = 'https://uptime.brenon.cloud/status/services';
@@ -112,6 +125,7 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(i18n)
+useAuthStore().hydrate()
 
 // Provide dependencies (Dependency Injection)
 app.provide('serviceService', serviceService)
