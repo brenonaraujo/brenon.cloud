@@ -269,13 +269,17 @@ O Meta-Harness Stanford é o mesmo desenho uma camada abaixo: o proposer inspeci
 
 Framework que só funciona em repo vazio é tutorial. A gente usou os dois jeitos.
 
-### mandai-v2 — greenfield, o caso de validação
+### mandai-v2 — greenfield, agora público
 
-O [mandai-v2](https://github.com/brenonaraujo/mandai-v2) é o projeto que o README público nomeia como caso de validação e teste. O repo é privado, então este post não vai inventar contagem de issues. O que dá para afirmar pela trilha pública: o harness foi materializado lá primeiro, no Hermes Agent, como greenfield completo — spec entra, team-manager decompõe, personas entregam atrás de sensores.
+O **[mandai-v2](https://github.com/brenonaraujo/mandai-v2)** está público. É o caso de validação nomeado no README do git-meta-harness — o primeiro greenfield completo da fábrica, no Hermes Agent.
 
-O formato do produto é um marketplace B2B2C de compras coletivas: líderes abrem rodadas, moradores entram e pagam, fornecedores cumprem. Multi-tenant por workspace, multi-papel por conta, i18n como restrição de primeira classe (en, pt-BR, es). É exatamente a classe de trabalho em que um agente sozinho alucina arquitetura: papéis demais, dinheiro demais, domínio "óbvio" que não é óbvio.
+O produto é compra coletiva por líder de praça, no formato Meituan Select / Duoduo Maicai. SPEC v0.2: WhatsApp-first, Pix-first, celular como identidade, multi-tenant por workspace (bairro digital), uma conta com três papéis (Morador, Líder, Fornecedor) mais Admin. A stack casa com o default do harness: Go + Gin + GORM + PostgreSQL, Nuxt 4 + Nuxt UI + Pinia, estrutura de i18n no lugar com waiver de conteúdo PT-BR (ADR-0001).
 
-Greenfield é onde `gmh install` + seed parecem mágica. O team-manager cria a issue #1. Você não configura a fábrica. Você valida.
+O repo carrega o harness materializado: `harness/bootstrap.md`, `harness/AGENTS.md`, personas (incluindo `examples/domain-expert-mandai.md`), sensores, templates de issue, CI. O fluxo documentado é `triage → refined → ready → in-progress → in-review → qa → done`.
+
+Contado no repo público (2026-08-26): **80 issues**, todas fechadas; **33 pull requests**; o épico do MVP é a [#97](https://github.com/brenonaraujo/mandai-v2/issues/97). O contrário de um scaffold de brinquedo. Spec entra, team-manager roteia, personas entregam atrás de sensores, humano valida.
+
+Greenfield é onde `gmh install` + seed parecem mágica. O team-manager cria a issue #1. Você não configura a fábrica. Você valida. Depois a fábrica continua pelas outras 79 issues.
 
 ### Clinicsy — adopt num SaaS produtivo
 
@@ -358,5 +362,6 @@ A gente construiu essa fábrica. Um lab em Stanford, independente, construiu uma
 - **[stanford-iris-lab/meta-harness](https://github.com/stanford-iris-lab/meta-harness)**: Código de referência do paper.
 - **[Loop Engineering Agentico](/blog/agentic-loop-engineering)**: O relato de campo que este post continua.
 - **[Clinicsy](https://clinicsy.app)**: SaaS ao vivo — gestão para home care, consultório e clínica. O caso brownfield.
+- **[mandai-v2](https://github.com/brenonaraujo/mandai-v2)**: Validação greenfield pública — 80 issues, 33 PRs, SPEC v0.2, `harness/` materializado.
 - **[Hermes Agent](https://hermes-agent.nousresearch.com/docs/)**: O runtime do caso de validação.
 - **[brenon.cloud](https://brenon.cloud)**: Onde este artigo é publicado.
