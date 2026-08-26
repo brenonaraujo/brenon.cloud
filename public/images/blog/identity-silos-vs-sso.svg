@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" width="1000" height="480">
+  <defs>
+    <linearGradient id="bgSilo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="480" fill="url(#bgSilo)" rx="12"/>
+  <text x="500" y="36" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="18" font-weight="bold">Two models of login</text>
+
+  <text x="250" y="72" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="13" font-weight="bold">SILO</text>
+  <text x="250" y="90" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="11">one password per app</text>
+
+  <g font-family="monospace">
+    <rect x="70" y="115" width="160" height="64" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+    <text x="150" y="142" text-anchor="middle" fill="#fecaca" font-size="12">Grafana</text>
+    <text x="150" y="162" text-anchor="middle" fill="#64748b" font-size="10">admin / ****</text>
+    <rect x="270" y="115" width="160" height="64" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+    <text x="350" y="142" text-anchor="middle" fill="#fecaca" font-size="12">n8n</text>
+    <text x="350" y="162" text-anchor="middle" fill="#64748b" font-size="10">owner / ****</text>
+    <rect x="70" y="200" width="160" height="64" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+    <text x="150" y="227" text-anchor="middle" fill="#fecaca" font-size="12">MinIO</text>
+    <text x="150" y="247" text-anchor="middle" fill="#64748b" font-size="10">root / ****</text>
+    <rect x="270" y="200" width="160" height="64" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+    <text x="350" y="227" text-anchor="middle" fill="#fecaca" font-size="12">Draw</text>
+    <text x="350" y="247" text-anchor="middle" fill="#64748b" font-size="10">no login</text>
+  </g>
+  <text x="250" y="300" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="12">revoke = hunt five UIs</text>
+  <text x="250" y="322" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="12">MFA = five setups or none</text>
+
+  <line x1="500" y1="100" x2="500" y2="340" stroke="#334155" stroke-width="1"/>
+
+  <text x="750" y="72" text-anchor="middle" fill="#86efac" font-family="monospace" font-size="13" font-weight="bold">SSO</text>
+  <text x="750" y="90" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="11">one IdP, many clients</text>
+
+  <rect x="630" y="115" width="240" height="70" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  <text x="750" y="145" text-anchor="middle" fill="#93c5fd" font-family="monospace" font-size="13" font-weight="bold">AUTHENTIK</text>
+  <text x="750" y="166" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">session + groups</text>
+
+  <g font-family="monospace" font-size="11">
+    <rect x="575" y="220" width="105" height="48" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="627" y="249" text-anchor="middle" fill="#86efac">Grafana</text>
+    <rect x="698" y="220" width="105" height="48" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="750" y="249" text-anchor="middle" fill="#86efac">n8n</text>
+    <rect x="821" y="220" width="105" height="48" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <text x="873" y="249" text-anchor="middle" fill="#86efac">Draw</text>
+  </g>
+  <line x1="750" y1="185" x2="627" y2="220" stroke="#3b82f6" stroke-width="1.5"/>
+  <line x1="750" y1="185" x2="750" y2="220" stroke="#3b82f6" stroke-width="1.5"/>
+  <line x1="750" y1="185" x2="873" y2="220" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="750" y="300" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="12">revoke = drop a group</text>
+  <text x="750" y="322" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="12">MFA lives on the IdP</text>
+
+  <rect x="80" y="360" width="840" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="500" y="394" text-anchor="middle" fill="#e2e8f0" font-family="sans-serif" font-size="14">SSO is not the same password copied around. The apps never see the password.</text>
+  <text x="500" y="418" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="13">They ask the IdP: is this person signed in, and may they use me?</text>
+</svg>
