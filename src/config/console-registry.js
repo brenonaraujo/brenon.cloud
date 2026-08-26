@@ -5,6 +5,9 @@
  *
  * groups: ['*'] = any Authentik session
  * otherwise the user needs at least one listed group (from the all_groups claim)
+ *
+ * icon: key used by Console.vue → Icons.js
+ * color: blue | green | cyan | orange | purple | red
  */
 export const CONSOLE_SERVICES = [
   {
@@ -15,7 +18,9 @@ export const CONSOLE_SERVICES = [
       pt: 'Quadro compartilhado. Qualquer conta Brenon Cloud.'
     },
     url: 'https://draw.brenon.cloud',
-    groups: ['*']
+    groups: ['*'],
+    icon: 'draw',
+    color: 'blue'
   },
   {
     id: 'grafana',
@@ -25,7 +30,9 @@ export const CONSOLE_SERVICES = [
       pt: 'Métricas e dashboards do lab.'
     },
     url: 'https://grafana.brenon.cloud',
-    groups: ['brenon-admins', 'brenon-ops', 'brenon-viewers']
+    groups: ['brenon-admins', 'brenon-ops', 'brenon-viewers'],
+    icon: 'chart',
+    color: 'orange'
   },
   {
     id: 'n8n',
@@ -35,7 +42,9 @@ export const CONSOLE_SERVICES = [
       pt: 'Automação de fluxos.'
     },
     url: 'https://n8n.brenon.cloud',
-    groups: ['brenon-admins', 'brenon-ops', 'brenon-builders']
+    groups: ['brenon-admins', 'brenon-ops', 'brenon-builders'],
+    icon: 'workflow',
+    color: 'purple'
   },
   {
     id: 'minio',
@@ -45,7 +54,9 @@ export const CONSOLE_SERVICES = [
       pt: 'Console do object storage. S3 continua na API.'
     },
     url: 'https://minio-console.brenon.cloud',
-    groups: ['brenon-admins', 'brenon-ops']
+    groups: ['brenon-admins', 'brenon-ops'],
+    icon: 'cloudstorage',
+    color: 'cyan'
   },
   {
     id: 'portainer',
@@ -55,7 +66,9 @@ export const CONSOLE_SERVICES = [
       pt: 'Swarm. Só staff. Login local continua como break-glass.'
     },
     url: 'https://portainer.brenon.cloud',
-    groups: ['brenon-admins']
+    groups: ['brenon-admins'],
+    icon: 'settings',
+    color: 'green'
   }
 ]
 

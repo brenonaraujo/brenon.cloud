@@ -331,9 +331,11 @@
     "continuing": "Finalizando o cadastro…"
   },
   "console": {
+    "eyebrow": "Brenon Cloud",
     "title": "Console",
     "subtitle": "Serviços que esta conta pode abrir. Mais tiles aparecem quando entra um plano ou um grupo de staff.",
-    "empty": "A conta está logada, mas ainda não tem app de console. Draw vale para qualquer conta — se não aparecer, atualize depois do cadastro terminar."
+    "empty": "A conta está logada, mas ainda não tem app de console. Draw vale para qualquer conta — se não aparecer, atualize depois do cadastro terminar.",
+    "open": "Abrir"
   },
   "footer": {
     "tagline": "Engenheiro de backend, entusiasta de Inteligência Artificial, construtor de home‑cloud.",
