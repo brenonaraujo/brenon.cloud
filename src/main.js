@@ -16,6 +16,7 @@ import Games from './pages/Games.vue'
 import GamePlayer from './pages/GamePlayer.vue'
 import AuthCallback from './pages/AuthCallback.vue'
 import AuthContinue from './pages/AuthContinue.vue'
+import Console from './pages/Console.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
@@ -82,6 +83,11 @@ const router = createRouter({
       path: '/auth/continue',
       name: 'auth-continue',
       component: AuthContinue
+    },
+    {
+      path: '/console',
+      name: 'console',
+      component: Console
     },
     {
       path: '/status',

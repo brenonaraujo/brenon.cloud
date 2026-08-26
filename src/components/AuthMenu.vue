@@ -27,14 +27,14 @@
         class="absolute right-0 z-50 mt-2 min-w-[12rem] rounded-md border border-white/10 bg-gray-900/95 py-1 shadow-xl backdrop-blur-sm"
         role="menu"
       >
-        <a
-          href="https://auth.brenon.cloud/if/user/"
+        <router-link
+          to="/console"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
           role="menuitem"
           @click="open = false"
         >
           {{ t('navbar.console') }}
-        </a>
+        </router-link>
         <a
           href="https://draw.brenon.cloud"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
