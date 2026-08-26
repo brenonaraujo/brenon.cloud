@@ -1,6 +1,6 @@
 ---
-title: Single sign-on on a home cloud — from identity, through OIDC, to Authentik on Brenon.Cloud
-description: What identity, SSO and OIDC actually are, how the authorization-code dance works, and how we wired Authentik to Grafana, Portainer, n8n, MinIO, Draw and a custom Go to console flow on brenon.cloud.
+title: One door for many services — Authentik as the access plane on Brenon.Cloud
+description: Why we put Authentik in front of the lab: one login so more people can use more services, with a single place to grant and revoke. What Authentik is, how it compares to other open-source IdPs, and how OIDC carries that session to each console.
 date: 2026-08-26
 author: Brenon Araujo
 tags: [authentik, sso, oidc, home-cloud, identity]
@@ -8,13 +8,17 @@ cover: /images/blog/authentik-sso-on-brenon-cloud-cover.svg
 coverFallback: /images/blog/authentik-sso-on-brenon-cloud-cover.svg
 ---
 
-# Single sign-on on a home cloud
+# One door for many services
 
-A cloud is not a pile of containers with public hostnames. A cloud has an identity plane: one place that answers *who is this person* and *what may they open*. AWS does that with IAM Identity Center. Google does it with the account picker. Azure does it with Entra ID. We already ran Swarm, Kong, a tunnel, and a dozen `*.brenon.cloud` hosts. What we did not have was that plane.
+We did not turn on SSO to look like a vendor. We did it because the lab was getting hard to share.
 
-Authentik was already up at [auth.brenon.cloud](https://auth.brenon.cloud). Version 2025.8.4, healthy, almost nothing plugged in. Grafana had a password. Portainer had a password. n8n had a password. MinIO had a root user. Draw was wide open. That is a lab. It is not a cloud.
+Every new console meant another password to invent, another admin user to create, another place to remember to delete someone. Grafana, Portainer, n8n, MinIO, Draw — five doors. That is fine when the only user is you. It falls apart the moment you want a collaborator in n8n, a friend on Draw, later a customer on a Hermes instance. You cannot scale access if access is five spreadsheets.
 
-This article follows the same shape as [the loop engineering post](/blog/agentic-loop-engineering): start with the idea, name the protocol, then walk through what we actually shipped and where it broke. The store that sells a Hermes instance to a stranger is not live. The identity plane is the prerequisite, and that part is.
+So we made **one door**. You sign in at [auth.brenon.cloud](https://auth.brenon.cloud). Authentik decides who you are and which tiles you may open. The consoles stop owning passwords. Revoke is a group, not a hunt. That is the whole reason.
+
+Authentik was already running there (2025.8.4). It was an IdP with almost nothing plugged in. The work was to make it the **core**: the single access-control point for humans on `*.brenon.cloud`. This post starts there — why, then what Authentik actually is and why it stayed instead of Keycloak or Authelia — and only then walks the protocol and each console.
+
+The marketing site, games, TibiaPixel play, and the status page stay public. A door is for consoles, not for reading the blog.
 
 ---
 
@@ -128,34 +132,59 @@ A few rules that are easy to skip and expensive to debug:
 
 ---
 
-## How this is the same shape as a real cloud
+## Why Authentik is the core
 
-Once you have an IdP, a portal, and groups, you are no longer describing a homelab trick. You are describing the same objects AWS, GCP, and Azure sell, with different names.
+The protocol is OIDC. The **product** in the middle is Authentik. If Authentik is down, Grafana is down, Draw is down, the **Go to console** button is down. Portainer is the only console that still has a local password, and that is only so we can recover the Swarm that runs Authentik itself.
 
-| Cloud vendor | Object | Brenon.Cloud |
-|--------------|--------|--------------|
-| AWS IAM Identity Center | access portal | Authentik library at `/if/user/` |
-| AWS | account | this Swarm |
-| AWS | permission set | Authentik group |
-| AWS | IAM user | Authentik user |
-| AWS | access key | Kong `key-auth` consumer |
-| AWS Cognito / GCP IAP / Azure App Registration | app client | OIDC provider per slug |
-| AWS ALB + OIDC | forward auth | oauth2-proxy in front of dumb apps |
-| AWS Organizations SCP | guardrail | policy on the application |
+![Authentik is the control plane](/images/blog/authentik-building-blocks.svg)
 
-The important mapping is not the table. It is the **separation of duties**:
+Authentik is a self-hosted IdP (MIT, Python/Django, Postgres, Redis, a worker). We run it as a Swarm stack at `auth.brenon.cloud`. The pieces that matter for sharing services are not marketing bullets. They are objects we click — and now describe in [brenon-cloud-identity](https://github.com/brenonaraujo/brenon-cloud-identity).
 
-- Billing (Stripe, later) does not log you in. It writes a group.
-- The IdP does not provision Docker. It answers who you are and which tiles you may see.
-- The orchestrator that will one day spawn a Hermes instance for a customer reads the group, not the credit card.
+**Application.** The tile. Name, slug, launch URL, which groups see it. The user library at `/if/user/` is just the list of applications you are allowed to open. That library is the reason we can invite more people without mailing five URLs and five passwords.
 
-Without that split, selling capacity is a spreadsheet of passwords. With it, selling capacity is "put them in `plan-hermes` and start a stack."
+**Provider.** How the tile talks. Ours are OAuth2/OIDC (`grafana`, `n8n`, `minio`, `draw`, `brenon-cloud`). Authentik also speaks SAML, LDAP, SCIM, and a **proxy** provider. A provider with no application is a dead client — oauth2-proxy said `Failed to resolve application` until we linked them. Discovery can return 200 while authorize still fails.
+
+**Flow and stage.** A flow is an ordered list of stages: identification, password, MFA, write the user, log them in, redirect. Login and **sign up** are two flows. We pointed the identification stage at our enrollment flow so "I do not have an account" is not a second product. The leftover slug is still `bankdefi-enrollment-flow`. The title on screen is Brenon Cloud.
+
+**Group.** The permission set. `brenon-admins`, `brenon-ops`, `brenon-viewers`, `brenon-builders`, `plan-free`. Bindings are deny-by-default. Draw is the exception: any authenticated user, so a new free account can already open a board.
+
+**Policy.** Extra conditions (expression, reputation). We mostly rely on the group binding. The object is there when a plan needs more than a tile.
+
+**Brand.** The chrome of the login page. This is how the door says Brenon Cloud instead of a generic Authentik.
+
+**Source.** Inbound identity: Google, LDAP, another SAML IdP. Not wired. When we want "Sign in with Google" we add a source. We do not replace Authentik.
+
+**Outpost.** Authentik's own edge process for forward-auth, LDAP, RADIUS. We used **oauth2-proxy** in front of n8n, MinIO, and Draw instead, because we needed to skip `/webhook*` and kill Excalidraw's service worker. The outpost is still the native answer if we fold those proxies back in.
+
+**Blueprints and the API.** As-code. The catalog is the source of truth. Apply goes to the LAN listener (`:9005`) because Cloudflare 403s non-browser user agents on the public host.
+
+**Events.** Every login, every failed authorize, every policy deny. When a collaborator cannot open n8n, this is the first log, not five app logs.
+
+What we are not using yet, but is why the box can stay the core for years: WebAuthn/passkeys, invitation links, recovery flows, RAC (remote access), more sources. The point of picking a full IdP is that those are stages and objects, not a migration.
+
+### What we looked at instead
+
+This was not a greenfield bake-off. Authentik was already on the cluster. We still had to decide whether to **keep it as the plane** or rip it out for something thinner or heavier. The job was: one portal, many OIDC clients, a signup flow we can show on brenon.cloud, groups we can hand to Stripe later, ops we can run on a home Swarm.
+
+![Open-source IdPs, for our job](/images/blog/authentik-vs-oss-idp.svg)
+
+**Keycloak** is the default enterprise answer. Realms, SAML, LDAP federation, a huge admin surface, a Terraform provider. It would have done OIDC for Grafana. It would not have given us a user-facing **application library** that looks like a console. Flows exist; deep custom is a Java SPI. Memory and JVM ops are real on a small node. We would have traded a box we already run for a heavier IAM we do not staff.
+
+**Authelia** is the homelab favorite when the only problem is "put login in front of this reverse proxy." One Go binary, YAML, excellent forward-auth for Traefik and nginx. Its OIDC provider is enough for a couple of clients. It is not a directory, a flow designer, or a portal. Enrollment as a product and groups as a catalog are the wrong shape. If we only needed to lock Draw, Authelia would have been the smaller tool. We needed to **share many services with many people** from one place.
+
+**Zitadel** is closer to Authentik in ambition: OIDC, a login UI, actions, first-class multi-tenant (instances, orgs, projects). That model is right if the product *is* IAM for other companies. Our tenant is one home cloud. Authentik's application + group is a shallower mental model and it matched the tiles we wanted.
+
+**Kanidm** (Rust) is the right IdP if the pain is POSIX: PAM, nss, Unix users. That is not our pain. **Ory** (Hydra + Kratos + Keto + Oathkeeper) is the right answer if you want to assemble an IdP from parts. We wanted one box. **Dex** is a broker in front of someone else's users. We needed the user store.
+
+Authentik sat in the middle we actually needed: a portal, visual flows, a provider per app, groups, an API, and an outpost if we want it — without a JVM and without assembling four services. That is why it is the core, not a leftover from a previous experiment.
+
+The resemblance to a public cloud is a side effect, not the goal. AWS Identity Center is also "one portal, permission sets, apps." We care about that shape because it lets us invite people. We do not need to win a comparison with us-east-1.
 
 ---
 
-## Then we actually did it
+## Then we wired the consoles to it
 
-Authentik was already a Swarm stack. We did not install a new IdP. We treated the existing one as the plane, described the catalog in [brenon-cloud-identity](https://github.com/brenonaraujo/brenon-cloud-identity), and applied it against the LAN API (`192.168.1.101:9005`) because Cloudflare in front of the public host returns 403 to non-browser user agents.
+We did not install a new IdP. We described the catalog and applied it. Cloudflare in front of the public host returns 403 to non-browser user agents, so apply talks to the LAN API.
 
 The website stayed public. TibiaPixel play stayed public. The Uptime status page stayed public. Machine routes on `api.brenon.cloud` stayed on Kong keys. Humans and bots are not the same door.
 
@@ -226,11 +255,11 @@ Comments and likes on posts are not built. When they are, they will read `profil
 
 ---
 
-## Groups are the catalog
+## Groups are how we share
 
 Staff groups already exist: `brenon-admins`, `brenon-ops`, `brenon-viewers`, `brenon-builders`. `plan-free` exists for product apps. Bindings are deny-by-default: if the application is not assigned to one of your groups, it does not show in the library and the provider rejects the token. Draw is the exception we called out above.
 
-This is enough authorization to sell later:
+This is the single control point. Invite someone to Authentik, put them in a group, they see those tiles. Take the group away, every console that checks the token stops. We do not open a ticket on five products.
 
 1. Checkout says the customer paid `price_xxx`.
 2. A webhook (n8n, with `/webhook*` already open) puts them in `plan-hermes` or `plan-oficina`.
@@ -303,7 +332,11 @@ The promise is not that a home rack becomes AWS. The promise is that the **objec
 - **[OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html)**: the protocol, including the authorization-code flow and the ID token.
 - **[OAuth 2.0 RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749)**: what OIDC sits on.
 - **[PKCE RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636)**: why a public SPA can do this without a client secret.
-- **[Authentik](https://goauthentik.io/)**: the IdP we run.
+- **[Authentik](https://goauthentik.io/)**: the IdP, and the core of this setup.
+- **[Authentik docs](https://docs.goauthentik.io/)**: applications, providers, flows, outposts.
+- **[Keycloak](https://www.keycloak.org/)**: the heavier Java IAM we did not move to.
+- **[Authelia](https://www.authelia.com/)**: the forward-auth box that would have been enough to lock one host, not to share many.
+- **[Zitadel](https://zitadel.com/)**: multi-tenant IAM, closer in ambition, wrong tenant model for one home cloud.
 - **[User library](https://auth.brenon.cloud/if/user/)**: the portal after login.
 - **[brenon.cloud](https://brenon.cloud)**: Go to console in the nav.
 - **[Draw](https://draw.brenon.cloud)**: Excalidraw, SSO required.
