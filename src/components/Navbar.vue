@@ -22,21 +22,21 @@
           </svg>
         </button>
         <!-- Desktop menu -->
-        <div class="hidden sm:flex items-center space-x-8">
-          <nav class="flex space-x-8">
+        <div class="hidden sm:flex items-center gap-6">
+          <nav class="flex items-center gap-6">
             <template v-for="item in menuItems" :key="item.to">
               <a v-if="item.external"
                 :href="item.to"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-300 hover:text-white transition-colors"
+                class="whitespace-nowrap text-gray-300 hover:text-white transition-colors"
               >
                 {{ item.text }}
               </a>
               <router-link
                 v-else-if="item.route"
                 :to="item.to"
-                class="text-gray-300 hover:text-white transition-colors"
+                class="whitespace-nowrap text-gray-300 hover:text-white transition-colors"
               >
                 {{ item.text }}
               </router-link>
@@ -44,7 +44,7 @@
                 v-else
                 href="#"
                 @click.prevent="scrollToSection(item.to)"
-                class="text-gray-300 hover:text-white transition-colors cursor-pointer"
+                class="whitespace-nowrap text-gray-300 hover:text-white transition-colors cursor-pointer"
               >
                 {{ item.text }}
               </a>
