@@ -149,3 +149,46 @@ export const CloudStorageIcon = defineComponent({
     ])
   }
 })
+
+export const DrawIcon = defineComponent({
+  name: 'DrawIcon',
+  props: {
+    class: String
+  },
+  render() {
+    return h('svg', {
+      class: this.class,
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round'
+    }, [
+      h('path', { d: 'M12 20h9' }),
+      h('path', { d: 'M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z' })
+    ])
+  }
+})
+
+export const ExternalIcon = defineComponent({
+  name: 'ExternalIcon',
+  props: {
+    class: String
+  },
+  render() {
+    return h('svg', {
+      class: this.class,
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': '2',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round'
+    }, [
+      h('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }),
+      h('polyline', { points: '15 3 21 3 21 9' }),
+      h('line', { x1: '10', y1: '14', x2: '21', y2: '3' })
+    ])
+  }
+})
