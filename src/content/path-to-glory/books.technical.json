@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "designing-data-intensive-applications",
+    "title": "Designing Data-Intensive Applications",
+    "author": "Martin Kleppmann",
+    "year": 2025,
+    "url": "https://www.amazon.com.br/dp/1098119061",
+    "tag": "Data systems",
+    "why": "The book I keep going back to for storage, replication, partitioning, and what actually fails when data grows. Second edition."
+  },
+  {
+    "slug": "clean-architecture",
+    "title": "Clean Architecture",
+    "author": "Robert C. Martin",
+    "year": 2017,
+    "url": "https://www.amazon.com.br/dp/0134494164",
+    "tag": "Architecture",
+    "why": "Boundaries, dependency direction, and how to keep a codebase from rotting as features pile up."
+  },
+  {
+    "slug": "building-multi-tenant-saas",
+    "title": "Building Multi-Tenant SaaS Architectures",
+    "author": "Tod Golding",
+    "year": 2024,
+    "url": "https://www.oreilly.com/library/view/building-multi-tenant-saas/9781098140632/",
+    "tag": "SaaS",
+    "why": "Principles, practices, and patterns for multi-tenant systems on AWS — isolation, tenancy models, the stuff that bites you in production."
+  },
+  {
+    "slug": "domain-driven-design",
+    "title": "Domain-Driven Design",
+    "author": "Eric Evans",
+    "year": 2003,
+    "url": "https://www.amazon.com.br/dp/8550800651",
+    "tag": "Domain",
+    "why": "How to attack software complexity from the domain, not from the framework of the week."
+  },
+  {
+    "slug": "building-microservices",
+    "title": "Building Microservices",
+    "author": "Sam Newman",
+    "year": 2021,
+    "url": "https://www.oreilly.com/library/view/building-microservices-2nd/9781492034018/",
+    "tag": "Microservices",
+    "why": "Second edition. When to split, when not to, and what you actually pay for independently deployable services."
+  },
+  {
+    "slug": "designing-distributed-systems",
+    "title": "Designing Distributed Systems",
+    "author": "Brendan Burns",
+    "year": 2018,
+    "url": "https://www.oreilly.com/library/view/designing-distributed-systems/9781491983638/",
+    "tag": "Distributed systems",
+    "why": "Patterns you keep rediscovering in containers and orchestrators — written by someone who built Kubernetes."
+  }
+]

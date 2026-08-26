@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "designing-data-intensive-applications",
+    "title": "Designing Data-Intensive Applications",
+    "tag": "Sistemas de dados",
+    "why": "O livro que eu reabro pra storage, replicação, particionamento e o que quebra de verdade quando o dado cresce. Segunda edição."
+  },
+  {
+    "slug": "clean-architecture",
+    "title": "Clean Architecture",
+    "tag": "Arquitetura",
+    "why": "Fronteiras, direção de dependência e como um código não apodrece quando a feature se acumula."
+  },
+  {
+    "slug": "building-multi-tenant-saas",
+    "title": "Building Multi-Tenant SaaS Architectures",
+    "tag": "SaaS",
+    "why": "Princípios, práticas e padrões de multi-tenant na AWS — isolamento, modelo de tenancy, o que dói em produção."
+  },
+  {
+    "slug": "domain-driven-design",
+    "title": "Domain-Driven Design",
+    "tag": "Domínio",
+    "why": "Como atacar a complexidade do software pelo domínio, não pelo framework da semana."
+  },
+  {
+    "slug": "building-microservices",
+    "title": "Building Microservices",
+    "tag": "Microsserviços",
+    "why": "Segunda edição. Quando quebrar, quando não quebrar, e o preço real de serviço independente."
+  },
+  {
+    "slug": "designing-distributed-systems",
+    "title": "Designing Distributed Systems",
+    "tag": "Sistemas distribuídos",
+    "why": "Padrões que você redescobre em container e orquestrador — escrito por quem fez o Kubernetes."
+  }
+]

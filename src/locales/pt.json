@@ -167,7 +167,8 @@
   "pathToGlory": {
     "title": "Caminho para a Glória",
     "subtitle": "Os roadmaps e recursos que sigo no caminho de me tornar um engenheiro melhor.",
-    "intro": "Esta é a trilha curada que estou percorrendo — e que recomendo — pra quem quer uma carreira parecida com a minha. Roadmaps do roadmap.sh aos quais sempre volto, mais os livros, cursos e canais que moldaram como penso.",
+    "intro": "Esta é a trilha que estou percorrendo — e que recomendo — pra quem quer uma carreira parecida com a minha. Roadmaps do roadmap.sh, mais os livros e vídeos que realmente ficaram.",
+    "disclaimer": "Estamos recuperando anotações pra traduzir tudo que lemos, assistimos e ouvimos ao longo de mais de uma década pra chegar até aqui. Esta página é um recorte — vai crescer.",
     "roadmaps": {
       "title": "Roadmaps recomendados",
       "description": "Trilhas abertas do roadmap.sh que entregaria pro meu eu mais novo.",
@@ -185,6 +186,16 @@
           "description": "Dar um passo atrás pra desenhar sistemas: trade‑offs, padrões e a visão de longo prazo de uma base de código."
         }
       }
+    },
+    "books": {
+      "title": "Livros que recomendo",
+      "description": "Os que mudaram como eu desenho sistema — e uns que não têm nada a ver com código.",
+      "technical": "Técnicos",
+      "nonTechnical": "Não técnicos"
+    },
+    "videos": {
+      "title": "Vídeos e playlists",
+      "description": "Canais e talks que eu indico."
     },
     "resources": {
       "title": "Recursos de estudo",

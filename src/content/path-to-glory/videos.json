@@ -1,0 +1,21 @@
+[
+  {
+    "slug": "devdojo-brasil",
+    "title": "DevDojo Brasil",
+    "author": "William Suane",
+    "kind": "channel",
+    "url": "https://www.youtube.com/@DevDojoBrasil",
+    "tag": "Channel",
+    "why": "The channel I point people to when they want Java, Spring, and backend without the fluff. Playlist after playlist."
+  },
+  {
+    "slug": "uncle-bob-agility-architecture",
+    "title": "Agility and Software Architecture",
+    "author": "Robert C. Martin",
+    "kind": "talk",
+    "url": "https://www.youtube.com/watch?v=0oGpWmS0aYQ",
+    "thumb": "https://i.ytimg.com/vi/0oGpWmS0aYQ/hqdefault.jpg",
+    "tag": "Talk",
+    "why": "Uncle Bob on agility and architecture. The talk I send when someone treats those two as opposites."
+  }
+]
