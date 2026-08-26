@@ -289,6 +289,34 @@
                   </table>
                 </div>
               </div>
+
+              <div v-if="clusterGpus.length">
+                <h4 class="text-sm font-medium text-gray-300 mb-3">{{ t('home.about.cluster.gpusTitle') }}</h4>
+                <div class="overflow-x-auto rounded-xl ring-1 ring-white/10">
+                  <table class="min-w-full text-sm">
+                    <thead class="bg-gray-800/80 text-gray-400 text-left">
+                      <tr>
+                        <th class="px-4 py-3 font-medium">{{ t('home.about.cluster.gpuName') }}</th>
+                        <th class="px-4 py-3 font-medium">{{ t('home.about.cluster.gpuRole') }}</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                      <tr
+                        v-for="gpu in clusterGpus"
+                        :key="gpu.name"
+                        class="bg-gray-900/40 hover:bg-gray-800/40 transition-colors"
+                      >
+                        <td class="px-4 py-3 font-mono text-emerald-300">{{ gpu.name }}</td>
+                        <td class="px-4 py-3">
+                          <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium ring-1 bg-emerald-500/15 text-emerald-300 ring-emerald-400/30">
+                            {{ gpu.role }}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -423,6 +451,7 @@ const clusterStats = computed(() => {
     { key: 'nodes', label: 'Nodes', value: s.nodes },
     { key: 'cpu', label: 'CPU', value: s.cpu },
     { key: 'ram', label: 'RAM', value: s.ram },
+    { key: 'gpus', label: 'GPUs', value: s.gpus },
     { key: 'stacks', label: 'Stacks', value: s.stacks },
     { key: 'services', label: 'Services', value: s.services },
     { key: 'containers', label: 'Containers', value: s.containers },
@@ -434,6 +463,11 @@ const clusterStats = computed(() => {
 const clusterNodes = computed(() => {
   const nodes = tm('home.about.cluster.nodes')
   return Array.isArray(nodes) ? nodes : []
+})
+
+const clusterGpus = computed(() => {
+  const gpus = tm('home.about.cluster.gpus')
+  return Array.isArray(gpus) ? gpus : []
 })
 
 onMounted(async () => {
