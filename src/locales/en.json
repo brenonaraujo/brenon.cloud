@@ -331,9 +331,11 @@
     "continuing": "Finishing signup…"
   },
   "console": {
+    "eyebrow": "Brenon Cloud",
     "title": "Console",
     "subtitle": "Services this account can open. More tiles appear when a plan or staff group is added.",
-    "empty": "This account is signed in, but no console app is assigned yet. Draw is available to every account — if you do not see it, refresh after signup finishes."
+    "empty": "This account is signed in, but no console app is assigned yet. Draw is available to every account — if you do not see it, refresh after signup finishes.",
+    "open": "Open"
   },
   "footer": {
     "tagline": "Backend engineer, content creator, home‑cloud builder.",
