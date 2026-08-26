@@ -1,6 +1,6 @@
 ---
 title: git-meta-harness — From Loop Engineering to a Team That Ships
-description: We designed the loop. Then we needed the loop itself to be a product — personas, sensors, GitHub as substrate. Independently, Stanford IRIS published Meta-Harness. Same name, complementary layers, and two real deployments including Clinicsy.
+description: We designed the loop. Then we needed the loop itself to be a product — dynamic personas, harness memory, GitHub as substrate. Independently, Stanford IRIS published Meta-Harness. Same name, complementary layers, Hermes underneath, and two real deployments including Clinicsy.
 date: 2026-08-27
 author: Brenon Araujo
 tags: [ai, agentic, loop-engineering, meta-harness, hermes, github, autonomous-agents]
@@ -14,9 +14,9 @@ In [Agentic Loop Engineering](/blog/agentic-loop-engineering) we argued that the
 
 Every new repo still asked the same tax. Pick a stack. Write personas. Wire CI. Invent labels. Explain to the agent, again, that the domain expert does not write code and that a green test suite is not a release. The loop was real. The factory that produces the loop was not.
 
-So we built **git-meta-harness** — a framework that materializes a multi-agent delivery team from a functional spec, using GitHub Issues, PRs, and Actions as the native substrate. We called it *meta* because the unit it delivers is not one configured agent. It is an orchestrated team, with process, gates, and an audit trail.
+So we built **git-meta-harness** — a framework that materializes a multi-agent delivery team from a functional spec, using GitHub Issues, PRs, and Actions as the native substrate. We called it *meta* because the unit it delivers is not one configured agent. It is an orchestrated team, with process, gates, and an audit trail. Some of those profiles are **created from the project itself** — a `domain-expert-clinicsy` is not a generic PM with the name swapped. It is instantiated from the spec, the stack, and the language of that product.
 
-Then we went looking for whether anyone else had named the same idea. They had. In March 2026, Stanford IRIS (with MIT and KRAFTON) published **Meta-Harness: End-to-End Optimization of Model Harnesses** ([arXiv:2603.28052](https://arxiv.org/abs/2603.28052)). Same word. Different layer. Their paper searches over the *code that wraps a model*. Our framework governs the *team that ships software*. This article is how those two ideas fit — and what happened when we stopped talking about the loop and started dropping it onto real products, including a SaaS already in production: [Clinicsy](https://clinicsy.app).
+Then we went looking for whether anyone else had named the same idea. They had. In March 2026, Stanford IRIS (with MIT and KRAFTON) published **Meta-Harness: End-to-End Optimization of Model Harnesses** ([arXiv:2603.28052](https://arxiv.org/abs/2603.28052)). Same word. Different layer. Their paper searches over the *code that wraps a model*. Our framework governs the *team that ships software*. Under both sits **Hermes Agent**, which is already a harness for talking to the operating system — terminal, filesystem, `gh`, browsers. git-meta-harness does not reimplement that. It emits the project-specific agents, skills, tools, and memory that Hermes (or another runtime) then runs. This article is how those layers fit — and what happened when we stopped talking about the loop and started dropping it onto real products, including a SaaS already in production: [Clinicsy](https://clinicsy.app).
 
 ---
 
@@ -30,7 +30,7 @@ A harness that lives in one chat is a one-off. A harness that lives in one Herme
 
 The missing product was not a better prompt. It was **the harness of harnesses**: a versioned contract that, given a spec, produces a team + a project + a pipeline, and then keeps producing the next change the same way.
 
-That is `git-meta-harness`. Public repo: [github.com/brenonaraujo/git-meta-harness](https://github.com/brenonaraujo/git-meta-harness). Current line is **v1.14.2**, MIT, with a `gmh` CLI.
+That is `git-meta-harness`. Public repo: [github.com/brenonaraujo/git-meta-harness](https://github.com/brenonaraujo/git-meta-harness). Current line is **v1.15.0**, MIT, with a `gmh` CLI.
 
 ---
 
@@ -59,10 +59,12 @@ Our definition is operational, not experimental. A harness here is the configura
 The input is a **functional spec** — what the system does for users, not which language to pick. The output, after one materialization, is:
 
 - a roster of personas with explicit allowed / forbidden / exit evidence
+- **at least one domain-expert created from that project's context** (`domain-expert-<slug>`), never a generic `domain-expert`
 - GitHub issues with `type/*` routing
 - one PR per issue, gated by sensors
 - ADRs for decisions
-- a process for the *next* change, not just the first scaffold
+- durable **memory of the generated harness** (`harness/memory/snapshot.json`)
+- a process for the *next* change, including improving personas and skills from the issue trail
 
 The user does not design the loop. The user pastes the spec (or asks for spec discovery on an existing repo) and validates.
 
@@ -144,6 +146,59 @@ v1.14 added the path we actually needed:
 
 `adopt` is the honest feature. Most software worth running is not greenfield.
 
+### Dynamic domain-expert, from the project, not from a template name
+
+Invariant 12 says there is never a generic `domain-expert`. That used to be a markdown rule and a stub CLI. v1.15 makes it an operation:
+
+```bash
+gmh personas create --domain clinicsy --from-spec docs/SPEC.md
+gmh personas create --domain "Home Care" --context "WhatsApp, LGPD, multi-tenant clinic SaaS"
+```
+
+The slug becomes `domain-expert-home-care`. The file is copied from the canonical template, placeholders filled, and a **Project context** section appended from the spec or the `--context` blob. Clinicsy does not get a banking persona with the title changed. It gets a specialist whose first job is the language of that clinic.
+
+`gmh personas list` / `remove` exist. Overwrite is refused. `domain-expert-adopter` (the adopt-time adapter) cannot be deleted by accident.
+
+### Two harnesses, stacked
+
+This is the part we under-said in the first draft.
+
+**Hermes is already a harness** — for the machine. Tools, permissions, skills, memory, profiles, `gh`, the filesystem, the browser. We do not rebuild that inside git-meta-harness. We *use* it.
+
+**git-meta-harness is the delivery harness.** Its result is context: which personas exist for *this* repo, which skills they load, which sensors gate a PR, which GitHub labels route work. `gmh agents sync` projects that context onto Hermes profiles (`SOUL.md`) and skills. The team-manager then runs *on Hermes*, with OS tools, against that project-specific context.
+
+```mermaid
+flowchart TB
+    subgraph OS["Hermes — OS and tool harness"]
+        T[terminal / fs / gh / browser]
+        M[profile memory]
+    end
+    subgraph DEL["git-meta-harness — delivery harness"]
+        P[personas including dynamic domain-expert]
+        S[skills]
+        G[sensors and invariants]
+        MEM["harness/memory/snapshot.json"]
+    end
+    SPEC[Project spec] --> DEL
+    DEL -->|materialize SOUL plus skills| OS
+    OS -->|comments on issues| DEL
+```
+
+### Memory of what was generated, and an evolve loop over it
+
+A materialized harness that lives only in a chat is the original problem again. v1.15 writes **`harness/memory/snapshot.json`**: schema, framework version, runtime (`hermes` when `~/.hermes` is there), the persona files, the skills, the Hermes profiles. That is the memory of the *generated* harness — not Hermes's user memory, the delivery snapshot.
+
+Then we took the paper at its word. Stanford Meta-Harness keeps a filesystem of candidate *model* harnesses plus traces, and a proposer that reads them with `grep`/`cat`. We keep a filesystem of **issue and comment traces** and a proposer prompt for the Hermes team-manager:
+
+```bash
+gmh memory write
+gmh evolve --from-dir ./comments --apply
+```
+
+`--apply` writes `harness/memory/traces/<utc>/{comments.json,proposal.md,PROMPT.md}`. It does **not** overwrite persona markdown. The team-manager, running on Hermes, reads the prompt, uses `gh` and the filesystem, and a human still validates before a persona or skill file changes. Personas and skills improve **on demand**, from the history the project already has — the same comments that sensor 13 already requires builders to read.
+
+That is the governance-side analog of the paper. We did not vendor their Python proposer. We reused the idea: richer access to prior experience, stored as files, not compressed into a one-shot prompt.
+
 ---
 
 ## How this is loop engineering, instantiated
@@ -157,7 +212,7 @@ The mapping is one-to-one with the building blocks we already used in the previo
 | Skills | `harness/skills/*.md`, materialized per persona |
 | Connectors | GitHub + the agent runtime of the day |
 | Sub-agents | 8 personas, smart routing |
-| Memory outside the chat | Issues, ADRs, `versions.md`, invariants |
+| Memory outside the chat | Issues, ADRs, `versions.md`, invariants, **`harness/memory/`** |
 
 The loop as a flowchart:
 
@@ -239,7 +294,7 @@ The harder test is a product that already runs.
 
 Stack on the ground: **Next.js 15 + React 19 + TypeScript**, Firebase (Auth, Firestore, Storage), Stripe for trial and subscription. First tenant: **VittaLuz**, now one clinic inside the platform. Public trial is 14 days; listed plans sit in the R$29.90–R$50.00 range.
 
-This is not the harness default stack (Go + Gin + PostgreSQL / Nuxt). That is the point of `gmh adopt`. You do not get to pretend the repo is empty. You detect what is there, specialize a `domain-expert` for clinical practice management, and keep the invariants that still apply: tenant isolation, no secrets in git, tests with schema changes, human validation before merge.
+This is not the harness default stack (Go + Gin + PostgreSQL / Nuxt). That is the point of `gmh adopt`. You do not get to pretend the repo is empty. You detect what is there, run `gmh personas create --domain clinicsy --context "home care, consultório, LGPD, WhatsApp, Stripe"`, and keep the invariants that still apply: tenant isolation, no secrets in git, tests with schema changes, human validation before merge. The specialist is **created from this product**, not copied from mandai.
 
 Clinicsy already had an agent culture before the meta-harness repo existed — Copilot custom agents in `.github/agents/` (orchestrator, implementer, reviewer, devops, browser tester), plus an `AGENTS.md` that is loaded on every session: tenant-scoped queries, auth gate, idempotent Stripe webhook, plan enforcement. Activating git-meta-harness here is not "generate a toy app". It is overlaying a team-manager, routing, and gates on a codebase with production traffic and a paying tenant.
 
@@ -277,13 +332,13 @@ Existing repos without a spec are the common case. The harness documents a five-
 
 ## What is next
 
-The models are good enough. The interesting work is still orchestration — and now, the join between the two meta-harnesses.
+The models are good enough. The interesting work is still orchestration — and the join between the two meta-harnesses is no longer only a sketch.
 
-- **Stanford as optimizer, us as governor.** Their proposer-plus-filesystem loop is a plausible way to generate a new `domain-expert-<x>` and have our sensors reject it until it produces real acceptance criteria. That bridge is sketched in our [ECOSYSTEM](https://github.com/brenonaraujo/git-meta-harness/blob/main/docs/ECOSYSTEM.md) notes. It is not shipped.
-- **More `adopt`, fewer greenfield victory laps.** Clinicsy is the template: live SaaS, non-default stack, production constraints. The next product we drop this on should also already exist.
+- **Evolve is shipped on the governance side.** `gmh evolve` writes traces and a Hermes prompt from issue comments. What is *not* shipped is calling Stanford's Python proposer over our persona files. Next: harvest comments live via `gh`, still with a human gate before any persona overwrite.
+- **More `adopt`, fewer greenfield victory laps.** Clinicsy is the template: live SaaS, non-default stack, production constraints, a domain-expert instantiated from that context.
 - **Keep the runtime list honest.** Adapters are projections. If a runtime does not support a capability, we document the gap instead of leaving inert files.
 
-The promise is the same as in the loop-engineering post, with one extra sentence. Agents handle the mechanical work so engineers can keep the architecture, the product, and the human context. The extra sentence: **the factory that assigns that work should itself be a checked-in artifact**, not a chat you had in July.
+The promise is the same as in the loop-engineering post, with two extra sentences. Agents handle the mechanical work so engineers can keep the architecture, the product, and the human context. Extra sentence one: **the factory that assigns that work should itself be a checked-in artifact**, not a chat you had in July. Extra sentence two: **that factory sits on Hermes for tools, remembers what it generated, and can improve its own personas from the issue trail.**
 
 We built that factory. A lab at Stanford, independently, built a factory that improves the model's wrapper. Both are called meta-harness. Both belong in the same diagram. Only one of them is what we run on [Clinicsy](https://clinicsy.app) on a Tuesday.
 
@@ -291,7 +346,9 @@ We built that factory. A lab at Stanford, independently, built a factory that im
 
 ## References and Useful Links
 
-- **[git-meta-harness](https://github.com/brenonaraujo/git-meta-harness)**: The framework. v1.14.2, MIT, `gmh` CLI.
+- **[git-meta-harness](https://github.com/brenonaraujo/git-meta-harness)**: The framework. v1.15.0, MIT, `gmh` CLI.
+- **[v1.15.0 PR](https://github.com/brenonaraujo/git-meta-harness/pull/1)**: Dynamic domain-expert, harness memory, evolve loop.
+- **[EVOLVE.md](https://github.com/brenonaraujo/git-meta-harness/blob/feat/v1.15.0-persona-evolve/docs/EVOLVE.md)**: Hermes as OS/tool harness, snapshot memory, issue-trace evolve.
 - **[CONCEPT.md](https://github.com/brenonaraujo/git-meta-harness/blob/main/docs/CONCEPT.md)**: What it is, what it is not, why "meta".
 - **[LOOP.md](https://github.com/brenonaraujo/git-meta-harness/blob/main/docs/LOOP.md)**: Explicit mapping onto loop engineering.
 - **[ORIGIN.md](https://github.com/brenonaraujo/git-meta-harness/blob/main/docs/ORIGIN.md)**: How it came out of Hermes profiles.
