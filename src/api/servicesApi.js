@@ -398,8 +398,8 @@ graph LR
           pt: 'Docker'
         },
         description: {
-          en: 'The infrastructure building block: a real 3-node Docker Swarm at home (Server 1 manager + Server 2/3 workers) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates, Portainer ops, and Grafana observability without a managed K8s bill',
-          pt: 'O bloco de infraestrutura: um Docker Swarm real de 3 nós em casa (Server 1 manager + workers Server 2/3) — 18 CPU / 92 GB RAM, 20+ stacks, rolling updates, operação via Portainer e observabilidade com Grafana sem conta de K8s gerenciado'
+          en: 'The infrastructure building block: a real 3-node Docker Swarm at home (Server 1 manager + Server 2/3 workers) — 18 CPU / 92 GB RAM, NVIDIA RTX 3080 + RTX 5080, 20+ stacks, rolling updates, Portainer ops, and Grafana observability without a managed K8s bill',
+          pt: 'O bloco de infraestrutura: um Docker Swarm real de 3 nós em casa (Server 1 manager + workers Server 2/3) — 18 CPU / 92 GB RAM, NVIDIA RTX 3080 + RTX 5080, 20+ stacks, rolling updates, operação via Portainer e observabilidade com Grafana sem conta de K8s gerenciado'
         },
         icon: 'CubeIcon',
         color: 'cyan',
@@ -456,8 +456,8 @@ graph LR
               pt: 'Estratégia de Dimensionamento Eficiente'
             },
             description: {
-              en: 'Run dozens of containers across 3 nodes (18 CPU / 92.2 GB RAM pooled). Swarm schedules stacks across Server 1–3; Portainer shows live service health, volumes, and rolling updates, while Grafana tracks metrics.',
-              pt: 'Rode dezenas de containers em 3 nós (18 CPU / 92,2 GB RAM no pool). O Swarm agenda stacks entre Server 1–3; o Portainer mostra saúde dos serviços, volumes e rolling updates, e o Grafana acompanha as métricas.'
+              en: 'Run dozens of containers across 3 nodes (18 CPU / 92.2 GB RAM pooled) plus two NVIDIA GPUs (RTX 3080 and RTX 5080) for local AI and other GPU workloads. Swarm schedules stacks across Server 1–3; Portainer shows live service health, volumes, and rolling updates, while Grafana tracks metrics.',
+              pt: 'Rode dezenas de containers em 3 nós (18 CPU / 92,2 GB RAM no pool) mais duas GPUs NVIDIA (RTX 3080 e RTX 5080) para IA local e outros workloads de GPU. O Swarm agenda stacks entre Server 1–3; o Portainer mostra saúde dos serviços, volumes e rolling updates, e o Grafana acompanha as métricas.',
             }
           },
           {
@@ -2059,8 +2059,149 @@ graph LR
         demoUrl: 'https://mentoria.devdojo.academy'
       },
       {
-        id: 'draw',
+        id: 'clinicsy',
         category: 'product',
+        title: {
+          en: 'Clinicsy — practice management off spreadsheets',
+          pt: 'Clinicsy — fim das planilhas para home care, consultório e clínica'
+        },
+        shortName: {
+          en: 'Clinicsy',
+          pt: 'Clinicsy'
+        },
+        description: {
+          en: 'Live multi-tenant SaaS to get home care, consultórios, and clinics off spreadsheets: smart scheduling, WhatsApp, AI-assisted clinical notes (audio, text, images), finance and sales. Fair pricing that grows with you — 14-day free trial.',
+          pt: 'SaaS multi-tenant ao vivo para home care, consultório e clínica saírem da planilha: agendamento inteligente, WhatsApp, evolução com IA (áudio, texto e imagens), financeiro e vendas. Preço justo que cresce com você — 14 dias grátis.'
+        },
+        icon: 'chart',
+        color: 'cyan',
+        learnMoreUrl: '/service?service=clinicsy',
+        image: 'https://clinicsy.app/favicon.ico',
+        hostname: 'clinicsy.app',
+        features: [
+          { en: 'Smart scheduling with Google Maps travel time', pt: 'Agendamento inteligente com deslocamento no Google Maps' },
+          { en: 'Public booking link for patients', pt: 'Agendamento online público para o paciente' },
+          { en: 'WhatsApp reminders and confirmations', pt: 'WhatsApp para lembretes e confirmações' },
+          { en: 'Clinical notes via audio, text, and images with AI', pt: 'Evolução por áudio, texto e imagens com IA' },
+          { en: 'Custom anamnesis and patient dossier', pt: 'Anamnese personalizável e dossiê do paciente' },
+          { en: 'Products, session packs, finance, and reports', pt: 'Produtos, pacotes de sessões, financeiro e relatórios' },
+          { en: 'Multi-user permissions and per-clinic branding', pt: 'Multi-usuários, permissões e marca por clínica' },
+          { en: 'LGPD isolation per clinic · 14-day free trial', pt: 'Isolamento LGPD por clínica · 14 dias grátis' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Get the practice off spreadsheets', pt: 'Tirar a clínica da planilha' },
+            description: {
+              en: 'Agenda, finance, and clinical record in one flow — Maps, WhatsApp, and AI — instead of Excel, personal chat, and paper notes.',
+              pt: 'Agenda, financeiro e prontuário no mesmo fluxo — Maps, WhatsApp e IA — em vez de Excel, WhatsApp pessoal e caderno.'
+            }
+          },
+          {
+            title: { en: 'Home care, consultório, and clinic', pt: 'Home care, consultório e clínica' },
+            description: {
+              en: 'The same product covers city-running home care, a single consultório, and a multi-user clinic — price listed from R$ 29.90 to R$ 50.00.',
+              pt: 'O mesmo produto atende quem roda a cidade, o consultório e a clínica multi-usuário — preço listado de R$ 29,90 a R$ 50,00.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Google Maps', description: { en: 'Travel-time aware home-care scheduling', pt: 'Deslocamento no agendamento de home care' } },
+          { name: 'WhatsApp', description: { en: 'Reminders and appointment confirmations', pt: 'Lembretes e confirmações de consulta' } },
+          { name: 'Stripe', description: { en: 'Public trial and subscription billing', pt: 'Trial público e assinatura' } },
+          { name: 'Cloudflare / Netlify', description: { en: 'Public edge at clinicsy.app', pt: 'Borda pública em clinicsy.app' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open Clinicsy', pt: 'Abrir Clinicsy' }, description: { en: 'Visit clinicsy.app', pt: 'Acesse clinicsy.app' } },
+          { title: { en: 'Start the 14-day trial', pt: 'Começar os 14 dias grátis' }, description: { en: 'Create the clinic — no card required to look around', pt: 'Crie a clínica — sem cartão só para conhecer' } },
+          { title: { en: 'Book the first visit', pt: 'Marcar o primeiro atendimento' }, description: { en: 'Add a patient and open the agenda', pt: 'Cadastre um paciente e abra a agenda' } }
+        ],
+        gettingStarted: {
+          en: 'Clinicsy is our live SaaS for home care, consultórios, and clinics — get off spreadsheets. <a href="https://clinicsy.app" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Start 14 days free at clinicsy.app</a>.',
+          pt: 'Clinicsy é o nosso SaaS ao vivo para home care, consultório e clínica — sair da planilha. <a href="https://clinicsy.app" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Comece 14 dias grátis em clinicsy.app</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Clinic team] --> B[Clinicsy]
+    B --> C[Smart agenda + Maps]
+    B --> D[WhatsApp]
+    B --> E[AI clinical notes]
+    B --> F[Finance and sales]
+    B --> G[Per-clinic LGPD data]
+    style B fill:#06b6d4,stroke:#0891b2,color:#fff
+`,
+        demoUrl: 'https://clinicsy.app'
+      },
+      {
+        id: 'vserver',
+        category: 'product',
+        title: {
+          en: 'VServer — operate GPU machines',
+          pt: 'VServer — operar máquinas com GPU'
+        },
+        shortName: {
+          en: 'VServer',
+          pt: 'VServer'
+        },
+        description: {
+          en: 'Dashboard we built to operate GPU-oriented machines — local AI models or crypto mining — with real-time server monitoring at vserver.brenon.cloud.',
+          pt: 'Dashboard que construímos para operar máquinas voltadas a GPU — modelos de IA local ou mineração de criptomoedas — com monitoramento em tempo real em vserver.brenon.cloud.'
+        },
+        icon: 'cube',
+        color: 'red',
+        learnMoreUrl: '/service?service=vserver',
+        hostname: 'vserver.brenon.cloud',
+        features: [
+          { en: 'Real-time server monitoring dashboard', pt: 'Dashboard de monitoramento de servidor em tempo real' },
+          { en: 'Operate machines aimed at GPU workloads', pt: 'Operar máquinas voltadas a workload em GPU' },
+          { en: 'Local AI model workloads', pt: 'Workloads de modelos de IA local' },
+          { en: 'Crypto mining workloads', pt: 'Workloads de mineração de criptomoedas' },
+          { en: 'Public health API (v2)', pt: 'API pública de health (v2)' },
+          { en: 'Authenticated metrics endpoint', pt: 'Endpoint de métricas autenticado' }
+        ],
+        useCases: [
+          {
+            title: { en: 'Run local AI on our GPUs', pt: 'Rodar IA local nas nossas GPUs' },
+            description: {
+              en: 'Use VServer to keep GPU boxes healthy while they serve local models — the same class of machines that already run STT/TTS stacks on the home lab.',
+              pt: 'Use o VServer para manter as caixas de GPU saudáveis enquanto servem modelos locais — a mesma classe de máquina que já roda stacks de STT/TTS no lab.'
+            }
+          },
+          {
+            title: { en: 'Operate mining / GPU compute', pt: 'Operar mineração / compute de GPU' },
+            description: {
+              en: 'The same console is how we operate machines dedicated to GPU compute, including crypto mining, without treating them as just another Swarm service card.',
+              pt: 'O mesmo console é como operamos máquinas dedicadas a compute de GPU, inclusive mineração, sem tratá-las só como mais um card de serviço Swarm.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'GPU hosts', description: { en: 'NVIDIA RTX 3080 and RTX 5080 in the lab', pt: 'NVIDIA RTX 3080 e RTX 5080 no lab' } },
+          { name: 'Health API', description: { en: 'Public /api/health on vserver.brenon.cloud', pt: '/api/health público em vserver.brenon.cloud' } },
+          { name: 'Cloudflare', description: { en: 'Public edge at vserver.brenon.cloud', pt: 'Borda pública em vserver.brenon.cloud' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open VServer', pt: 'Abrir VServer' }, description: { en: 'Visit vserver.brenon.cloud', pt: 'Acesse vserver.brenon.cloud' } },
+          { title: { en: 'Sign in', pt: 'Entrar' }, description: { en: 'The dashboard is gated; metrics need a token', pt: 'O dashboard é autenticado; métricas pedem token' } },
+          { title: { en: 'Watch the host', pt: 'Acompanhar o host' }, description: { en: 'Use it to operate GPU AI or mining boxes', pt: 'Use para operar caixas de IA ou mineração' } }
+        ],
+        gettingStarted: {
+          en: 'VServer is our console for GPU-oriented machines — local AI or mining — with live monitoring. <a href="https://vserver.brenon.cloud" class="text-red-400 hover:underline" target="_blank" rel="noopener noreferrer">Open vserver.brenon.cloud</a>.',
+          pt: 'VServer é o nosso console para máquinas voltadas a GPU — IA local ou mineração — com monitoramento ao vivo. <a href="https://vserver.brenon.cloud" class="text-red-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra vserver.brenon.cloud</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Operator] --> B[VServer Dashboard]
+    B --> C[GPU hosts]
+    C --> D[Local AI models]
+    C --> E[Crypto mining]
+    B --> F[Health + metrics]
+    style B fill:#dc2626,stroke:#b91c1c,color:#fff
+`,
+        demoUrl: 'https://vserver.brenon.cloud'
+      },
+      {
+        id: 'draw',
+        category: 'platform',
         title: {
           en: 'Draw — Excalidraw whiteboard',
           pt: 'Draw — whiteboard Excalidraw'
@@ -2070,8 +2211,8 @@ graph LR
           pt: 'Draw'
         },
         description: {
-          en: 'A self-hosted Excalidraw whiteboard on Brenon.Cloud for hand-drawn diagrams, architecture sketches, and collaborative whiteboarding — no SaaS login wall.',
-          pt: 'Whiteboard Excalidraw self-hosted no Brenon.Cloud para diagramas hand-drawn, rascunhos de arquitetura e colaboração — sem muro de login de SaaS.'
+          en: 'A self-hosted Excalidraw whiteboard we operate on Brenon.Cloud for hand-drawn diagrams, architecture sketches, and collaborative whiteboarding — available to any logged-in Brenon.Cloud account via Authentik.',
+          pt: 'Whiteboard Excalidraw self-hosted que operamos no Brenon.Cloud para diagramas hand-drawn, rascunhos de arquitetura e colaboração — disponível para qualquer conta logada no Brenon.Cloud via Authentik.'
         },
         icon: 'workflow',
         color: 'cyan',
@@ -2083,8 +2224,8 @@ graph LR
           { en: 'Hand-drawn style diagrams', pt: 'Diagramas com visual hand-drawn' },
           { en: 'Self-hosted on the home Swarm', pt: 'Self-hosted no Swarm home' },
           { en: 'Public HTTPS via Cloudflare', pt: 'HTTPS público via Cloudflare' },
-          { en: 'Great for architecture and teaching notes', pt: 'Ótimo para arquitetura e anotações de aula' },
-          { en: 'No third-party whiteboard account required', pt: 'Sem conta de whiteboard de terceiros' }
+          { en: 'Authentik SSO — any logged-in Brenon.Cloud account', pt: 'SSO Authentik — qualquer conta logada no Brenon.Cloud' },
+          { en: 'Great for architecture and teaching notes', pt: 'Ótimo para arquitetura e anotações de aula' }
         ],
         useCases: [
           {
@@ -2103,6 +2244,7 @@ graph LR
           }
         ],
         integrations: [
+          { name: 'Authentik', description: { en: 'SSO for any logged-in Brenon.Cloud account', pt: 'SSO para qualquer conta logada no Brenon.Cloud' } },
           { name: 'Docker Swarm', description: { en: 'Containerized Excalidraw stack', pt: 'Stack Excalidraw containerizada' } },
           { name: 'Cloudflare', description: { en: 'Edge at draw.brenon.cloud', pt: 'Borda em draw.brenon.cloud' } }
         ],
@@ -2112,15 +2254,17 @@ graph LR
           { title: { en: 'Export if needed', pt: 'Exportar se quiser' }, description: { en: 'Save PNG/SVG from the toolbar', pt: 'Salve PNG/SVG pela toolbar' } }
         ],
         gettingStarted: {
-          en: 'Draw is our self-hosted Excalidraw. <a href="https://draw.brenon.cloud" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Open the whiteboard</a>.',
-          pt: 'Draw é o nosso Excalidraw self-hosted. <a href="https://draw.brenon.cloud" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra o whiteboard</a>.'
+          en: 'Draw is the Excalidraw whiteboard we operate on the home Swarm. Sign in with your Brenon.Cloud account and sketch. <a href="https://draw.brenon.cloud" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Open the whiteboard</a>.',
+          pt: 'Draw é o whiteboard Excalidraw que operamos no Swarm home. Entre com sua conta Brenon.Cloud e desenhe. <a href="https://draw.brenon.cloud" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra o whiteboard</a>.'
         },
         mermaidDiagram: `
 graph LR
-    A[Browser] --> B[draw.brenon.cloud]
-    B --> C[Excalidraw]
-    C --> D[Brenon.Cloud Swarm]
-    style B fill:#06b6d4,stroke:#0891b2,color:#fff
+    A[Browser] --> B[Authentik SSO]
+    B --> C[draw.brenon.cloud]
+    C --> D[Excalidraw]
+    D --> E[Brenon.Cloud Swarm]
+    style C fill:#06b6d4,stroke:#0891b2,color:#fff
+    style B fill:#9333ea,stroke:#7c3aed,color:#fff
 `,
         demoUrl: 'https://draw.brenon.cloud'
       }

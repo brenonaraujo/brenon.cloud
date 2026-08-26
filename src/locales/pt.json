@@ -56,7 +56,7 @@
     "about": {
       "title": "A infraestrutura por trás disso",
       "description": "Snapshot ao vivo do cluster Docker Swarm do Brenon.Cloud",
-      "vision": "O Brenon.Cloud é um home lab de verdade virado plataforma: três nós, dezenas de stacks, produtos públicos no Cloudflare e um caderno aberto de tudo que se aprende no caminho.",
+      "vision": "O Brenon.Cloud é um home lab de verdade virado plataforma: três nós, duas GPUs NVIDIA (RTX 3080 e RTX 5080), dezenas de stacks, produtos públicos no Cloudflare e um caderno aberto de tudo que se aprende no caminho.",
       "cluster": {
         "title": "Snapshot do cluster Swarm",
         "subtitle": "Ambiente Portainer — Docker Swarm multi-nó",
@@ -64,6 +64,7 @@
           "nodes": "3 nós",
           "cpu": "18 CPU",
           "ram": "92,2 GB RAM",
+          "gpus": "2 GPUs",
           "stacks": "23 stacks",
           "services": "38 serviços",
           "containers": "120 containers",
@@ -90,12 +91,26 @@
             "cpu": "2 CPU",
             "memory": "8,1 GB"
           }
+        ],
+        "gpusTitle": "GPUs",
+        "gpuName": "Placa",
+        "gpuRole": "Papel",
+        "gpus": [
+          {
+            "name": "NVIDIA GeForce RTX 3080",
+            "role": "compute"
+          },
+          {
+            "name": "NVIDIA GeForce RTX 5080",
+            "role": "compute"
+          }
         ]
       },
       "stack": {
         "title": "Stack de infraestrutura",
         "items": [
           "Orquestração Docker Swarm multi-nó",
+          "NVIDIA RTX 3080 + RTX 5080 para workloads de GPU",
           "Kong API Gateway + borda Cloudflare",
           "Identidade / SSO com Authentik",
           "Dashboards de observabilidade com Grafana",
@@ -238,7 +253,17 @@
     "draw": {
       "title": "Draw",
       "shortName": "Draw",
-      "description": "Whiteboard Excalidraw self-hosted no Brenon.Cloud."
+      "description": "Excalidraw self-hosted que operamos — SSO Authentik."
+    },
+    "clinicsy": {
+      "title": "Clinicsy",
+      "shortName": "Clinicsy",
+      "description": "Gestão para home care, consultório e clínica — fim das planilhas."
+    },
+    "vserver": {
+      "title": "VServer",
+      "shortName": "VServer",
+      "description": "Operar máquinas com GPU para IA local ou mineração."
     }
   },
   "servicePage": {
