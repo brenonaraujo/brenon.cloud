@@ -23,6 +23,14 @@ export const useAuthStore = defineStore('auth', () => {
     return p.name || p.preferred_username || p.email || ''
   })
   const email = computed(() => user.value?.profile?.email || '')
+  const groups = computed(() => {
+    const raw = user.value?.profile?.groups || user.value?.profile?.all_groups || ''
+    if (Array.isArray(raw)) return raw.filter(Boolean)
+    return String(raw)
+      .split(',')
+      .map((g) => g.trim())
+      .filter(Boolean)
+  })
 
   async function hydrate() {
     error.value = null
@@ -37,9 +45,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login() {
+  async function login(returnTo = '/console') {
+    const next = typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/console'
     await getManager().signinRedirect({
-      state: { returnTo: window.location.pathname + window.location.search }
+      state: { returnTo: next }
     })
   }
 
@@ -53,7 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = result
     ready.value = true
     const returnTo = result?.state?.returnTo
-    return typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/'
+    return typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/console'
   }
 
   async function logout() {
@@ -67,6 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     displayName,
     email,
+    groups,
     hydrate,
     login,
     signup,

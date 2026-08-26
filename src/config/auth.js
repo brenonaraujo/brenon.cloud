@@ -14,7 +14,7 @@ export function oidcSettings() {
     redirect_uri: authRedirectUri(),
     post_logout_redirect_uri: `${window.location.origin}/`,
     response_type: 'code',
-    scope: 'openid profile email',
+    scope: 'openid profile email all_groups',
     loadUserInfo: true,
     automaticSilentRenew: false
   }

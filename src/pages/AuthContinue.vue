@@ -11,6 +11,6 @@ const { t } = useI18n()
 const auth = useAuthStore()
 
 onMounted(() => {
-  auth.login()
+  auth.login('/console')
 })
 </script>
