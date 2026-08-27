@@ -275,6 +275,11 @@
       "title": "VServer",
       "shortName": "VServer",
       "description": "Operate GPU machines for local AI or crypto mining."
+    },
+    "profitt": {
+      "title": "Profitt",
+      "shortName": "Profitt",
+      "description": "Track DeFi and traditional-market portfolios — P&L, AI, WhatsApp/Telegram."
     }
   },
   "servicePage": {

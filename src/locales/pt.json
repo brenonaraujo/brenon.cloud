@@ -275,6 +275,11 @@
       "title": "VServer",
       "shortName": "VServer",
       "description": "Operar máquinas com GPU para IA local ou mineração."
+    },
+    "profitt": {
+      "title": "Profitt",
+      "shortName": "Profitt",
+      "description": "Acompanhe carteiras DeFi e tradicionais — P&L, IA, WhatsApp/Telegram."
     }
   },
   "servicePage": {
