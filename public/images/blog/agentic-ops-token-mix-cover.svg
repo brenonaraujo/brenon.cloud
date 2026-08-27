@@ -26,7 +26,7 @@
   <g font-family="monospace">
     <rect x="250" y="280" width="220" height="110" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
     <text x="360" y="324" text-anchor="middle" fill="#67e8f9" font-size="15">MINIMAX M3</text>
-    <text x="360" y="354" text-anchor="middle" fill="#a5f3fc" font-size="22" font-weight="700">16.09B</text>
+    <text x="360" y="354" text-anchor="middle" fill="#a5f3fc" font-size="22" font-weight="700">16.89B</text>
     <text x="360" y="378" text-anchor="middle" fill="#64748b" font-size="12">2 months · plan</text>
 
     <rect x="490" y="280" width="220" height="110" rx="8" fill="#1e293b" stroke="#a78bfa" stroke-width="2"/>
