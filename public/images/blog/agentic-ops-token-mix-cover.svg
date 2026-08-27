@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g opacity="0.06" stroke="#8b5cf6" stroke-width="1">
+    <line x1="0" y1="126" x2="1200" y2="126"/>
+    <line x1="0" y1="252" x2="1200" y2="252"/>
+    <line x1="0" y1="378" x2="1200" y2="378"/>
+    <line x1="0" y1="504" x2="1200" y2="504"/>
+    <line x1="240" y1="0" x2="240" y2="630"/>
+    <line x1="480" y1="0" x2="480" y2="630"/>
+    <line x1="720" y1="0" x2="720" y2="630"/>
+    <line x1="960" y1="0" x2="960" y2="630"/>
+  </g>
+
+  <text x="600" y="96" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="18">brenon.cloud · token economics</text>
+  <text x="600" y="168" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="44" font-weight="700">20B tokens</text>
+  <text x="600" y="214" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="24">MiniMax + Grok mix for agentic ops</text>
+
+  <g font-family="monospace">
+    <rect x="250" y="280" width="220" height="110" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
+    <text x="360" y="324" text-anchor="middle" fill="#67e8f9" font-size="15">MINIMAX M3</text>
+    <text x="360" y="354" text-anchor="middle" fill="#a5f3fc" font-size="22" font-weight="700">16.09B</text>
+    <text x="360" y="378" text-anchor="middle" fill="#64748b" font-size="12">2 months · plan</text>
+
+    <rect x="490" y="280" width="220" height="110" rx="8" fill="#1e293b" stroke="#a78bfa" stroke-width="2"/>
+    <text x="600" y="324" text-anchor="middle" fill="#c4b5fd" font-size="15">GROK HEAVY</text>
+    <text x="600" y="354" text-anchor="middle" fill="#ddd6fe" font-size="22" font-weight="700">weekly</text>
+    <text x="600" y="378" text-anchor="middle" fill="#64748b" font-size="12">Build · Experts</text>
+
+    <rect x="730" y="280" width="220" height="110" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+    <text x="840" y="324" text-anchor="middle" fill="#fcd34d" font-size="15">STACK / MO</text>
+    <text x="840" y="354" text-anchor="middle" fill="#fde68a" font-size="22" font-weight="700">~$149</text>
+    <text x="840" y="378" text-anchor="middle" fill="#64748b" font-size="12">promo Heavy</text>
+  </g>
+
+  <rect x="320" y="450" width="560" height="90" rx="8" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="600" y="490" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="14">same 20B on Claude Sonnet 5 API</text>
+  <text x="600" y="522" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="28" font-weight="700">~$46k</text>
+</svg>
