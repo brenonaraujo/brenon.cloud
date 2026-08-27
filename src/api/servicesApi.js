@@ -2200,6 +2200,78 @@ graph TD
         demoUrl: 'https://vserver.brenon.cloud'
       },
       {
+        id: 'profitt',
+        category: 'product',
+        title: {
+          en: 'Profitt — track your investment portfolio',
+          pt: 'Profitt — acompanhe sua carteira de investimentos'
+        },
+        shortName: {
+          en: 'Profitt',
+          pt: 'Profitt'
+        },
+        description: {
+          en: 'Investment portfolio tracker we built and operate at profitt.app: DeFi and traditional markets in one dashboard, P&L, AI insights, multi-currency, and WhatsApp/Telegram alerts. Sign in with Google.',
+          pt: 'Acompanhamento de carteira que construímos e operamos em profitt.app: DeFi e mercados tradicionais num só dashboard, P&L, insights de IA, multi-moeda e alertas no WhatsApp/Telegram. Entre com Google.'
+        },
+        icon: 'chart',
+        color: 'green',
+        learnMoreUrl: '/service?service=profitt',
+        image: 'https://profitt.app/favicon.ico',
+        hostname: 'profitt.app',
+        features: [
+          { en: 'Unified DeFi + traditional-market portfolio', pt: 'Carteira unificada: DeFi e mercados tradicionais' },
+          { en: 'P&L across operations, wherever they sit', pt: 'P&L das operações, não importa onde estejam' },
+          { en: 'AI insights — evaluate the book and buy/sell timing', pt: 'Insights de IA — avaliar a carteira e o momento de compra/venda' },
+          { en: 'Natural-language asset entry (e.g. “Comprei 0.5 BTC”)', pt: 'Entrada de ativo em linguagem natural (ex.: “Comprei 0.5 BTC”)' },
+          { en: 'WhatsApp and Telegram bots for live alerts', pt: 'Bots de WhatsApp e Telegram para alertas em tempo real' },
+          { en: 'Balance sheet, portfolio analysis, and compound-interest calculator', pt: 'Balanço patrimonial, análise de portfólio e calculadora de juros compostos' },
+          { en: 'Multi-currency display (BRL and others)', pt: 'Exibição multi-moeda (BRL e outras)' },
+          { en: 'Google login · Stripe Pro / Pro Max with a 30-day Pro trial', pt: 'Login com Google · Stripe Pro / Pro Max com trial Pro de 30 dias' }
+        ],
+        useCases: [
+          {
+            title: { en: 'One book for stocks, crypto, and ETFs', pt: 'Uma carteira para ações, cripto e ETFs' },
+            description: {
+              en: 'See total value, allocation, top movers, and P&L instead of spreading the same positions across broker apps and spreadsheets.',
+              pt: 'Veja valor total, alocação, maiores altas/baixas e P&L em vez de espalhar as mesmas posições entre corretoras e planilhas.'
+            }
+          },
+          {
+            title: { en: 'Ask the book in chat — and in WhatsApp/Telegram', pt: 'Perguntar à carteira no chat — e no WhatsApp/Telegram' },
+            description: {
+              en: 'Add trades in natural language, run AI insights on the portfolio, and get notifications in the messenger you already use.',
+              pt: 'Lance operações em linguagem natural, rode insights de IA na carteira e receba notificações no messenger que você já usa.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Google', description: { en: 'Sign in with Google', pt: 'Entrar com Google' } },
+          { name: 'WhatsApp', description: { en: 'AI bots and live investment alerts', pt: 'Bots de IA e alertas de investimento em tempo real' } },
+          { name: 'Telegram', description: { en: 'AI bots and live investment alerts', pt: 'Bots de IA e alertas de investimento em tempo real' } },
+          { name: 'Stripe', description: { en: 'Pro and Pro Max subscriptions · 30-day Pro trial', pt: 'Assinaturas Pro e Pro Max · trial Pro de 30 dias' } }
+        ],
+        quickStart: [
+          { title: { en: 'Open Profitt', pt: 'Abrir o Profitt' }, description: { en: 'Visit profitt.app', pt: 'Acesse profitt.app' } },
+          { title: { en: 'Sign in with Google', pt: 'Entrar com Google' }, description: { en: 'No extra account to create', pt: 'Sem criar conta extra' } },
+          { title: { en: 'Add the first asset', pt: 'Adicionar o primeiro ativo' }, description: { en: 'Type it, or describe the trade in natural language', pt: 'Cadastre, ou descreva a operação em linguagem natural' } }
+        ],
+        gettingStarted: {
+          en: 'Profitt is the portfolio tracker we built and operate — DeFi and traditional markets, AI insights, WhatsApp/Telegram. <a href="https://profitt.app" class="text-green-400 hover:underline" target="_blank" rel="noopener noreferrer">Open profitt.app</a>.',
+          pt: 'Profitt é o acompanhamento de carteira que construímos e operamos — DeFi e mercados tradicionais, insights de IA, WhatsApp/Telegram. <a href="https://profitt.app" class="text-green-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra profitt.app</a>.'
+        },
+        mermaidDiagram: `
+graph TD
+    A[Investor] --> B[Profitt]
+    B --> C[Portfolio + P&L]
+    B --> D[AI Insights]
+    B --> E[WhatsApp / Telegram]
+    B --> F[Calculator]
+    style B fill:#22c55e,stroke:#16a34a,color:#fff
+`,
+        demoUrl: 'https://profitt.app'
+      },
+      {
         id: 'draw',
         category: 'platform',
         title: {
