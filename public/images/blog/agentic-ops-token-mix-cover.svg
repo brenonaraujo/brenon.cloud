@@ -20,8 +20,8 @@
   </g>
 
   <text x="600" y="96" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="18">brenon.cloud · token economics</text>
-  <text x="600" y="168" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="44" font-weight="700">20B tokens</text>
-  <text x="600" y="214" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="24">MiniMax + Grok mix for agentic ops</text>
+  <text x="600" y="160" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="40" font-weight="700">~$150/mo vs ~$46k–$115k</text>
+  <text x="600" y="206" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="22">~300× cheaper than Claude or ChatGPT API</text>
 
   <g font-family="monospace">
     <rect x="250" y="280" width="220" height="110" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>

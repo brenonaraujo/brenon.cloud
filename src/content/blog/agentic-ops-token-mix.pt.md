@@ -1,6 +1,6 @@
 ---
-title: 20 bilhões de tokens — MiniMax, Grok e o mix que sustenta operação agentica
-description: Em dois meses o MiniMax M3 queimou 16,89B de tokens. Esse mix — mais Grok Heavy — entregou BRNN AI, Clinicsy, Mentoria, TibiaPixel e o resto do catálogo da Brenon.Cloud em loops agenticos, por uma fração do que Claude ou ChatGPT cobrariam na API.
+title: 20B de tokens a ~US$ 150/mês — ~300× mais barato que Claude ou ChatGPT
+description: Os mesmos ~20B: MiniMax + Grok Heavy a ~US$ 149/mês versus ~US$ 46 mil na API do Claude Sonnet 5, ~US$ 92 mil no GPT-5.6 Sol, ~US$ 115 mil no Opus 5.
 date: 2026-08-28
 author: Brenon Araujo
 tags: [ai, tokens, minimax, grok, hermes, agentic, cost, llm, git-meta-harness]
@@ -8,13 +8,15 @@ cover: /images/blog/agentic-ops-token-mix-cover.svg
 coverFallback: /images/blog/agentic-ops-token-mix-cover.svg
 ---
 
-# 20 bilhões de tokens — MiniMax, Grok e o mix que sustenta operação agentica
+# 20B de tokens a ~US$ 150/mês — ~300× mais barato que Claude ou ChatGPT
 
 Nos últimos dois meses a gente empurrou Hermes, subagentes, PRs, deploys e uma fila de experimentos em cima de vários provedores ao mesmo tempo. O heatmap do MiniMax Coding Plan não mente: **16,89 bilhões de tokens** só nesse plano, com pico de **1,74B** em **76 dias ativos**, de junho a agosto de 2026.
 
-O Grok não expõe o mesmo contador de tokens. Somando o pool semanal do Heavy, créditos de OpenRouter, Gemini e modelos locais, o volume total da operação fica na casa dos **~20B de tokens**. Esses tokens não ficaram no dashboard. Eles entregaram produtos que a gente ainda **constrói, publica e opera** na Brenon.Cloud — BRNN AI, Clinicsy, DevDojo Mentoring, TibiaPixel e o resto do catálogo — com fluxos agenticos de ponta a ponta.
+O Grok não expõe o mesmo contador de tokens. Somando o pool semanal do Heavy, créditos de OpenRouter, Gemini e modelos locais, o volume total da operação fica na casa dos **~20B de tokens**. No nosso mix, esse volume no cruzeiro custa **~US$ 149/mês** (MiniMax 5B + Grok Heavy promo). Os mesmos 20B na API metered do Claude Sonnet 5 dão **~US$ 46.000**. No GPT-5.6 Sol, **~US$ 92.000**. No Claude Opus 5, **~US$ 115.000**. Isso é **~300×** contra o Sonnet, **~600–770×** contra os flagships — não é erro de arredondamento.
 
-A tese deste post é simples: dá para montar uma operação empresarial totalmente agentica misturando modelos chineses baratos em volume com modelos americanos caros e competentes no ponto certo — e o recibo fica em outra ordem de grandeza do que “tudo no Claude / tudo no ChatGPT”.
+Esses tokens não ficaram no dashboard. Eles sustentam o catálogo que a gente opera na Brenon.Cloud: produtos greenfield que nasceram no loop, e dois projetos que já estavam andando — **Clinicsy** e **Profitt** — que a gente não criou ali. Pegamos em andamento e hoje operamos com Hermes + MiniMax + Grok.
+
+A tese deste post é simples: misturar plano chinês barato em volume com modelo americano caro e competente no ponto certo dá para rodar uma operação empresarial agentica sem pagar tarifa de Claude ou ChatGPT em 100% da esteira.
 
 ---
 
@@ -150,25 +152,34 @@ Isso encaixa no que já descrevemos em [Loop Engineering Agentico](/blog/agentic
 
 ## O que esses tokens realmente entregaram
 
-O heatmap não é score de laboratório. É a conta do software que a gente **construiu, publicou e opera** — boa parte greenfield — com loops de entrega agenticos no Hermes. O mesmo mix ainda evolui esses produtos. Humano continua no gate de merge; o loop faz o resto.
+O heatmap não é score de laboratório. É a conta do software que a gente **publica e opera** com loops de entrega agenticos no Hermes — MiniMax no volume, Grok no checkpoint difícil. Humano continua no gate de merge; o loop faz o resto.
+
+Dois formatos. **Greenfield** a gente criou no loop. **Em andamento** a gente não criou: Clinicsy e Profitt já estavam se movendo. Pegamos esses projetos e hoje operamos com o mesmo loop engineering — Hermes + MiniMax + Grok.
+
+### Criados no loop (greenfield)
 
 | Produto | Host ao vivo | O que é |
 | --- | --- | --- |
 | **BRNN AI** | [ai.brenon.cloud](https://ai.brenon.cloud) | APIs first-party no nosso Swarm. **Whisper STT** e **Chatterbox TTS** estão no ar (15 min/mês de STT, 5 min/mês de TTS, pt-BR + en). LLM first-party ainda não entra no catálogo. |
-| **Clinicsy** | [clinicsy.app](https://clinicsy.app) | SaaS multi-tenant para home care, consultório e clínica saírem da planilha: agenda com Maps, WhatsApp, evolução com IA, financeiro. |
 | **DevDojo Mentoring** | [mentoria.devdojo.academy](https://mentoria.devdojo.academy) | Mentoria técnica gamificada, ligada ao GitHub e ao Discord da DevDojo. |
 | **TibiaPixel** | [tibiapixel.brenon.cloud](https://tibiapixel.brenon.cloud) | Simulação open-source estilo Tibia, sobrevivência e craft. Agentes de IA e humanos no mesmo shard, mesmas regras. Alpha, três servidores. |
 | **OficinaCloud** | [oficina.brenon.cloud](https://oficina.brenon.cloud) | SaaS multi-tenant para oficinas mecânicas de pequeno e médio porte: clientes, veículos, OS, estoque. |
 | **VServer** | [vserver.brenon.cloud](https://vserver.brenon.cloud) | Dashboard que a gente fez para operar máquinas com GPU (IA local ou mineração) com monitoramento ao vivo. |
-| **Profitt** | [profitt.app](https://profitt.app) | Tracker de portfólio que a gente constrói e opera — DeFi + mercado tradicional, insights de IA, alertas no WhatsApp/Telegram. |
 
-Isso não é slide. São hosts públicos: trial, alpha, tenant pagante. Os loops que queimaram 16,89B de tokens são os loops que abrem PR, rodam CI e fazem deploy nesse catálogo.
+### Pegos em andamento (não nasceram no loop)
 
-### Greenfield precisava de fábrica, não só de um loop bom
+| Produto | Host ao vivo | O que é |
+| --- | --- | --- |
+| **Clinicsy** | [clinicsy.app](https://clinicsy.app) | SaaS multi-tenant para home care, consultório e clínica saírem da planilha. Já estava em progresso quando entrou no Hermes + MiniMax + Grok. |
+| **Profitt** | [profitt.app](https://profitt.app) | Tracker de portfólio — DeFi + mercado tradicional, insights de IA, alertas no WhatsApp/Telegram. Mesma história: em movimento, depois operado pelo loop, não criado por ele. |
 
-Boa parte desse catálogo começou vazio — spec, Swarm, time legado zero. Isso é um jeito bom de **testar modelo**. É um jeito ruim de repetir o *mesmo* fluxo no próximo repo, e pior ainda para jogar agente em cima de produto que já tem cliente.
+Isso não é slide. São hosts públicos: trial, alpha, tenant pagante. Os loops que queimaram 16,89B de tokens são os loops que abrem PR, rodam CI e fazem deploy nesse catálogo — inclusive nos dois que a gente não começou.
 
-Por isso, além do mix de modelo, a gente construiu o **[git-meta-harness](https://github.com/brenonaraujo/git-meta-harness)** (`gmh`): um framework que materializa o time de entrega — personas, issues/PRs no GitHub, sensores — para o Hermes e outros code agents rodarem o mesmo loop em vez de reinventar no chat. Greenfield ganha `gmh install`. SaaS no ar como o Clinicsy ganha `gmh adopt`. Escrevemos essa fábrica em [git-meta-harness — Do Loop Engineering a um Time que Entrega](/blog/git-meta-harness). Este post é a conta de token. Aquele é como o trabalho se reproduz.
+### Greenfield precisava de fábrica. Os dois que herdamos, também.
+
+Repo vazio, spec, Swarm, time legado zero: um jeito bom de **testar modelo**. Um jeito ruim de repetir o *mesmo* fluxo no próximo repo — e pior ainda para jogar agente em cima de produto que já tem cliente, que é exatamente Clinicsy e Profitt.
+
+Por isso, além do mix de modelo, a gente construiu o **[git-meta-harness](https://github.com/brenonaraujo/git-meta-harness)** (`gmh`): um framework que materializa o time de entrega — personas, issues/PRs no GitHub, sensores — para o Hermes e outros code agents rodarem o mesmo loop em vez de reinventar no chat. Greenfield ganha `gmh install`. SaaS em andamento ganha `gmh adopt` (Clinicsy é o caso que a gente escreveu). Escrevemos essa fábrica em [git-meta-harness — Do Loop Engineering a um Time que Entrega](/blog/git-meta-harness). Este post é a conta de token. Aquele é como o trabalho se reproduz.
 
 Com MiniMax 5B + Grok Heavy (promo) a gente mantém:
 
@@ -194,7 +205,7 @@ Não é “ilimitado”. É **dimensionado**. O Ultra foi para descobrir o ritmo
 
 ## Conclusão
 
-16,89B no MiniMax em dois meses. Grok Heavy no raciocínio, no Build e nos Experts. Gemini, OpenRouter e local no resto. Hermes no meio, git-meta-harness como a fábrica que repete o loop. Resultado: **BRNN AI, Clinicsy, Mentoria, TibiaPixel** e o resto do catálogo — operação agentica de verdade por **~US$ 150/mês no regime atual**, enquanto o **mesmo volume em Sonnet/Opus/GPT metered** se mede em **dezenas a centenas de milhares de dólares**.
+16,89B no MiniMax em dois meses. Grok Heavy no raciocínio, no Build e nos Experts. Hermes no meio, git-meta-harness como a fábrica que repete o loop. Resultado: produtos greenfield **e** dois projetos pegos em andamento (Clinicsy, Profitt) rodando em operação agentica por **~US$ 150/mês**, enquanto os **mesmos ~20B na API do Claude ou do ChatGPT** saem **~US$ 46–115 mil** — da ordem de **300×**.
 
 Não é truque. É arbitragem de preço + desenho de workload. Modelos chineses baratos no volume. Modelos americanos caros e competentes no ponto certo. Juntos, sustentam uma operação empresarial agentica — produto no ar, não reel de demo — sem o drama do estouro de token.
 
@@ -212,4 +223,4 @@ Se você ainda está pagando frontier em 100% do loop, a planilha acima é o con
 - **[git-meta-harness — Do Loop Engineering a um Time que Entrega](/blog/git-meta-harness)**: a fábrica que reproduz o loop no Hermes e em outros coding agents.
 - **[git-meta-harness](https://github.com/brenonaraujo/git-meta-harness)**: framework público, MIT, CLI `gmh`.
 - **[Hermes Agent](https://hermes-agent.nousresearch.com/docs)**: o runtime agentico que consome o mix no dia a dia.
-- **[BRNN AI](https://ai.brenon.cloud)**, **[Clinicsy](https://clinicsy.app)**, **[DevDojo Mentoring](https://mentoria.devdojo.academy)**, **[TibiaPixel](https://tibiapixel.brenon.cloud)**, **[OficinaCloud](https://oficina.brenon.cloud)**, **[VServer](https://vserver.brenon.cloud)**, **[Profitt](https://profitt.app)**: produtos do catálogo que esses tokens entregaram.
+- **[BRNN AI](https://ai.brenon.cloud)**, **[Clinicsy](https://clinicsy.app)**, **[DevDojo Mentoring](https://mentoria.devdojo.academy)**, **[TibiaPixel](https://tibiapixel.brenon.cloud)**, **[OficinaCloud](https://oficina.brenon.cloud)**, **[VServer](https://vserver.brenon.cloud)**, **[Profitt](https://profitt.app)**: catálogo que a gente opera — greenfield mais Clinicsy e Profitt pegos em andamento.
