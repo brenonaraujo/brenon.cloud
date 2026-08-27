@@ -10,11 +10,12 @@
           </div>
         </router-link>
         <!-- Mobile menu button -->
-        <button 
-          @click="toggleMobileMenu" 
-          :aria-expanded="isMobileMenuOpen" 
-          aria-controls="mobile-menu" 
-          class="sm:hidden inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <button
+          type="button"
+          @click="toggleMobileMenu"
+          :aria-expanded="isMobileMenuOpen"
+          aria-controls="mobile-menu"
+          class="sm:hidden inline-flex items-center justify-center rounded-lg p-2 min-h-[44px] min-w-[44px] text-white hover:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <span class="sr-only">Open main menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -40,7 +41,7 @@
               >
                 {{ item.text }}
               </router-link>
-              <a 
+              <a
                 v-else
                 href="#"
                 @click.prevent="scrollToSection(item.to)"
@@ -55,69 +56,81 @@
           <LanguageSelector />
         </div>
       </div>
-      <!-- Mobile menu -->
-      <div 
-        id="mobile-menu" 
-        :class="{ 'hidden': !isMobileMenuOpen }" 
-        class="sm:hidden fixed inset-0 bg-gray-900/95 backdrop-blur-sm z-50"
-      >
-        <div class="p-4">
-          <div class="flex justify-end">
-            <button 
-              @click="toggleMobileMenu"
-              class="p-2 text-gray-400 hover:text-white"
-            >
-              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <nav class="mt-8">
-            <div class="space-y-4">
-              <template v-for="item in menuItems" :key="item.to">
-                <a v-if="item.external"
-                  :href="item.to"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 transition-colors"
-                  @click="toggleMobileMenu"
-                >
-                  {{ item.text }}
-                </a>
-                <router-link
-                  v-else-if="item.route"
-                  :to="item.to"
-                  class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 transition-colors"
-                  @click="toggleMobileMenu"
-                >
-                  {{ item.text }}
-                </router-link>
-                <a 
-                  v-else
-                  href="#"
-                  @click.prevent="scrollToSection(item.to)"
-                  class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 transition-colors cursor-pointer"
-                >
-                  {{ item.text }}
-                </a>
-              </template>
-            </div>
-            <div class="mt-8 flex justify-center">
-              <AuthMenu />
-            </div>
-            <!-- Language Selector for Mobile -->
-            <div class="mt-6 flex justify-center">
-              <LanguageSelector />
-            </div>
-          </nav>
-        </div>
-      </div>
     </div>
   </nav>
+
+  <!--
+    Teleport to body: the sticky nav uses backdrop-filter, which becomes the
+    containing block for position:fixed descendants. Nested inset-0 then sizes
+    to the 80px bar instead of the viewport, so the overlay "disappears" into
+    the page. Rendering on <body> keeps the sheet viewport-fixed.
+  -->
+  <Teleport to="body">
+    <div
+      v-if="isMobileMenuOpen"
+      id="mobile-menu"
+      class="sm:hidden fixed inset-0 z-[100] overflow-y-auto overscroll-contain bg-gray-900"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Main menu"
+    >
+      <div class="p-4 min-h-full">
+        <div class="flex justify-end">
+          <button
+            type="button"
+            @click="closeMobileMenu"
+            class="p-2 min-h-[44px] min-w-[44px] inline-flex items-center justify-center text-gray-400 hover:text-white"
+          >
+            <span class="sr-only">Close menu</span>
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <nav class="mt-8">
+          <div class="space-y-4">
+            <template v-for="item in menuItems" :key="item.to">
+              <a v-if="item.external"
+                :href="item.to"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 min-h-[44px] transition-colors"
+                @click="closeMobileMenu"
+              >
+                {{ item.text }}
+              </a>
+              <router-link
+                v-else-if="item.route"
+                :to="item.to"
+                class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 min-h-[44px] transition-colors"
+                @click="closeMobileMenu"
+              >
+                {{ item.text }}
+              </router-link>
+              <a
+                v-else
+                href="#"
+                @click.prevent="scrollToSection(item.to)"
+                class="block text-center text-lg font-medium text-gray-300 hover:text-white py-3 min-h-[44px] transition-colors cursor-pointer"
+              >
+                {{ item.text }}
+              </a>
+            </template>
+          </div>
+          <div class="mt-8 flex justify-center">
+            <AuthMenu />
+          </div>
+          <div class="mt-6 flex justify-center">
+            <LanguageSelector />
+          </div>
+        </nav>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LanguageSelector from './ui/LanguageSelector.vue'
@@ -137,13 +150,19 @@ const menuItems = computed(() => [
   { to: 'https://uptime.brenon.cloud/status/services', text: t('navbar.status'), external: true }
 ])
 
-const scrollToSection = (sectionId) => {
-  if (isMobileMenuOpen.value) {
-  }
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+}
 
-  // If we're not on the home page, navigate there first
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+const scrollToSection = (sectionId) => {
+  closeMobileMenu()
+
   if (router.currentRoute.value.path !== '/') {
-  router.push('/')
+    router.push('/')
     setTimeout(() => {
       const element = document.getElementById(sectionId)
       if (element) {
@@ -153,14 +172,34 @@ const scrollToSection = (sectionId) => {
     return
   }
 
-  // If we're already on the home page
   const element = document.getElementById(sectionId)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value
+watch(isMobileMenuOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
+
+const onKeydown = (event) => {
+  if (event.key === 'Escape') closeMobileMenu()
 }
+
+let desktopMq
+const onDesktopMq = (event) => {
+  if (event.matches) closeMobileMenu()
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', onKeydown)
+  desktopMq = window.matchMedia('(min-width: 640px)')
+  desktopMq.addEventListener('change', onDesktopMq)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', onKeydown)
+  desktopMq?.removeEventListener('change', onDesktopMq)
+  document.body.style.overflow = ''
+})
 </script>
