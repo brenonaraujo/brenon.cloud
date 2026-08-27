@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" width="1200" height="820">
+  <defs>
+    <linearGradient id="bgArch" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="820" fill="url(#bgArch)" rx="12"/>
+  <text x="600" y="36" text-anchor="middle" fill="#f1f5f9" font-family="sans-serif" font-size="20" font-weight="700">Brenon.Cloud · on-prem cluster + cheap edge</text>
+  <text x="600" y="58" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="12">3 rooms · ethernet · Cloudflare · Netlify · Akash · Firebase</text>
+
+  <!-- users -->
+  <rect x="360" y="74" width="480" height="40" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="600" y="100" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="13">USERS · family · mentees · SaaS clients</text>
+
+  <line x1="600" y1="114" x2="600" y2="132" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- cloud row -->
+  <rect x="40" y="136" width="1120" height="168" rx="12" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="60" y="158" fill="#fbbf24" font-family="monospace" font-size="11">PUBLIC CLOUD · not the house</text>
+
+  <rect x="60" y="172" width="340" height="112" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+  <text x="230" y="200" text-anchor="middle" fill="#fbbf24" font-family="monospace" font-size="14" font-weight="700">CLOUDFLARE</text>
+  <text x="230" y="222" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="12">Free Website · US$ 0</text>
+  <text x="230" y="244" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">DNS · TLS · tunnel</text>
+  <text x="230" y="264" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">~419k req / 2.5 GB · 30d</text>
+
+  <rect x="430" y="172" width="340" height="112" rx="8" fill="#0f172a" stroke="#22d3ee" stroke-width="2"/>
+  <text x="600" y="200" text-anchor="middle" fill="#67e8f9" font-family="monospace" font-size="14" font-weight="700">NETLIFY</text>
+  <text x="600" y="222" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="12">Personal · US$ 9</text>
+  <text x="600" y="244" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">CDN + frontend deploys</text>
+  <text x="600" y="264" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">15+ projects · product SPAs</text>
+
+  <rect x="800" y="172" width="340" height="112" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="2"/>
+  <text x="970" y="200" text-anchor="middle" fill="#6ee7b7" font-family="monospace" font-size="14" font-weight="700">AKASH</text>
+  <text x="970" y="222" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="12">isolated monitor · &lt; US$ 1</text>
+  <text x="970" y="244" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">Uptime Kuma</text>
+  <text x="970" y="264" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">uptime.brenon.cloud</text>
+
+  <!-- arrows cloud to house -->
+  <line x1="230" y1="284" x2="230" y2="330" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="600" y1="284" x2="600" y2="330" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M970 284 V318 H230" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="620" y="318" fill="#4ade80" font-family="monospace" font-size="10">HTTP checks</text>
+
+  <!-- on-prem -->
+  <rect x="40" y="336" width="1120" height="460" rx="12" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="60" y="358" fill="#93c5fd" font-family="monospace" font-size="11">ON-PREM · house · 3 rooms · copper ethernet</text>
+
+  <rect x="60" y="372" width="340" height="150" rx="8" fill="#0f172a" stroke="#60a5fa" stroke-width="2"/>
+  <text x="230" y="400" text-anchor="middle" fill="#93c5fd" font-family="monospace" font-size="13" font-weight="700">SERVER 1 · manager</text>
+  <text x="230" y="422" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12">mini PC · reused</text>
+  <text x="230" y="444" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="12">4 CPU · 16.7 GB</text>
+  <text x="230" y="466" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">Swarm manager</text>
+  <text x="230" y="488" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">room A</text>
+
+  <rect x="430" y="372" width="340" height="150" rx="8" fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
+  <text x="600" y="400" text-anchor="middle" fill="#c4b5fd" font-family="monospace" font-size="13" font-weight="700">SERVER 2 · worker</text>
+  <text x="600" y="422" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12">former mining RIG · vserver</text>
+  <text x="600" y="444" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="12">12 CPU · 67.4 GB</text>
+  <text x="600" y="466" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">RTX 3080 + RTX 5080</text>
+  <text x="600" y="488" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">room B</text>
+
+  <rect x="800" y="372" width="340" height="150" rx="8" fill="#0f172a" stroke="#60a5fa" stroke-width="2"/>
+  <text x="970" y="400" text-anchor="middle" fill="#93c5fd" font-family="monospace" font-size="13" font-weight="700">SERVER 3 · worker</text>
+  <text x="970" y="422" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12">small node</text>
+  <text x="970" y="444" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="12">2 CPU · 8.1 GB</text>
+  <text x="970" y="466" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">Swarm worker</text>
+  <text x="970" y="488" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11">room C</text>
+
+  <!-- ethernet -->
+  <line x1="400" y1="448" x2="430" y2="448" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="770" y1="448" x2="800" y2="448" stroke="#38bdf8" stroke-width="2"/>
+  <text x="600" y="538" text-anchor="middle" fill="#38bdf8" font-family="monospace" font-size="11">wired LAN between rooms · not Wi-Fi</text>
+
+  <!-- gpu / mining -->
+  <rect x="430" y="552" width="340" height="72" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+  <text x="600" y="580" text-anchor="middle" fill="#fbbf24" font-family="monospace" font-size="12" font-weight="700">GPUs 24/7 on PRL</text>
+  <text x="600" y="602" text-anchor="middle" fill="#fde68a" font-family="monospace" font-size="12">energy ~US$ 80 · mining ~US$ 90</text>
+
+  <!-- swarm services -->
+  <rect x="60" y="640" width="710" height="72" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+  <text x="415" y="668" text-anchor="middle" fill="#6ee7b7" font-family="monospace" font-size="12" font-weight="700">SWARM SERVICES</text>
+  <text x="415" y="690" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="11">Authentik · Kong · Whisper STT · Chatterbox TTS · 23 stacks</text>
+
+  <rect x="790" y="640" width="350" height="72" rx="8" fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
+  <text x="965" y="668" text-anchor="middle" fill="#c4b5fd" font-family="monospace" font-size="12" font-weight="700">FIREBASE FREE TIER</text>
+  <text x="965" y="690" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="11">Clinicsy · Profitt · Firestore</text>
+
+  <rect x="60" y="728" width="1080" height="50" rx="8" fill="#111827" stroke="#334155" stroke-width="1.5"/>
+  <text x="600" y="758" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="12">ai.brenon.cloud · vserver.brenon.cloud · oficina.brenon.cloud · clinicsy.app · mentoria.devdojo.academy</text>
+</svg>
