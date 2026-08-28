@@ -30,7 +30,7 @@ export async function handler(event) {
   }
 
   try {
-    const result = await getService().broadcast({
+    const result = await getService(event).broadcast({
       slug: body.slug,
       locale: body.locale,
       title: body.title,

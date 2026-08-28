@@ -19,7 +19,7 @@ export async function handler(event) {
   }
 
   try {
-    const result = await getService().subscribe({
+    const result = await getService(event).subscribe({
       email: body.email,
       locale: body.locale,
       website: body.website

@@ -376,7 +376,9 @@
       "invalid": "That link is invalid or expired. Subscribe again.",
       "error": "Could not subscribe right now. Try again in a moment.",
       "rss": "RSS feed",
-      "notConfigured": "The list is not connected to email sending yet."
+      "notConfigured": "The list is not connected to email sending yet.",
+      "done": "You are on the list.",
+      "confirmError": "That confirmation link failed. Request another email in the form."
     }
   },
   "games": {

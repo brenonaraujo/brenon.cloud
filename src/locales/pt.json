@@ -376,7 +376,9 @@
       "invalid": "Link inválido ou expirado. Assine de novo.",
       "error": "Não deu para assinar agora. Tente de novo em instantes.",
       "rss": "Feed RSS",
-      "notConfigured": "A lista ainda não está ligada ao envio de e-mail."
+      "notConfigured": "A lista ainda não está ligada ao envio de e-mail.",
+      "done": "Você está na lista.",
+      "confirmError": "O link de confirmação falhou. Peça outro e-mail no formulário."
     }
   },
   "games": {
