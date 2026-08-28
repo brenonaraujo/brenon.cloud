@@ -366,7 +366,7 @@
     "newsletter": {
       "title": "Assinar os posts novos",
       "blurb": "Um e-mail por post, neste idioma. Sem digest e sem aviso quando o site só muda de layout.",
-      "email": "seu@email.com",
+      "email": "seu e-mail",
       "consent": "Aceito receber e-mail só quando sair um post novo. Posso sair a qualquer momento pelo link do próprio e-mail.",
       "submit": "Assinar",
       "pending": "Enviamos um e-mail de confirmação. Sem o clique, você não entra na lista.",

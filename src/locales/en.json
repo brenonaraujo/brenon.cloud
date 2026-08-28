@@ -366,7 +366,7 @@
     "newsletter": {
       "title": "Get new posts by email",
       "blurb": "One email per post, in this language. No digest, and no mail when the site only changes layout.",
-      "email": "you@email.com",
+      "email": "your email",
       "consent": "I agree to get an email only when a new post is published. I can leave anytime from the link in the email.",
       "submit": "Subscribe",
       "pending": "We sent a confirmation email. You are not on the list until you click it.",
