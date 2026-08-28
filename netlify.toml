@@ -12,6 +12,9 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
   included_files = ["lib/**"]
+  # Bundling @netlify/blobs strips the runtime context and throws
+  # MissingBlobsEnvironmentError in production.
+  external_node_modules = ["@netlify/blobs"]
 
 # Confirm / unsubscribe must not fall through to the SPA.
 [[redirects]]
