@@ -33,16 +33,37 @@ export function redirect(status, location) {
   }
 }
 
+function fallbackStore() {
+  return {
+    async get() {
+      return null
+    },
+    async addConfirmed() {
+      throw new Error('blobs unavailable')
+    },
+    async remove() {},
+    async listConfirmed() {
+      return []
+    }
+  }
+}
+
 export function getService() {
   if (!isConfigured()) {
     throw new Error('newsletter is not configured')
   }
-  const store = createBlobSubscriberStore(getStore('newsletter-subscribers'))
+  let store
+  try {
+    store = createBlobSubscriberStore(getStore('newsletter-subscribers'))
+  } catch (err) {
+    console.error('newsletter blobs unavailable', err)
+    store = fallbackStore()
+  }
   return createNewsletterService({
     store,
     sendEmail: (msg) => sendResendEmail(process.env.RESEND_API_KEY, msg),
     secret: process.env.NEWSLETTER_SIGNING_SECRET,
     siteUrl: siteUrl(),
-    from: process.env.NEWSLETTER_FROM || 'Brenon.Cloud <news@brenon.cloud>'
+    from: process.env.NEWSLETTER_FROM || 'Brenon.Cloud <onboarding@resend.dev>'
   })
 }
