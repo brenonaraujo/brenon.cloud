@@ -28,6 +28,10 @@ export async function handler(event) {
     return json(status, result)
   } catch (err) {
     console.error('newsletter-subscribe', err)
+    const name = err && err.name ? String(err.name) : ''
+    if (name.includes('Blob')) {
+      return json(500, { ok: false, error: 'store_failed' })
+    }
     return json(500, { ok: false, error: 'send_failed' })
   }
 }
