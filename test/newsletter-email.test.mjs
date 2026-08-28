@@ -12,6 +12,8 @@ test('confirm email is a full HTML document with a button', () => {
   assert.match(html, /Confirmar inscrição/)
   assert.match(html, /https:\/\/brenon.cloud\/newsletter\/confirm\?token=abc/)
   assert.match(html, /min-height:44px/)
+  assert.match(html, /https:\/\/brenon\.cloud\/brenon-cloud-logo\.png/)
+  assert.match(html, /alt="Brenon.Cloud"/)
   assert.doesNotMatch(html, /<p>Oi\.<\/p>/)
 })
 
