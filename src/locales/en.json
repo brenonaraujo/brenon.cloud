@@ -362,6 +362,21 @@
     "notFound": {
       "title": "Post not found",
       "description": "This article does not exist or was moved."
+    },
+    "newsletter": {
+      "title": "Get new posts by email",
+      "blurb": "One email per post, in this language. No digest, and no mail when the site only changes layout.",
+      "email": "you@email.com",
+      "consent": "I agree to get an email only when a new post is published. I can leave anytime from the link in the email.",
+      "submit": "Subscribe",
+      "pending": "We sent a confirmation email. You are not on the list until you click it.",
+      "already": "This email is already on the list.",
+      "confirmed": "Subscription confirmed. The next post will arrive by email.",
+      "unsubscribed": "You have been removed from the list.",
+      "invalid": "That link is invalid or expired. Subscribe again.",
+      "error": "Could not subscribe right now. Try again in a moment.",
+      "rss": "RSS feed",
+      "notConfigured": "The list is not connected to email sending yet."
     }
   },
   "games": {

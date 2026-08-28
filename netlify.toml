@@ -8,6 +8,24 @@
   NODE_VERSION = "22"
   NPM_FLAGS    = "--legacy-peer-deps"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["lib/**"]
+
+# Confirm / unsubscribe must not fall through to the SPA.
+[[redirects]]
+  from = "/newsletter/confirm"
+  to = "/.netlify/functions/newsletter-confirm"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/newsletter/unsubscribe"
+  to = "/.netlify/functions/newsletter-unsubscribe"
+  status = 200
+  force = true
+
 # /games/* holds the standalone game files (iframes). They must be served
 # as static assets, not handed to the SPA. Everything else falls back to
 # the Vue app so deep links like /games/tetris still resolve to the player.

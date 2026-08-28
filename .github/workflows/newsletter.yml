@@ -1,0 +1,31 @@
+name: Newsletter
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/content/blog/**'
+
+permissions:
+  contents: read
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Email confirmed subscribers about new posts
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+          NEWSLETTER_BROADCAST_URL: https://brenon.cloud/.netlify/functions/newsletter-broadcast
+          NEWSLETTER_BROADCAST_SECRET: ${{ secrets.NEWSLETTER_BROADCAST_SECRET }}
+        run: node scripts/broadcast-new-posts.mjs

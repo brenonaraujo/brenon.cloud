@@ -11,6 +11,10 @@
       </p>
     </header>
 
+    <div class="max-w-3xl mx-auto mb-16">
+      <NewsletterForm />
+    </div>
+
     <div v-if="loading" class="text-center py-12">
       <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-600 border-t-blue-500"></div>
       <p class="mt-4 text-gray-400">{{ t('common.loading') }}</p>
@@ -103,6 +107,7 @@
 import { onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBlog } from '../composables/useBlog'
+import NewsletterForm from '../components/NewsletterForm.vue'
 
 const { t } = useI18n()
 const { posts, loading, error, locale, loadPosts, formatDate } = useBlog()

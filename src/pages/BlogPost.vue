@@ -72,6 +72,8 @@
       />
 
       <div ref="blogContent" class="prose-blog" v-html="post.html"></div>
+
+      <NewsletterForm />
     </article>
 
     <div v-else class="text-center py-12">
@@ -92,6 +94,7 @@ import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useBlog } from '../composables/useBlog'
+import NewsletterForm from '../components/NewsletterForm.vue'
 import mermaid from 'mermaid'
 
 const route = useRoute()
