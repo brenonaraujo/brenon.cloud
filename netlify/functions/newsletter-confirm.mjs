@@ -9,7 +9,7 @@ export async function handler(event) {
   if (!isConfigured()) return dest('error')
 
   try {
-    const result = await getService().confirm(token)
+    const result = await getService(event).confirm(token)
     return dest(result.ok ? 'confirmed' : 'invalid')
   } catch (err) {
     console.error('newsletter-confirm', err)

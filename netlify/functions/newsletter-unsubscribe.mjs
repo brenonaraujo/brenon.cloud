@@ -9,7 +9,7 @@ export async function handler(event) {
   if (!isConfigured()) return dest('error')
 
   try {
-    const result = await getService().unsubscribe(token)
+    const result = await getService(event).unsubscribe(token)
     return dest(result.ok ? 'unsubscribed' : 'invalid')
   } catch (err) {
     console.error('newsletter-unsubscribe', err)

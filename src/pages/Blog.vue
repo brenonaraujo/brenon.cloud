@@ -11,7 +11,7 @@
       </p>
     </header>
 
-    <div class="max-w-3xl mx-auto mb-16">
+    <div class="max-w-xl mx-auto mb-12">
       <NewsletterForm />
     </div>
 

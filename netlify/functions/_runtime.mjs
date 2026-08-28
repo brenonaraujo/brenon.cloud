@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs'
+import { connectLambda, getStore } from '@netlify/blobs'
 import { createBlobSubscriberStore } from '../../lib/blob-subscribers.mjs'
 import { createNewsletterService } from '../../lib/newsletter-service.mjs'
 import { sendResendEmail } from '../../lib/resend-mail.mjs'
@@ -48,9 +48,16 @@ function fallbackStore() {
   }
 }
 
-export function getService() {
+export function getService(event) {
   if (!isConfigured()) {
     throw new Error('newsletter is not configured')
+  }
+  if (event) {
+    try {
+      connectLambda(event)
+    } catch (err) {
+      console.error('newsletter connectLambda', err)
+    }
   }
   let store
   try {
@@ -64,6 +71,6 @@ export function getService() {
     sendEmail: (msg) => sendResendEmail(process.env.RESEND_API_KEY, msg),
     secret: process.env.NEWSLETTER_SIGNING_SECRET,
     siteUrl: siteUrl(),
-    from: process.env.NEWSLETTER_FROM || 'Brenon.Cloud <onboarding@resend.dev>'
+    from: process.env.NEWSLETTER_FROM || 'Brenon.Cloud <news@brenon.cloud>'
   })
 }
