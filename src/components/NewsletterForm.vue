@@ -1,5 +1,5 @@
 <template>
-  <section class="relative rounded-2xl border border-gray-700/50 bg-gray-800/40 backdrop-blur-sm p-6 sm:p-8">
+  <section id="newsletter" class="relative rounded-2xl border border-gray-700/50 bg-gray-800/40 backdrop-blur-sm p-6 sm:p-8">
     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
       <div>
         <h2 class="text-xl font-semibold text-white">{{ t('blog.newsletter.title') }}</h2>
