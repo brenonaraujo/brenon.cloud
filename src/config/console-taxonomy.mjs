@@ -5,7 +5,7 @@
  *   platform    = staff/ops consoles
  */
 
-const PLATFORM_IDS = new Set(['grafana', 'n8n', 'minio', 'portainer', 'konga'])
+const PLATFORM_IDS = new Set(['grafana', 'n8n', 'minio', 'portainer', 'konga', 'authentik'])
 
 const STAFF_GROUPS = [
   'brenon-admins',

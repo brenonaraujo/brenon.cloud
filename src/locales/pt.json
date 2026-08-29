@@ -441,6 +441,10 @@
       "subtitle": "Alertas desta conta e do control plane.",
       "empty": "Nenhum alerta agora.",
       "emptyTitle": "Tudo em dia",
+      "pagination": "Páginas de notificações",
+      "prev": "Anterior",
+      "next": "Próxima",
+      "pageOf": "Página {page} de {pages} ({total})",
       "items": {
         "catalogOffline": {
           "title": "Catálogo ao vivo indisponível",

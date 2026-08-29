@@ -109,6 +109,7 @@ import {
   currentPeriodLabel,
   formatMoney
 } from '../../config/console-overview.mjs'
+import { unreadNotifications } from '../../config/console-prefs.mjs'
 import ConsolePanel from '../../components/console/ConsolePanel.vue'
 import ConsoleServiceRow from '../../components/console/ConsoleServiceRow.vue'
 
@@ -131,7 +132,10 @@ const billing = computed(() => billingSnapshot(auth.groups))
 const amount = computed(() => formatMoney(billing.value.amountCents, billing.value.currency, locale.value))
 const period = computed(() => currentPeriodLabel(locale.value))
 const notes = computed(() =>
-  buildNotifications({ catalogOffline: Boolean(catalog.error), groups: auth.groups })
+  unreadNotifications(
+    buildNotifications({ catalogOffline: Boolean(catalog.error), groups: auth.groups }),
+    catalog.readNotificationIds
+  )
 )
 const recent = computed(() => catalog.recentApps(auth.groups).slice(0, 8))
 const favorites = computed(() => catalog.favoriteApps(auth.groups))
