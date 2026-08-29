@@ -129,6 +129,28 @@
             </router-link>
           </li>
           <li>
+            <router-link
+              to="/console/billing"
+              class="console-nav-link"
+              :class="exactActive('/console/billing')"
+              @click="$emit('close')"
+            >
+              <ReceiptIcon class="h-4 w-4" />
+              {{ t('console.nav.billing') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              to="/console/notifications"
+              class="console-nav-link"
+              :class="exactActive('/console/notifications')"
+              @click="$emit('close')"
+            >
+              <BellIcon class="h-4 w-4" />
+              {{ t('console.nav.notifications') }}
+            </router-link>
+          </li>
+          <li>
             <a
               href="https://uptime.brenon.cloud/status/services"
               target="_blank"
@@ -165,11 +187,13 @@ import {
 } from '../../config/console-taxonomy.mjs'
 import {
   ArrowLeftIcon,
+  BellIcon,
   BoltIcon,
   ChartIcon,
   ExternalIcon,
   GridIcon,
   HomeIcon,
+  ReceiptIcon,
   StarSolidIcon,
   UserIcon
 } from '../icons/Icons.js'

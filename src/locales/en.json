@@ -360,13 +360,17 @@
       "homeHint": "Console home",
       "servicesHint": "All services",
       "hermesHint": "Hermes agent instances",
-      "accountHint": "Account and plan"
+      "accountHint": "Account and plan",
+      "billingHint": "Plan and invoices",
+      "notificationsHint": "Account alerts"
     },
     "nav": {
       "home": "Home",
       "services": "All services",
       "hermes": "Hermes",
       "account": "Account",
+      "billing": "Billing",
+      "notifications": "Notifications",
       "applications": "Applications",
       "platform": "Platform",
       "favorites": "Favorites",
@@ -378,6 +382,8 @@
     },
     "home": {
       "greeting": "Hello, {name}",
+      "overview": "Overview",
+      "region": "Region",
       "recent": "Recently used",
       "recentEmpty": "Open a service and it will show up here.",
       "favorites": "Favorites",
@@ -415,6 +421,40 @@
       "staff": "Staff",
       "customer": "Customer",
       "refreshSession": "Sign in again"
+    },
+    "billing": {
+      "title": "Billing",
+      "subtitle": "Plan, period charges and invoices for this account.",
+      "thisPeriod": "This period",
+      "zeroHint": "No usage charges this period. Invoices will list here when billing is live.",
+      "planHint": "The plan comes from Authentik groups on this account.",
+      "invoices": "Invoices",
+      "invoicesEmpty": "No invoices yet.",
+      "colPeriod": "Period",
+      "colAmount": "Amount",
+      "colStatus": "Status",
+      "payment": "Payment method",
+      "paymentEmpty": "No payment method on file. Plans are assigned on the account, not through a card form here."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Alerts for this account and the control plane.",
+      "empty": "No alerts right now.",
+      "emptyTitle": "All caught up",
+      "items": {
+        "catalogOffline": {
+          "title": "Live catalog unreachable",
+          "body": "The console is showing the offline service list. Retry from the banner when the control plane is back."
+        },
+        "groupsEmpty": {
+          "title": "No groups on this session",
+          "body": "Sign in again so plan and staff groups refresh."
+        },
+        "hermesProvision": {
+          "title": "Hermes instances are not live yet",
+          "body": "Provisioning is still rolling out. Open Hermes to see the instance list."
+        }
+      }
     },
     "hermes": {
       "eyebrow": "Agents",

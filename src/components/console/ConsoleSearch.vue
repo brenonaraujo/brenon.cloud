@@ -107,6 +107,8 @@ const nativePages = computed(() => [
   { id: 'home', to: '/console', title: t('console.nav.home'), hint: t('console.search.homeHint') },
   { id: 'services', to: '/console/services', title: t('console.nav.services'), hint: t('console.search.servicesHint') },
   { id: 'hermes', to: '/console/hermes', title: t('console.nav.hermes'), hint: t('console.search.hermesHint') },
+  { id: 'billing', to: '/console/billing', title: t('console.nav.billing'), hint: t('console.search.billingHint') },
+  { id: 'notifications', to: '/console/notifications', title: t('console.nav.notifications'), hint: t('console.search.notificationsHint') },
   { id: 'account', to: '/console/account', title: t('console.nav.account'), hint: t('console.search.accountHint') }
 ])
 

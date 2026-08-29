@@ -279,6 +279,17 @@ export const ArrowLeftIcon = strokeIcon('ArrowLeftIcon', [
   h('path', { d: 'm11 18-6-6 6-6' })
 ])
 
+export const BellIcon = strokeIcon('BellIcon', [
+  h('path', { d: 'M18 16v-5a6 6 0 1 0-12 0v5' }),
+  h('path', { d: 'M5 16h14' }),
+  h('path', { d: 'M9 16v1a3 3 0 0 0 6 0v-1' })
+])
+
+export const ReceiptIcon = strokeIcon('ReceiptIcon', [
+  h('path', { d: 'M6 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1-2-1z' }),
+  h('path', { d: 'M9 8h6M9 12h6M9 16h4' })
+])
+
 export const InboxIcon = strokeIcon('InboxIcon', [
   h('path', { d: 'M3 12h5l2 3h4l2-3h5' }),
   h('path', { d: 'M3 12v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' }),
