@@ -16,6 +16,15 @@
       <ConsoleSearch />
     </div>
 
+    <router-link
+      to="/"
+      class="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-md border border-white/15 px-3 text-sm text-gray-200 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white"
+    >
+      <ArrowLeftIcon class="h-4 w-4" />
+      <span class="hidden sm:inline">{{ t('console.nav.backToSite') }}</span>
+      <span class="sm:hidden">{{ t('console.nav.site') }}</span>
+    </router-link>
+
     <div class="hidden items-center gap-2 sm:flex">
       <span
         class="rounded border border-white/10 px-2 py-1 font-mono text-[11px] uppercase tracking-wide text-gray-400"
@@ -60,6 +69,14 @@
         >
           {{ t('console.nav.account') }}
         </router-link>
+        <router-link
+          to="/"
+          class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
+          role="menuitem"
+          @click="menuOpen = false"
+        >
+          {{ t('console.nav.backToSite') }}
+        </router-link>
         <button
           type="button"
           class="block w-full px-3 py-2 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white"
@@ -81,7 +98,7 @@ import { primaryPlan } from '../../config/console-taxonomy.mjs'
 import { useConsoleUi } from '../../composables/useConsoleUi'
 import LanguageSelector from '../ui/LanguageSelector.vue'
 import ConsoleSearch from './ConsoleSearch.vue'
-import { MenuIcon } from '../icons/Icons.js'
+import { ArrowLeftIcon, MenuIcon } from '../icons/Icons.js'
 
 defineEmits(['toggle-sidebar'])
 

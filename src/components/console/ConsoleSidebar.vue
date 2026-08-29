@@ -142,7 +142,8 @@
           </li>
           <li>
             <router-link to="/" class="console-nav-link" @click="$emit('close')">
-              {{ t('console.nav.site') }}
+              <ArrowLeftIcon class="h-4 w-4" />
+              {{ t('console.nav.backToSite') }}
             </router-link>
           </li>
         </ul>
@@ -163,6 +164,7 @@ import {
   isHermesSubscriber
 } from '../../config/console-taxonomy.mjs'
 import {
+  ArrowLeftIcon,
   BoltIcon,
   ChartIcon,
   ExternalIcon,
