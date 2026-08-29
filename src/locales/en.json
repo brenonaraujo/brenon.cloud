@@ -405,7 +405,11 @@
       "host": "Hostname",
       "kindApplication": "Application",
       "kindPlatform": "Platform",
-      "external": "Opens in a new tab"
+      "external": "Opens in a new tab",
+      "plan": "Plan",
+      "about": "About this service",
+      "docs": "Learn more",
+      "status": "Status"
     },
     "account": {
       "title": "Account",
@@ -426,15 +430,32 @@
       "title": "Billing",
       "subtitle": "Plan, period charges and invoices for this account.",
       "thisPeriod": "This period",
-      "zeroHint": "No usage charges this period. Invoices will list here when billing is live.",
-      "planHint": "The plan comes from Authentik groups on this account.",
+      "zeroHint": "No usage charges this period. Paid plans bill through Stripe Checkout — we never take a card on this page.",
+      "planHint": "The plan is written to Authentik groups after Stripe confirms payment. Sign out and sign in again so the session picks it up.",
       "invoices": "Invoices",
       "invoicesEmpty": "No invoices yet.",
       "colPeriod": "Period",
       "colAmount": "Amount",
       "colStatus": "Status",
-      "payment": "Payment method",
-      "paymentEmpty": "No payment method on file. Plans are assigned on the account, not through a card form here."
+      "payment": "Payment",
+      "paymentEmpty": "No Stripe customer on this account yet. Upgrade opens hosted Checkout.",
+      "paymentReady": "Card and invoices live in the Stripe customer portal.",
+      "perMonth": "per month",
+      "current": "Current plan",
+      "upgrade": "Upgrade",
+      "manage": "Manage subscription",
+      "stripeHint": "Subscription is synced from Stripe to this control plane.",
+      "checkoutSuccess": "Payment received. Sign out and sign in again if the new plan is not on this session yet.",
+      "checkoutCancel": "Checkout was cancelled. Nothing was charged.",
+      "needSession": "Sign in again so billing can verify this account.",
+      "loadError": "Could not load billing from the control plane.",
+      "checkoutError": "Could not start Stripe Checkout.",
+      "portalError": "Could not open the Stripe portal.",
+      "features": {
+        "free": "Member console and Draw|Akash Console Air|Authentik login",
+        "basic": "Everything in Free|Paid plan group on Authentik|Stripe invoices in the portal",
+        "pro": "Everything in Basic|Hermes as a Service (plan-hermes)|Priority for new agent instances"
+      }
     },
     "notifications": {
       "title": "Notifications",
@@ -490,6 +511,8 @@
     },
     "plan": {
       "free": "Free",
+      "basic": "Basic",
+      "pro": "Pro",
       "hermes": "Hermes"
     }
   },

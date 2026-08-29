@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { mergeCatalog } from '../src/config/console-native.mjs'
+import { factsFor } from '../src/config/console-service-facts.mjs'
 import { visibleForGroups } from '../src/config/console-acl.mjs'
 import {
   canManageHermes,
@@ -60,8 +61,10 @@ describe('groupServices / searchServices', () => {
 })
 
 describe('plans and hermes access', () => {
-  it('prefers plan-hermes over plan-free', () => {
+  it('prefers plan-pro, then hermes, then basic, then free', () => {
+    assert.equal(primaryPlan(['plan-free', 'plan-pro']), 'pro')
     assert.equal(primaryPlan(['plan-free', 'plan-hermes']), 'hermes')
+    assert.equal(primaryPlan(['plan-free', 'plan-basic']), 'basic')
     assert.equal(primaryPlan(['plan-free']), 'free')
     assert.equal(primaryPlan([]), 'free')
   })
@@ -70,9 +73,11 @@ describe('plans and hermes access', () => {
     assert.equal(isStaff(['brenon-admins']), true)
     assert.equal(isStaff(['plan-free']), false)
     assert.equal(isHermesSubscriber(['plan-hermes']), true)
+    assert.equal(isHermesSubscriber(['plan-pro']), true)
     assert.equal(isHermesSubscriber(['hermes-owner']), false)
     assert.equal(isHermesOperator(['hermes-owner']), true)
     assert.equal(canManageHermes(['plan-hermes']), true)
+    assert.equal(canManageHermes(['plan-pro']), true)
     assert.equal(canManageHermes(['hermes-owner']), true)
     assert.equal(canManageHermes(['plan-free']), false)
   })
@@ -119,7 +124,7 @@ describe('console prefs', () => {
   })
 })
 
-describe('native authentik tile', () => {
+describe('native authentik + console-air tiles', () => {
   it('is admin-only and merges without duplicating the catalog', () => {
     const merged = mergeCatalog([{ id: 'draw', groups: ['*'] }])
     assert.equal(merged.some((s) => s.id === 'authentik'), true)
@@ -127,5 +132,21 @@ describe('native authentik tile', () => {
     assert.equal(visibleForGroups(merged, ['brenon-admins']).some((s) => s.id === 'authentik'), true)
     const again = mergeCatalog([{ id: 'authentik', groups: ['brenon-admins'] }])
     assert.equal(again.filter((s) => s.id === 'authentik').length, 1)
+  })
+
+  it('shows Console Air to any signed-in account including free', () => {
+    const merged = mergeCatalog([{ id: 'draw', groups: ['*'] }])
+    assert.equal(visibleForGroups(merged, ['plan-free']).some((s) => s.id === 'console-air'), true)
+    assert.equal(serviceKind({ id: 'console-air', groups: ['*'] }), 'platform')
+  })
+})
+
+describe('service facts', () => {
+  it('returns real host copy for Console Air and Draw', () => {
+    const air = factsFor('console-air', 'en')
+    assert.equal(air.plan, 'free')
+    assert.match(air.bullets[0], /akash\.brenon\.cloud/)
+    const draw = factsFor('draw', 'pt')
+    assert.match(draw.bullets[0], /draw\.brenon\.cloud/)
   })
 })

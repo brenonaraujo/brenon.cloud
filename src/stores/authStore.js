@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
     return p.name || p.preferred_username || p.email || ''
   })
   const email = computed(() => user.value?.profile?.email || '')
+  const idToken = computed(() => user.value?.id_token || '')
   const groups = computed(() => {
     const raw = user.value?.profile?.groups || user.value?.profile?.all_groups || ''
     if (Array.isArray(raw)) return raw.filter(Boolean)
@@ -77,6 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
     displayName,
     email,
     groups,
+    idToken,
     hydrate,
     login,
     signup,

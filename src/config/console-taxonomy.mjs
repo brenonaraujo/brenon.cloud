@@ -5,7 +5,7 @@
  *   platform    = staff/ops consoles
  */
 
-const PLATFORM_IDS = new Set(['grafana', 'n8n', 'minio', 'portainer', 'konga', 'authentik'])
+const PLATFORM_IDS = new Set(['grafana', 'n8n', 'minio', 'portainer', 'konga', 'authentik', 'console-air'])
 
 const STAFF_GROUPS = [
   'brenon-admins',
@@ -53,9 +53,11 @@ export function searchServices(services, query, locale = 'en') {
 
 export function primaryPlan(groups) {
   const have = (groups || []).map((g) => String(g).toLowerCase())
+  if (have.includes('plan-pro')) return 'pro'
   if (have.includes('plan-hermes')) return 'hermes'
+  if (have.includes('plan-basic')) return 'basic'
+  if (have.includes('plan-free')) return 'free'
   const plans = have.filter((g) => g.startsWith('plan-'))
-  if (plans.includes('plan-free')) return 'free'
   if (plans.length) return plans[0].slice('plan-'.length)
   return 'free'
 }
@@ -67,7 +69,7 @@ export function isStaff(groups) {
 
 export function isHermesSubscriber(groups) {
   const have = new Set((groups || []).map((g) => String(g).toLowerCase()))
-  return have.has('plan-hermes')
+  return have.has('plan-hermes') || have.has('plan-pro')
 }
 
 export function isHermesOperator(groups) {

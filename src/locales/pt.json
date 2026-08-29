@@ -405,7 +405,11 @@
       "host": "Hostname",
       "kindApplication": "Aplicação",
       "kindPlatform": "Plataforma",
-      "external": "Abre em uma nova aba"
+      "external": "Abre em uma nova aba",
+      "plan": "Plano",
+      "about": "Sobre este serviço",
+      "docs": "Saiba mais",
+      "status": "Status"
     },
     "account": {
       "title": "Conta",
@@ -426,15 +430,32 @@
       "title": "Faturamento",
       "subtitle": "Plano, cobrança do período e faturas desta conta.",
       "thisPeriod": "Este período",
-      "zeroHint": "Nenhuma cobrança de uso neste período. As faturas aparecem aqui quando o billing estiver no ar.",
-      "planHint": "O plano vem dos grupos Authentik desta conta.",
+      "zeroHint": "Nenhuma cobrança de uso neste período. Planos pagos passam pelo Stripe Checkout — cartão nunca é digitado nesta página.",
+      "planHint": "O plano é gravado nos grupos Authentik depois que o Stripe confirma o pagamento. Saia e entre de novo para a sessão atualizar.",
       "invoices": "Faturas",
       "invoicesEmpty": "Nenhuma fatura ainda.",
       "colPeriod": "Período",
       "colAmount": "Valor",
       "colStatus": "Status",
-      "payment": "Forma de pagamento",
-      "paymentEmpty": "Nenhuma forma de pagamento cadastrada. O plano entra na conta, não por um formulário de cartão aqui."
+      "payment": "Pagamento",
+      "paymentEmpty": "Ainda não há cliente Stripe nesta conta. O upgrade abre o Checkout hospedado.",
+      "paymentReady": "Cartão e faturas ficam no portal do cliente Stripe.",
+      "perMonth": "por mês",
+      "current": "Plano atual",
+      "upgrade": "Fazer upgrade",
+      "manage": "Gerenciar assinatura",
+      "stripeHint": "A assinatura é sincronizada do Stripe para este control plane.",
+      "checkoutSuccess": "Pagamento recebido. Saia e entre de novo se o plano novo ainda não estiver nesta sessão.",
+      "checkoutCancel": "O checkout foi cancelado. Nada foi cobrado.",
+      "needSession": "Entre de novo para o billing verificar esta conta.",
+      "loadError": "Não foi possível carregar o billing no control plane.",
+      "checkoutError": "Não foi possível iniciar o Stripe Checkout.",
+      "portalError": "Não foi possível abrir o portal Stripe.",
+      "features": {
+        "free": "Console e Draw|Akash Console Air|Login Authentik",
+        "basic": "Tudo do Free|Grupo do plano pago no Authentik|Faturas Stripe no portal",
+        "pro": "Tudo do Basic|Hermes as a Service (plan-hermes)|Prioridade para novas instâncias"
+      }
     },
     "notifications": {
       "title": "Notificações",
@@ -490,6 +511,8 @@
     },
     "plan": {
       "free": "Free",
+      "basic": "Basic",
+      "pro": "Pro",
       "hermes": "Hermes"
     }
   },
