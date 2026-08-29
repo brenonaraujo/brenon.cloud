@@ -25,6 +25,8 @@ import ConsoleServices from './pages/console/Services.vue'
 import ConsoleService from './pages/console/Service.vue'
 import ConsoleHermes from './pages/console/Hermes.vue'
 import ConsoleAccount from './pages/console/Account.vue'
+import ConsoleBilling from './pages/console/Billing.vue'
+import ConsoleNotifications from './pages/console/Notifications.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
@@ -126,6 +128,16 @@ const router = createRouter({
           path: 'account',
           name: 'console-account',
           component: ConsoleAccount
+        },
+        {
+          path: 'billing',
+          name: 'console-billing',
+          component: ConsoleBilling
+        },
+        {
+          path: 'notifications',
+          name: 'console-notifications',
+          component: ConsoleNotifications
         }
       ]
     },

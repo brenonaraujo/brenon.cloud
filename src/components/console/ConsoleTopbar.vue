@@ -39,6 +39,20 @@
 
     <LanguageSelector />
 
+    <router-link
+      to="/console/notifications"
+      class="relative inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+      :aria-label="t('console.nav.notifications')"
+    >
+      <BellIcon class="h-5 w-5" />
+      <span
+        v-if="noteCount"
+        class="absolute right-1 top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-blue-500 px-1 text-[10px] font-medium text-white"
+      >
+        {{ noteCount }}
+      </span>
+    </router-link>
+
     <div class="relative" ref="menuRoot">
       <button
         type="button"
@@ -70,6 +84,14 @@
           {{ t('console.nav.account') }}
         </router-link>
         <router-link
+          to="/console/billing"
+          class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
+          role="menuitem"
+          @click="menuOpen = false"
+        >
+          {{ t('console.nav.billing') }}
+        </router-link>
+        <router-link
           to="/"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5"
           role="menuitem"
@@ -94,16 +116,19 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
+import { useConsoleStore } from '../../stores/consoleStore'
 import { primaryPlan } from '../../config/console-taxonomy.mjs'
+import { buildNotifications } from '../../config/console-overview.mjs'
 import { useConsoleUi } from '../../composables/useConsoleUi'
 import LanguageSelector from '../ui/LanguageSelector.vue'
 import ConsoleSearch from './ConsoleSearch.vue'
-import { ArrowLeftIcon, MenuIcon } from '../icons/Icons.js'
+import { ArrowLeftIcon, BellIcon, MenuIcon } from '../icons/Icons.js'
 
 defineEmits(['toggle-sidebar'])
 
 const { t, te } = useI18n()
 const auth = useAuthStore()
+const catalog = useConsoleStore()
 const { initials } = useConsoleUi()
 const menuOpen = ref(false)
 const menuRoot = ref(null)
@@ -113,6 +138,10 @@ const planLabel = computed(() => {
   const key = `console.plan.${plan}`
   return te(key) ? t(key) : plan
 })
+
+const noteCount = computed(
+  () => buildNotifications({ catalogOffline: Boolean(catalog.error), groups: auth.groups }).length
+)
 
 const onDocClick = (event) => {
   if (!menuRoot.value?.contains(event.target)) menuOpen.value = false

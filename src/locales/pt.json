@@ -360,13 +360,17 @@
       "homeHint": "Início do console",
       "servicesHint": "Todos os serviços",
       "hermesHint": "Instâncias de agentes Hermes",
-      "accountHint": "Conta e plano"
+      "accountHint": "Conta e plano",
+      "billingHint": "Plano e faturas",
+      "notificationsHint": "Alertas da conta"
     },
     "nav": {
       "home": "Início",
       "services": "Todos os serviços",
       "hermes": "Hermes",
       "account": "Conta",
+      "billing": "Faturamento",
+      "notifications": "Notificações",
       "applications": "Aplicações",
       "platform": "Plataforma",
       "favorites": "Favoritos",
@@ -378,6 +382,8 @@
     },
     "home": {
       "greeting": "Olá, {name}",
+      "overview": "Visão geral",
+      "region": "Região",
       "recent": "Usados recentemente",
       "recentEmpty": "Abra um serviço e ele aparece aqui.",
       "favorites": "Favoritos",
@@ -415,6 +421,40 @@
       "staff": "Staff",
       "customer": "Cliente",
       "refreshSession": "Entrar de novo"
+    },
+    "billing": {
+      "title": "Faturamento",
+      "subtitle": "Plano, cobrança do período e faturas desta conta.",
+      "thisPeriod": "Este período",
+      "zeroHint": "Nenhuma cobrança de uso neste período. As faturas aparecem aqui quando o billing estiver no ar.",
+      "planHint": "O plano vem dos grupos Authentik desta conta.",
+      "invoices": "Faturas",
+      "invoicesEmpty": "Nenhuma fatura ainda.",
+      "colPeriod": "Período",
+      "colAmount": "Valor",
+      "colStatus": "Status",
+      "payment": "Forma de pagamento",
+      "paymentEmpty": "Nenhuma forma de pagamento cadastrada. O plano entra na conta, não por um formulário de cartão aqui."
+    },
+    "notifications": {
+      "title": "Notificações",
+      "subtitle": "Alertas desta conta e do control plane.",
+      "empty": "Nenhum alerta agora.",
+      "emptyTitle": "Tudo em dia",
+      "items": {
+        "catalogOffline": {
+          "title": "Catálogo ao vivo indisponível",
+          "body": "O console está mostrando a lista offline. Use o retry no banner quando o control plane voltar."
+        },
+        "groupsEmpty": {
+          "title": "Nenhum grupo nesta sessão",
+          "body": "Entre de novo para atualizar plano e grupos de staff."
+        },
+        "hermesProvision": {
+          "title": "Instâncias Hermes ainda não estão no ar",
+          "body": "O provisionamento ainda está sendo preparado. Abra o Hermes para ver a lista de instâncias."
+        }
+      }
     },
     "hermes": {
       "eyebrow": "Agentes",
