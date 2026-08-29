@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-900 flex flex-col">
     <Navbar />
     <div class="flex-1">
-      <slot></slot>
+      <router-view />
     </div>
     <footer class="border-t border-gray-800 mt-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">

@@ -25,6 +25,7 @@ export function normalizeCatalogService(raw) {
     : Array.isArray(raw.consoleGroups)
       ? raw.consoleGroups
       : []
+  const kind = raw.kind || raw.category || ''
   return {
     id,
     title,
@@ -32,7 +33,8 @@ export function normalizeCatalogService(raw) {
     url,
     groups: groups.map((g) => String(g)).filter(Boolean),
     icon: raw.icon || 'cube',
-    color: raw.color || 'blue'
+    color: raw.color || 'blue',
+    kind
   }
 }
 

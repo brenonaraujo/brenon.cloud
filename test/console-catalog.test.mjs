@@ -17,6 +17,17 @@ describe('normalizeCatalogService', () => {
     assert.equal(row.url, 'https://konga.brenon.cloud')
     assert.deepEqual(row.groups, ['api-owner'])
     assert.equal(row.icon, 'settings')
+    assert.equal(row.kind, '')
+  })
+
+  it('keeps optional kind from the control plane', () => {
+    const row = normalizeCatalogService({
+      id: 'draw',
+      url: 'https://draw.brenon.cloud',
+      groups: ['*'],
+      kind: 'application'
+    })
+    assert.equal(row.kind, 'application')
   })
 
   it('accepts launchUrl and consoleGroups aliases', () => {
