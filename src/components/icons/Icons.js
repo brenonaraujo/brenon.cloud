@@ -274,6 +274,11 @@ export const ChevronRightIcon = strokeIcon('ChevronRightIcon', [
   h('path', { d: 'm9 6 6 6-6 6' })
 ])
 
+export const ArrowLeftIcon = strokeIcon('ArrowLeftIcon', [
+  h('path', { d: 'M19 12H5' }),
+  h('path', { d: 'm11 18-6-6 6-6' })
+])
+
 export const InboxIcon = strokeIcon('InboxIcon', [
   h('path', { d: 'M3 12h5l2 3h4l2-3h5' }),
   h('path', { d: 'M3 12v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' }),
