@@ -24,7 +24,7 @@
       </button>
       <div
         v-if="open"
-        class="absolute right-0 z-50 mt-2 min-w-[12rem] rounded-md border border-white/10 bg-gray-900/95 py-1 shadow-xl backdrop-blur-sm"
+        class="absolute right-0 z-50 mt-2 min-w-[14rem] rounded-md border border-white/10 bg-gray-900/95 py-1 shadow-xl backdrop-blur-sm"
         role="menu"
       >
         <router-link
@@ -35,17 +35,23 @@
         >
           {{ t('navbar.console') }}
         </router-link>
-        <a
-          href="https://draw.brenon.cloud"
-          class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
-          role="menuitem"
-          @click="open = false"
-        >
-          Draw
-        </a>
+        <div v-if="apps.length" class="max-h-72 overflow-y-auto border-t border-white/10">
+          <a
+            v-for="app in apps"
+            :key="app.id"
+            :href="app.url"
+            class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
+            role="menuitem"
+            target="_blank"
+            rel="noopener noreferrer"
+            @click="open = false"
+          >
+            {{ label(app.title) }}
+          </a>
+        </div>
         <button
           type="button"
-          class="block w-full px-3 py-2 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white"
+          class="block w-full border-t border-white/10 px-3 py-2 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white"
           role="menuitem"
           @click="auth.logout()"
         >
@@ -57,13 +63,18 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/authStore'
+import { useConsoleStore } from '../stores/consoleStore'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const auth = useAuthStore()
+const catalog = useConsoleStore()
 const open = ref(false)
+
+const apps = computed(() => catalog.appsFor(auth.groups))
+const label = (obj) => obj?.[locale.value] || obj?.en || ''
 
 const onDocClick = (event) => {
   if (!event.target.closest?.('[aria-haspopup="menu"]') && !event.target.closest?.('[role="menu"]')) {
@@ -71,6 +82,15 @@ const onDocClick = (event) => {
   }
 }
 
-onMounted(() => document.addEventListener('click', onDocClick))
+onMounted(() => {
+  document.addEventListener('click', onDocClick)
+  catalog.load()
+})
+watch(
+  () => auth.isAuthenticated,
+  (ok) => {
+    if (ok) catalog.load()
+  }
+)
 onBeforeUnmount(() => document.removeEventListener('click', onDocClick))
 </script>

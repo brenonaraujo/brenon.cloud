@@ -1,14 +1,13 @@
 /**
- * Brenon Cloud service registry (v0).
- * As-code catalog of consoles a logged-in human may open.
- * A backend can replace this file later; the page only reads `listForGroups`.
+ * Offline fallback for the member console.
+ * Live catalog: GET https://control.brenon.cloud/api/v1/catalog
+ * ACL: src/config/console-acl.mjs
  *
  * groups: ['*'] = any Authentik session
- * otherwise the user needs at least one listed group (from the all_groups claim)
- *
- * icon: key used by Console.vue → Icons.js
- * color: blue | green | cyan | orange | purple | red
+ * otherwise the user needs at least one listed group (all_groups claim)
  */
+import { visibleForGroups } from './console-acl.mjs'
+
 export const CONSOLE_SERVICES = [
   {
     id: 'draw',
@@ -73,9 +72,7 @@ export const CONSOLE_SERVICES = [
 ]
 
 export function listForGroups(userGroups) {
-  const have = new Set((userGroups || []).map((g) => String(g).toLowerCase()))
-  return CONSOLE_SERVICES.filter((svc) => {
-    if (svc.groups.includes('*')) return true
-    return svc.groups.some((g) => have.has(g.toLowerCase()))
-  })
+  return visibleForGroups(CONSOLE_SERVICES, userGroups)
 }
+
+export { visibleForGroups }
