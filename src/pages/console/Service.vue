@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <dl class="mt-10 grid gap-4 sm:grid-cols-2">
+      <dl class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="rounded-lg border border-white/10 bg-gray-900 p-4">
           <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.host') }}</dt>
           <dd class="mt-2 font-mono text-sm text-gray-200">{{ host(app.url) }}</dd>
@@ -67,7 +67,32 @@
           <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.required') }}</dt>
           <dd class="mt-2 text-sm text-gray-200">{{ accessLabel }}</dd>
         </div>
+        <div class="rounded-lg border border-white/10 bg-gray-900 p-4">
+          <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.plan') }}</dt>
+          <dd class="mt-2 text-sm text-gray-200">{{ planLabel }}</dd>
+        </div>
       </dl>
+
+      <section v-if="facts?.bullets?.length" class="mt-8 rounded-lg border border-white/10 bg-gray-900 p-6">
+        <h2 class="text-sm font-semibold text-white">{{ t('console.services.about') }}</h2>
+        <ul class="mt-4 space-y-2 text-sm leading-relaxed text-gray-300">
+          <li v-for="line in facts.bullets" :key="line">{{ line }}</li>
+        </ul>
+        <div class="mt-6 flex flex-wrap gap-4 text-sm">
+          <a
+            v-if="facts.docsUrl"
+            :href="facts.docsUrl"
+            class="text-blue-300 hover:text-white"
+          >{{ t('console.services.docs') }}</a>
+          <a
+            v-if="facts.statusUrl"
+            :href="facts.statusUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-300 hover:text-white"
+          >{{ t('console.services.status') }}</a>
+        </div>
+      </section>
       <p class="mt-4 text-xs text-gray-500">{{ t('console.services.external') }}</p>
     </template>
   </div>
@@ -81,10 +106,11 @@ import { useAuthStore } from '../../stores/authStore'
 import { useConsoleStore } from '../../stores/consoleStore'
 import { useConsoleUi } from '../../composables/useConsoleUi'
 import { serviceKind } from '../../config/console-taxonomy.mjs'
+import { factsFor } from '../../config/console-service-facts.mjs'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 import { ExternalIcon, InboxIcon, StarIcon, StarSolidIcon } from '../../components/icons/Icons.js'
 
-const { t } = useI18n()
+const { t, te, locale } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
 const catalog = useConsoleStore()
@@ -101,6 +127,12 @@ const accessLabel = computed(() => {
   const groups = app.value?.groups || []
   if (groups.includes('*')) return t('console.services.anyAccount')
   return groups.join(', ')
+})
+const facts = computed(() => (app.value ? factsFor(app.value.id, locale.value) : null))
+const planLabel = computed(() => {
+  const plan = facts.value?.plan || 'free'
+  const key = plan === 'staff' ? 'console.account.staff' : `console.plan.${plan}`
+  return te(key) ? t(key) : plan
 })
 const crumbs = computed(() => [
   { label: t('console.nav.services'), to: '/console/services' },

@@ -15,6 +15,19 @@ export const NATIVE_CONSOLE_APPS = [
     icon: 'settings',
     color: 'orange',
     kind: 'platform'
+  },
+  {
+    id: 'console-air',
+    title: { en: 'Akash Console Air', pt: 'Akash Console Air' },
+    description: {
+      en: 'Self-custodial Akash deployments. Any signed-in account, including Free.',
+      pt: 'Deployments self-custodial na Akash. Qualquer conta logada, inclusive Free.'
+    },
+    url: 'https://akash.brenon.cloud',
+    groups: ['*'],
+    icon: 'bolt',
+    color: 'red',
+    kind: 'platform'
   }
 ]
 
