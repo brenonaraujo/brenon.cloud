@@ -119,6 +119,7 @@ import { useAuthStore } from '../../stores/authStore'
 import { useConsoleStore } from '../../stores/consoleStore'
 import { primaryPlan } from '../../config/console-taxonomy.mjs'
 import { buildNotifications } from '../../config/console-overview.mjs'
+import { unreadNotifications } from '../../config/console-prefs.mjs'
 import { useConsoleUi } from '../../composables/useConsoleUi'
 import LanguageSelector from '../ui/LanguageSelector.vue'
 import ConsoleSearch from './ConsoleSearch.vue'
@@ -140,7 +141,11 @@ const planLabel = computed(() => {
 })
 
 const noteCount = computed(
-  () => buildNotifications({ catalogOffline: Boolean(catalog.error), groups: auth.groups }).length
+  () =>
+    unreadNotifications(
+      buildNotifications({ catalogOffline: Boolean(catalog.error), groups: auth.groups }),
+      catalog.readNotificationIds
+    ).length
 )
 
 const onDocClick = (event) => {

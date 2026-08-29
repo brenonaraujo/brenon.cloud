@@ -5,7 +5,7 @@ export function prefsKey(email) {
 }
 
 export function emptyPrefs() {
-  return { recent: [], favorites: [] }
+  return { recent: [], favorites: [], readNotifications: [] }
 }
 
 export function readPrefs(storage, email) {
@@ -16,7 +16,10 @@ export function readPrefs(storage, email) {
     const parsed = JSON.parse(raw)
     return {
       recent: Array.isArray(parsed.recent) ? parsed.recent.map(String).filter(Boolean) : [],
-      favorites: Array.isArray(parsed.favorites) ? parsed.favorites.map(String).filter(Boolean) : []
+      favorites: Array.isArray(parsed.favorites) ? parsed.favorites.map(String).filter(Boolean) : [],
+      readNotifications: Array.isArray(parsed.readNotifications)
+        ? parsed.readNotifications.map(String).filter(Boolean)
+        : []
     }
   } catch {
     return emptyPrefs()
@@ -27,7 +30,8 @@ export function writePrefs(storage, email, prefs) {
   if (!storage) return emptyPrefs()
   const next = {
     recent: (prefs?.recent || []).slice(0, MAX_RECENT),
-    favorites: [...new Set(prefs?.favorites || [])]
+    favorites: [...new Set(prefs?.favorites || [])],
+    readNotifications: [...new Set(prefs?.readNotifications || [])]
   }
   storage.setItem(prefsKey(email), JSON.stringify(next))
   return next
@@ -48,6 +52,34 @@ export function toggleFavorite(storage, email, id) {
   const has = prefs.favorites.includes(key)
   const favorites = has ? prefs.favorites.filter((item) => item !== key) : [...prefs.favorites, key]
   return writePrefs(storage, email, { ...prefs, favorites })
+}
+
+export function markNotificationsRead(storage, email, ids) {
+  const prefs = readPrefs(storage, email)
+  const extra = (ids || []).map(String).filter(Boolean)
+  if (!extra.length) return prefs
+  const readNotifications = [...new Set([...prefs.readNotifications, ...extra])]
+  return writePrefs(storage, email, { ...prefs, readNotifications })
+}
+
+export function unreadNotifications(items, readIds) {
+  const read = new Set(readIds || [])
+  return (items || []).filter((item) => !read.has(item.id))
+}
+
+export const NOTIFICATIONS_PAGE_SIZE = 10
+
+export function paginate(items, page, size = NOTIFICATIONS_PAGE_SIZE) {
+  const list = items || []
+  const pages = Math.max(1, Math.ceil(list.length / size) || 1)
+  const current = Math.min(pages, Math.max(1, Number(page) || 1))
+  const start = (current - 1) * size
+  return {
+    page: current,
+    pages,
+    total: list.length,
+    items: list.slice(start, start + size)
+  }
 }
 
 export function resolveByIds(services, ids) {

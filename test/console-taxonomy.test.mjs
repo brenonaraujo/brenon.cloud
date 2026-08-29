@@ -1,5 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
+import { mergeCatalog } from '../src/config/console-native.mjs'
+import { visibleForGroups } from '../src/config/console-acl.mjs'
 import {
   canManageHermes,
   groupServices,
@@ -15,7 +17,10 @@ import {
   readPrefs,
   recordVisit,
   resolveByIds,
-  toggleFavorite
+  toggleFavorite,
+  markNotificationsRead,
+  unreadNotifications,
+  paginate
 } from '../src/config/console-prefs.mjs'
 
 describe('serviceKind', () => {
@@ -26,6 +31,7 @@ describe('serviceKind', () => {
   it('treats known ops consoles as platform', () => {
     assert.equal(serviceKind({ id: 'konga', groups: ['api-owner'] }), 'platform')
     assert.equal(serviceKind({ id: 'portainer', groups: ['brenon-admins'] }), 'platform')
+    assert.equal(serviceKind({ id: 'authentik', groups: ['brenon-admins'] }), 'platform')
   })
 
   it('honors explicit kind from the control plane', () => {
@@ -92,5 +98,34 @@ describe('console prefs', () => {
       prefs.recent
     )
     assert.deepEqual(resolved.map((s) => s.id), ['draw', 'grafana'])
+  })
+
+  it('marks notifications read and paginates', () => {
+    const storage = new Map()
+    const mem = {
+      getItem: (k) => (storage.has(k) ? storage.get(k) : null),
+      setItem: (k, v) => storage.set(k, v)
+    }
+    markNotificationsRead(mem, 'a@x.com', ['catalog-offline'])
+    const items = [{ id: 'catalog-offline' }, { id: 'hermes-provision' }]
+    const unread = unreadNotifications(items, readPrefs(mem, 'a@x.com').readNotifications)
+    assert.deepEqual(unread.map((i) => i.id), ['hermes-provision'])
+    const lots = Array.from({ length: 25 }, (_, i) => ({ id: String(i) }))
+    const p2 = paginate(lots, 2, 10)
+    assert.equal(p2.page, 2)
+    assert.equal(p2.pages, 3)
+    assert.equal(p2.items.length, 10)
+    assert.equal(p2.items[0].id, '10')
+  })
+})
+
+describe('native authentik tile', () => {
+  it('is admin-only and merges without duplicating the catalog', () => {
+    const merged = mergeCatalog([{ id: 'draw', groups: ['*'] }])
+    assert.equal(merged.some((s) => s.id === 'authentik'), true)
+    assert.equal(visibleForGroups(merged, ['plan-free']).some((s) => s.id === 'authentik'), false)
+    assert.equal(visibleForGroups(merged, ['brenon-admins']).some((s) => s.id === 'authentik'), true)
+    const again = mergeCatalog([{ id: 'authentik', groups: ['brenon-admins'] }])
+    assert.equal(again.filter((s) => s.id === 'authentik').length, 1)
   })
 })

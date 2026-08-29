@@ -441,6 +441,10 @@
       "subtitle": "Alerts for this account and the control plane.",
       "empty": "No alerts right now.",
       "emptyTitle": "All caught up",
+      "pagination": "Notification pages",
+      "prev": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {pages} ({total})",
       "items": {
         "catalogOffline": {
           "title": "Live catalog unreachable",

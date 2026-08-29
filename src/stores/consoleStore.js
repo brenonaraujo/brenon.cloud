@@ -7,9 +7,11 @@ import {
   readPrefs,
   recordVisit,
   resolveByIds,
-  toggleFavorite
+  toggleFavorite,
+  markNotificationsRead
 } from '../config/console-prefs.mjs'
 import { groupServices, searchServices } from '../config/console-taxonomy.mjs'
+import { mergeCatalog } from '../config/console-native.mjs'
 
 function browserStorage() {
   try {
@@ -27,6 +29,7 @@ export const useConsoleStore = defineStore('console', () => {
   const error = ref(null)
   const recentIds = ref([])
   const favoriteIds = ref([])
+  const readNotificationIds = ref([])
   const prefsEmail = ref('')
 
   const offline = computed(() => loaded.value && source.value === 'fallback' && Boolean(error.value))
@@ -56,9 +59,13 @@ export const useConsoleStore = defineStore('console', () => {
     }
   }
 
-  function appsFor(userGroups) {
+  function catalogList() {
     const list = services.value.length ? services.value : CONSOLE_SERVICES
-    return visibleForGroups(list, userGroups)
+    return mergeCatalog(list)
+  }
+
+  function appsFor(userGroups) {
+    return visibleForGroups(catalogList(), userGroups)
   }
 
   function groupedFor(userGroups) {
@@ -76,18 +83,32 @@ export const useConsoleStore = defineStore('console', () => {
     const prefs = readPrefs(browserStorage(), nextEmail)
     recentIds.value = prefs.recent
     favoriteIds.value = prefs.favorites
+    readNotificationIds.value = prefs.readNotifications
   }
 
   function visit(id, email) {
     const prefs = recordVisit(browserStorage(), email, id)
     recentIds.value = prefs.recent
     favoriteIds.value = prefs.favorites
+    readNotificationIds.value = prefs.readNotifications
   }
 
   function star(id, email) {
     const prefs = toggleFavorite(browserStorage(), email, id)
     recentIds.value = prefs.recent
     favoriteIds.value = prefs.favorites
+    readNotificationIds.value = prefs.readNotifications
+  }
+
+  function markNotesRead(ids, email) {
+    const prefs = markNotificationsRead(browserStorage(), email, ids)
+    recentIds.value = prefs.recent
+    favoriteIds.value = prefs.favorites
+    readNotificationIds.value = prefs.readNotifications
+  }
+
+  function isNoteRead(id) {
+    return readNotificationIds.value.includes(id)
   }
 
   function isFavorite(id) {
@@ -111,6 +132,7 @@ export const useConsoleStore = defineStore('console', () => {
     offline,
     recentIds,
     favoriteIds,
+    readNotificationIds,
     load,
     appsFor,
     groupedFor,
@@ -118,6 +140,8 @@ export const useConsoleStore = defineStore('console', () => {
     hydratePrefs,
     visit,
     star,
+    markNotesRead,
+    isNoteRead,
     isFavorite,
     recentApps,
     favoriteApps
