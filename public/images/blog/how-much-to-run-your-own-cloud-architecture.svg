@@ -85,7 +85,7 @@
   <!-- swarm services -->
   <rect x="60" y="640" width="710" height="72" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
   <text x="415" y="668" text-anchor="middle" fill="#6ee7b7" font-family="monospace" font-size="12" font-weight="700">SWARM SERVICES</text>
-  <text x="415" y="690" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="11">Authentik · Kong · Whisper STT · Chatterbox TTS · 23 stacks</text>
+  <text x="415" y="690" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="11">Authentik · Kong · Whisper STT · Chatterbox TTS · 26 stacks</text>
 
   <rect x="790" y="640" width="350" height="72" rx="8" fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
   <text x="965" y="668" text-anchor="middle" fill="#c4b5fd" font-family="monospace" font-size="12" font-weight="700">FIREBASE FREE TIER</text>

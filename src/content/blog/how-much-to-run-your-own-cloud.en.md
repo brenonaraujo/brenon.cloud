@@ -36,7 +36,9 @@ Today that is a 3-node Docker Swarm:
 | Server 2 | worker | 12 | 67.4 GB | RIG / vserver, RTX 3080 + RTX 5080 |
 | Server 3 | worker | 2 | 8.1 GB | small worker, another mini PC |
 
-Snapshot of the cluster (Portainer, not a live API): **3 nodes, 18 CPU, 92.2 GB RAM, 2 GPUs, 23 stacks, 38 services, 120 containers**.
+![Portainer: brenon.cloud environment Up, 26 stacks, 52 services, 224 containers, 18 CPU, 92.2 GB RAM, 3 nodes](/images/blog/how-much-to-run-your-own-cloud-portainer.png)
+
+That is Portainer on the environment, right now. Snapshot (not a live API): **3 nodes, 18 CPU, 92.2 GB RAM, 2 GPUs, 26 stacks, 52 services, 224 containers**.
 
 Three rooms is not a datacenter. It is heat, noise, and power spread across the house. If one box has a bad day, Swarm still tries to schedule on what is left. The WAN is still one home ISP. Real resilience, the kind that survives my street going dark, is Cloudflare, Netlify, and Akash. Inside the house it is copper between rooms and a manager that does not sit on top of the GPUs.
 
