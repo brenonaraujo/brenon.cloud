@@ -1,30 +1,55 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { fetchLiveCatalog } from '../api/consoleCatalogApi'
 import { visibleForGroups } from '../config/console-acl.mjs'
 import { CONSOLE_SERVICES } from '../config/console-registry'
+import {
+  readPrefs,
+  recordVisit,
+  resolveByIds,
+  toggleFavorite
+} from '../config/console-prefs.mjs'
+import { groupServices, searchServices } from '../config/console-taxonomy.mjs'
+
+function browserStorage() {
+  try {
+    return window.localStorage
+  } catch {
+    return null
+  }
+}
 
 export const useConsoleStore = defineStore('console', () => {
   const services = ref([])
   const loaded = ref(false)
   const loading = ref(false)
   const source = ref('fallback')
+  const error = ref(null)
+  const recentIds = ref([])
+  const favoriteIds = ref([])
+  const prefsEmail = ref('')
+
+  const offline = computed(() => loaded.value && source.value === 'fallback' && Boolean(error.value))
 
   async function load(force = false) {
     if (loaded.value && !force) return
     loading.value = true
+    if (force) error.value = null
     try {
       const live = await fetchLiveCatalog()
       if (live.length) {
         services.value = live
         source.value = 'live'
+        error.value = null
       } else {
         services.value = CONSOLE_SERVICES
         source.value = 'fallback'
+        error.value = null
       }
-    } catch {
+    } catch (err) {
       services.value = CONSOLE_SERVICES
       source.value = 'fallback'
+      error.value = err?.message || 'catalog'
     } finally {
       loaded.value = true
       loading.value = false
@@ -36,5 +61,65 @@ export const useConsoleStore = defineStore('console', () => {
     return visibleForGroups(list, userGroups)
   }
 
-  return { services, loaded, loading, source, load, appsFor }
+  function groupedFor(userGroups) {
+    return groupServices(appsFor(userGroups))
+  }
+
+  function searchFor(userGroups, query, locale) {
+    return searchServices(appsFor(userGroups), query, locale)
+  }
+
+  function hydratePrefs(email) {
+    const nextEmail = String(email || '')
+    if (prefsEmail.value === nextEmail) return
+    prefsEmail.value = nextEmail
+    const prefs = readPrefs(browserStorage(), nextEmail)
+    recentIds.value = prefs.recent
+    favoriteIds.value = prefs.favorites
+  }
+
+  function visit(id, email) {
+    const prefs = recordVisit(browserStorage(), email, id)
+    recentIds.value = prefs.recent
+    favoriteIds.value = prefs.favorites
+  }
+
+  function star(id, email) {
+    const prefs = toggleFavorite(browserStorage(), email, id)
+    recentIds.value = prefs.recent
+    favoriteIds.value = prefs.favorites
+  }
+
+  function isFavorite(id) {
+    return favoriteIds.value.includes(id)
+  }
+
+  function recentApps(userGroups) {
+    return resolveByIds(appsFor(userGroups), recentIds.value)
+  }
+
+  function favoriteApps(userGroups) {
+    return resolveByIds(appsFor(userGroups), favoriteIds.value)
+  }
+
+  return {
+    services,
+    loaded,
+    loading,
+    source,
+    error,
+    offline,
+    recentIds,
+    favoriteIds,
+    load,
+    appsFor,
+    groupedFor,
+    searchFor,
+    hydratePrefs,
+    visit,
+    star,
+    isFavorite,
+    recentApps,
+    favoriteApps
+  }
 })

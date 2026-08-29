@@ -35,6 +35,22 @@
         >
           {{ t('navbar.console') }}
         </router-link>
+        <router-link
+          to="/console/hermes"
+          class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
+          role="menuitem"
+          @click="open = false"
+        >
+          {{ t('console.nav.hermes') }}
+        </router-link>
+        <router-link
+          to="/console/account"
+          class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
+          role="menuitem"
+          @click="open = false"
+        >
+          {{ t('console.nav.account') }}
+        </router-link>
         <div v-if="apps.length" class="max-h-72 overflow-y-auto border-t border-white/10">
           <a
             v-for="app in apps"

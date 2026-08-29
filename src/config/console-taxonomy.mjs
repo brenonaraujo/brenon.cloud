@@ -1,0 +1,85 @@
+/**
+ * Client-side grouping for the member console.
+ * Live catalog may send `kind` or `category`; otherwise we infer:
+ *   application = public product (`groups: ['*']` or known product ids)
+ *   platform    = staff/ops consoles
+ */
+
+const PLATFORM_IDS = new Set(['grafana', 'n8n', 'minio', 'portainer', 'konga'])
+
+const STAFF_GROUPS = [
+  'brenon-admins',
+  'brenon-ops',
+  'brenon-viewers',
+  'brenon-builders',
+  'api-owner',
+  'hermes-owner'
+]
+
+export function serviceKind(svc) {
+  const explicit = String(svc?.kind || svc?.category || '').toLowerCase()
+  if (explicit === 'platform') return 'platform'
+  if (explicit === 'product' || explicit === 'application' || explicit === 'app') {
+    return 'application'
+  }
+  const id = String(svc?.id || '').toLowerCase()
+  if (PLATFORM_IDS.has(id)) return 'platform'
+  const groups = svc?.groups || []
+  if (groups.includes('*')) return 'application'
+  return 'platform'
+}
+
+export function groupServices(services) {
+  const applications = []
+  const platform = []
+  for (const svc of services || []) {
+    if (serviceKind(svc) === 'application') applications.push(svc)
+    else platform.push(svc)
+  }
+  return { applications, platform }
+}
+
+export function searchServices(services, query, locale = 'en') {
+  const q = String(query || '').trim().toLowerCase()
+  if (!q) return services || []
+  return (services || []).filter((svc) => {
+    const title = String(svc.title?.[locale] || svc.title?.en || svc.id || '').toLowerCase()
+    const desc = String(svc.description?.[locale] || svc.description?.en || '').toLowerCase()
+    const host = String(svc.url || '').toLowerCase()
+    const id = String(svc.id || '').toLowerCase()
+    return title.includes(q) || desc.includes(q) || host.includes(q) || id.includes(q)
+  })
+}
+
+export function primaryPlan(groups) {
+  const have = (groups || []).map((g) => String(g).toLowerCase())
+  if (have.includes('plan-hermes')) return 'hermes'
+  const plans = have.filter((g) => g.startsWith('plan-'))
+  if (plans.includes('plan-free')) return 'free'
+  if (plans.length) return plans[0].slice('plan-'.length)
+  return 'free'
+}
+
+export function isStaff(groups) {
+  const have = new Set((groups || []).map((g) => String(g).toLowerCase()))
+  return STAFF_GROUPS.some((g) => have.has(g))
+}
+
+export function isHermesSubscriber(groups) {
+  const have = new Set((groups || []).map((g) => String(g).toLowerCase()))
+  return have.has('plan-hermes')
+}
+
+export function isHermesOperator(groups) {
+  const have = new Set((groups || []).map((g) => String(g).toLowerCase()))
+  return have.has('hermes-owner')
+}
+
+export function canManageHermes(groups) {
+  return isHermesSubscriber(groups) || isHermesOperator(groups)
+}
+
+export function pickLocalized(obj, locale) {
+  if (!obj || typeof obj !== 'object') return ''
+  return obj[locale] || obj.en || ''
+}

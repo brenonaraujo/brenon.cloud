@@ -6,6 +6,10 @@ import { useAuthStore } from './stores/authStore'
 import App from './App.vue'
 import './style.css'
 
+// Layouts
+import DefaultLayout from './layouts/DefaultLayout.vue'
+import ConsoleLayout from './layouts/ConsoleLayout.vue'
+
 // Pages
 import Home from './pages/Home.vue'
 import Service from './pages/Service.vue'
@@ -16,7 +20,11 @@ import Games from './pages/Games.vue'
 import GamePlayer from './pages/GamePlayer.vue'
 import AuthCallback from './pages/AuthCallback.vue'
 import AuthContinue from './pages/AuthContinue.vue'
-import Console from './pages/Console.vue'
+import ConsoleHome from './pages/console/Home.vue'
+import ConsoleServices from './pages/console/Services.vue'
+import ConsoleService from './pages/console/Service.vue'
+import ConsoleHermes from './pages/console/Hermes.vue'
+import ConsoleAccount from './pages/console/Account.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
@@ -38,56 +46,88 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/service',
-      name: 'service',
-      component: Service,
-      props: route => ({ serviceId: route.query.service })
-    },
-    {
-      path: '/blog',
-      name: 'blog',
-      component: Blog
-    },
-    {
-      path: '/blog/:slug',
-      name: 'blog-post',
-      component: BlogPost,
-      props: true
-    },
-    {
-      path: '/path',
-      name: 'path-to-glory',
-      component: PathToGlory
-    },
-    {
-      path: '/games',
-      name: 'games',
-      component: Games
-    },
-    {
-      path: '/games/:slug',
-      name: 'game-player',
-      component: GamePlayer,
-      props: true
-    },
-    {
-      path: '/auth/callback',
-      name: 'auth-callback',
-      component: AuthCallback
-    },
-    {
-      path: '/auth/continue',
-      name: 'auth-continue',
-      component: AuthContinue
+      component: DefaultLayout,
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: Home
+        },
+        {
+          path: 'service',
+          name: 'service',
+          component: Service,
+          props: route => ({ serviceId: route.query.service })
+        },
+        {
+          path: 'blog',
+          name: 'blog',
+          component: Blog
+        },
+        {
+          path: 'blog/:slug',
+          name: 'blog-post',
+          component: BlogPost,
+          props: true
+        },
+        {
+          path: 'path',
+          name: 'path-to-glory',
+          component: PathToGlory
+        },
+        {
+          path: 'games',
+          name: 'games',
+          component: Games
+        },
+        {
+          path: 'games/:slug',
+          name: 'game-player',
+          component: GamePlayer,
+          props: true
+        },
+        {
+          path: 'auth/callback',
+          name: 'auth-callback',
+          component: AuthCallback
+        },
+        {
+          path: 'auth/continue',
+          name: 'auth-continue',
+          component: AuthContinue
+        }
+      ]
     },
     {
       path: '/console',
-      name: 'console',
-      component: Console
+      component: ConsoleLayout,
+      children: [
+        {
+          path: '',
+          name: 'console',
+          component: ConsoleHome
+        },
+        {
+          path: 'services',
+          name: 'console-services',
+          component: ConsoleServices
+        },
+        {
+          path: 'services/:id',
+          name: 'console-service',
+          component: ConsoleService
+        },
+        {
+          path: 'hermes',
+          name: 'console-hermes',
+          component: ConsoleHermes
+        },
+        {
+          path: 'account',
+          name: 'console-account',
+          component: ConsoleAccount
+        }
+      ]
     },
     {
       path: '/status',
