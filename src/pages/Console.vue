@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <p v-if="!auth.ready" class="mt-12 text-gray-400">{{ t('auth.completing') }}</p>
+      <p v-if="!auth.ready || catalog.loading" class="mt-12 text-gray-400">{{ t('console.loading') }}</p>
 
       <div v-else-if="apps.length" class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <a
@@ -74,7 +74,7 @@
 import { computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/authStore'
-import { listForGroups } from '../config/console-registry'
+import { useConsoleStore } from '../stores/consoleStore'
 import {
   ChartIcon,
   CloudStorageIcon,
@@ -87,8 +87,9 @@ import {
 
 const { t, locale } = useI18n()
 const auth = useAuthStore()
+const catalog = useConsoleStore()
 
-const apps = computed(() => listForGroups(auth.groups))
+const apps = computed(() => catalog.appsFor(auth.groups))
 
 const initials = computed(() => {
   const name = auth.displayName || auth.email || '?'
@@ -143,6 +144,9 @@ const ensureSession = () => {
   }
 }
 
-onMounted(ensureSession)
+onMounted(() => {
+  catalog.load()
+  ensureSession()
+})
 watch(() => auth.ready, ensureSession)
 </script>
