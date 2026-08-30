@@ -73,7 +73,7 @@
               <td class="px-4 py-3 text-right">
                 <a
                   v-if="row.status === 'running' && row.hostname"
-                  :href="'https://' + row.hostname"
+                  :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
                   target="_blank"
                   rel="noopener"
                   class="text-sm text-blue-300 hover:text-blue-200"
