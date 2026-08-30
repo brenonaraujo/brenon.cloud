@@ -64,13 +64,33 @@
         />
       </label>
 
-      <button
-        type="submit"
-        class="inline-flex min-h-[44px] w-fit items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-40"
-        :disabled="saving"
-      >
-        {{ saving ? t('console.site.saving') : t('console.site.save') }}
-      </button>
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-medium text-gray-200">{{ t('console.site.js') }}</span>
+        <textarea
+          v-model="js"
+          rows="6"
+          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 font-mono text-sm text-gray-100"
+          :placeholder="t('console.site.jsHint')"
+        />
+      </label>
+
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="submit"
+          class="inline-flex min-h-[44px] w-fit items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-40"
+          :disabled="saving || resetting"
+        >
+          {{ saving ? t('console.site.saving') : t('console.site.save') }}
+        </button>
+        <button
+          type="button"
+          class="inline-flex min-h-[44px] w-fit items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5 disabled:opacity-40"
+          :disabled="saving || resetting"
+          @click="reset"
+        >
+          {{ resetting ? t('console.site.resetting') : t('console.site.reset') }}
+        </button>
+      </div>
     </form>
   </section>
 </template>
@@ -79,7 +99,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
-import { fetchHermesSite, humanHermesError, saveHermesSite } from '../../api/hermesApi.js'
+import { fetchHermesSite, humanHermesError, resetHermesSite, saveHermesSite } from '../../api/hermesApi.js'
 
 const props = defineProps({
   instance: { type: Object, default: null }
@@ -92,8 +112,10 @@ const enabled = ref(true)
 const visibility = ref('public')
 const html = ref('')
 const css = ref('')
+const js = ref('')
 const allowlistText = ref('')
 const saving = ref(false)
+const resetting = ref(false)
 const saved = ref(false)
 const error = ref('')
 
@@ -109,6 +131,7 @@ function apply(site) {
   visibility.value = site?.visibility || 'public'
   html.value = site?.html || ''
   css.value = site?.css || ''
+  js.value = site?.js || ''
   allowlistText.value = (site?.allowlist || []).join('\n')
 }
 
@@ -140,6 +163,7 @@ async function save() {
         visibility: visibility.value,
         html: html.value,
         css: css.value,
+        js: js.value,
         allowlist
       },
       props.instance.slug
@@ -150,6 +174,22 @@ async function save() {
     error.value = humanHermesError(err, t('console.site.saveFallback'))
   } finally {
     saving.value = false
+  }
+}
+
+async function reset() {
+  if (!auth.idToken || saving.value || resetting.value || !props.instance?.slug) return
+  resetting.value = true
+  saved.value = false
+  error.value = ''
+  try {
+    const data = await resetHermesSite(auth.idToken, props.instance.slug)
+    apply(data.site)
+    saved.value = true
+  } catch (err) {
+    error.value = humanHermesError(err, t('console.site.resetFallback'))
+  } finally {
+    resetting.value = false
   }
 }
 
