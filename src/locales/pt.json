@@ -428,10 +428,10 @@
     },
     "billing": {
       "title": "Faturamento",
-      "subtitle": "Plano, cobrança do período e faturas desta conta.",
+      "subtitle": "Assine para abrir mais serviços e, no Pro, ter uma instância Hermes só sua.",
       "thisPeriod": "Este período",
-      "zeroHint": "Nenhuma cobrança de uso neste período. Planos pagos passam pelo Stripe Checkout — cartão nunca é digitado nesta página.",
-      "planHint": "O plano é gravado nos grupos Authentik depois que o Stripe confirma o pagamento. Saia e entre de novo para a sessão atualizar.",
+      "zeroHint": "Nenhuma cobrança neste período. Planos pagos passam pelo Stripe Checkout — cartão nunca é digitado nesta página.",
+      "planHint": "Depois do pagamento, saia e entre de novo para a sessão atualizar o plano.",
       "invoices": "Faturas",
       "invoicesEmpty": "Nenhuma fatura ainda.",
       "colPeriod": "Período",
@@ -450,11 +450,27 @@
       "needSession": "Entre de novo para o billing verificar esta conta.",
       "loadError": "Não foi possível carregar o billing no control plane.",
       "checkoutError": "Não foi possível iniciar o Stripe Checkout.",
+      "checkoutSoon": "O checkout ainda não está no ar. Os planos já estão definidos; o pagamento hospedado entra quando o control plane publicar a rota.",
       "portalError": "Não foi possível abrir o portal Stripe.",
+      "hermesBadge": "Inclui Hermes",
+      "hermesOwn": "Uma instância Hermes para chamar de sua",
+      "hermesOwnBody": "Além do acesso aos serviços, o Pro inclui um agente Hermes só seu — skills, memória e ferramentas na sua conta. Não é o chat público do site.",
+      "openHermes": "Ver Hermes",
       "features": {
-        "free": "Console e Draw|Akash Console Air|Login Authentik",
-        "basic": "Tudo do Free|Grupo do plano pago no Authentik|Faturas Stripe no portal",
-        "pro": "Tudo do Basic|Hermes as a Service (plan-hermes)|Prioridade para novas instâncias"
+        "free": [
+          "Console, Draw e Akash Console Air",
+          "Login com a conta Brenon Cloud"
+        ],
+        "basic": [
+          "Tudo do Free",
+          "Acesso pago aos serviços do plano",
+          "Faturas no portal Stripe"
+        ],
+        "pro": [
+          "Tudo do Basic",
+          "Uma instância Hermes só sua",
+          "Agente, skills e memória na sua conta"
+        ]
       }
     },
     "notifications": {
