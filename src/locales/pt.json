@@ -533,7 +533,14 @@
       "colPlan": "Plano",
       "colRegion": "Região",
       "homeCard": "Hermes as a Service",
-      "homeCardBody": "Seu agente Hermes em username.brenon.cloud."
+      "homeCardBody": "Seu agente Hermes em username.brenon.cloud.",
+      "destroy": "Apagar",
+      "destroying": "Apagando…",
+      "destroyTitle": "Apagar esta instância?",
+      "destroyBody": "Tudo nesta instância some para sempre: conversas, memória, skills, tokens, webhooks e disco. O host {host} deixa de existir. O plano não é cancelado.",
+      "destroyConfirm": "Apagar para sempre",
+      "destroyCancel": "Cancelar",
+      "destroyFallback": "Não foi possível apagar a instância agora."
     },
     "plan": {
       "free": "Free",

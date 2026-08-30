@@ -533,7 +533,14 @@
       "colPlan": "Plan",
       "colRegion": "Region",
       "homeCard": "Hermes as a Service",
-      "homeCardBody": "Your Hermes agent at username.brenon.cloud."
+      "homeCardBody": "Your Hermes agent at username.brenon.cloud.",
+      "destroy": "Delete",
+      "destroying": "Deleting…",
+      "destroyTitle": "Delete this instance?",
+      "destroyBody": "Everything on this instance is gone forever: chats, memory, skills, tokens, webhooks and disk. The host {host} stops existing. Your plan is not canceled.",
+      "destroyConfirm": "Delete forever",
+      "destroyCancel": "Cancel",
+      "destroyFallback": "Could not delete the instance right now."
     },
     "plan": {
       "free": "Free",

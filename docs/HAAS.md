@@ -61,8 +61,10 @@ nascem ligados a esse host. Free não cria instância.
   e resolve na internet (não só no lab).
 - Abrir o host sem login redireciona para Authentik. Outro membro logado
   não entra na instância alheia. Operador entra.
-- A tabela da console lista nome, status, plano e abre o host quando
+- A tabela da console lista nome, status, plano e abre `/hermes` quando
   `running`. Não mostra instância inventada.
+- O dono (ou operador) pode apagar a instância. A UI avisa que tudo
+  some para sempre. Depois o slug pode ser criado de novo.
 - Webhook inbound no mesmo host não exige login (assinatura HMAC).
 
 ## Fora desta versão

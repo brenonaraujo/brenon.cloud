@@ -34,6 +34,16 @@ export async function createHermesInstance(idToken) {
   return data
 }
 
+export async function deleteHermesInstance(idToken, id) {
+  const res = await fetch(
+    `${BASE}/api/v1/hermes/instances/${encodeURIComponent(id)}?confirm=destroy`,
+    { method: 'DELETE', headers: authHeaders(idToken) }
+  )
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `delete ${res.status}`)
+  return data
+}
+
 export function humanHermesError(err, fallback) {
   const msg = String(err?.message || err || '')
   if (/load failed|failed to fetch|networkerror/i.test(msg)) return fallback
