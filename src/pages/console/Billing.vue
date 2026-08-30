@@ -42,6 +42,7 @@
         <p v-if="plan.id === 'pro' || plan.includesHermes" class="mt-4 text-sm font-medium text-blue-200">
           {{ t('console.billing.hermesOwn') }}
         </p>
+        <p v-if="planDisk(plan)" class="mt-1 text-xs text-gray-400">{{ t('console.billing.disk', { gb: planDisk(plan) }) }}</p>
         <p v-if="plan.id === 'pro' || plan.includesHermes" class="mt-1 text-sm leading-relaxed text-gray-400">
           {{ t('console.billing.hermesOwnBody') }}
         </p>
@@ -160,6 +161,13 @@ function planLines(id) {
   const value = tm(key)
   if (Array.isArray(value)) return value.map((s) => String(s).trim()).filter(Boolean)
   return []
+}
+
+function planDisk(plan) {
+  if (plan?.diskGb) return Number(plan.diskGb)
+  if (plan?.id === 'pro') return 20
+  if (plan?.id === 'basic' || plan?.includesHermes) return 5
+  return 0
 }
 
 async function load() {

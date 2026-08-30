@@ -7,6 +7,7 @@
         <p class="text-[11px] uppercase tracking-[0.12em] text-blue-300/80">{{ t('console.hermes.eyebrow') }}</p>
         <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">{{ t('console.hermes.title') }}</h1>
         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.subtitle') }}</p>
+        <p v-if="disk" class="mt-2 text-sm text-blue-200">{{ t('console.hermes.disk', { gb: disk }) }}</p>
       </div>
       <span
         class="inline-flex w-fit items-center rounded-md px-2 py-1 text-[11px] font-medium uppercase tracking-wide"
@@ -68,10 +69,10 @@
       <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.lockedTitle') }}</h2>
       <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.locked') }}</p>
       <router-link
-        to="/console/account"
+        to="/console/billing"
         class="mt-6 inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
       >
-        {{ t('console.nav.account') }}
+        {{ t('console.nav.billing') }}
       </router-link>
     </section>
   </div>
@@ -83,6 +84,7 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
 import {
   canManageHermes,
+  hermesDiskGb,
   isHermesOperator,
   isHermesSubscriber
 } from '../../config/console-taxonomy.mjs'
@@ -94,6 +96,7 @@ const auth = useAuthStore()
 
 const canManage = computed(() => canManageHermes(auth.groups))
 const operator = computed(() => isHermesOperator(auth.groups))
+const disk = computed(() => hermesDiskGb(auth.groups))
 const badge = computed(() => {
   if (isHermesSubscriber(auth.groups)) return t('console.hermes.badgePlan')
   if (operator.value) return t('console.hermes.badgeOperator')

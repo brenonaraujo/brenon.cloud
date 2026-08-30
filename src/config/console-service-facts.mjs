@@ -126,14 +126,14 @@ export const SERVICE_FACTS = {
     docsUrl: 'https://brenon.cloud/blog/console-air-on-brenon-cloud',
     facts: {
       en: [
-        'Self-hosted Akash Console Air at akash.brenon.cloud. Available from the Free plan.',
-        'Wallet-only: Keplr (or compatible Cosmos wallet). No email, KYC or credit card.',
+        'Self-hosted Akash Console Air at akash.brenon.cloud. Any plan, including Free — Brenon Cloud login required.',
+        'Anonymous visitors are blocked. After Authentik, connect Keplr (or a compatible Cosmos wallet).',
         'Swap AKT for ACTs in-app (10 AKT minimum). SDL editor, bids, leases, logs.',
         'Akash split Console (managed + card) from Console Air (AEP-84). This instance is Air.'
       ],
       pt: [
-        'Console Air da Akash em akash.brenon.cloud. Disponível desde o plano Free.',
-        'Só carteira: Keplr (ou Cosmos compatível). Sem e-mail, KYC ou cartão.',
+        'Console Air da Akash em akash.brenon.cloud. Qualquer plano, inclusive Free — precisa estar logado na Brenon Cloud.',
+        'Visitante anônimo é bloqueado. Depois do Authentik, conecte o Keplr (ou carteira Cosmos compatível).',
         'Troca AKT por ACTs no app (mínimo 10 AKT). Editor SDL, bids, leases, logs.',
         'A Akash separou Console gerenciado do Console Air (AEP-84). Esta instância é Air.'
       ]

@@ -428,7 +428,7 @@
     },
     "billing": {
       "title": "Billing",
-      "subtitle": "Subscribe for more services — Pro includes a Hermes instance of your own.",
+      "subtitle": "Basic and Pro include a Hermes instance of your own. Disk: 5 GB on Basic, 20 GB on Pro.",
       "thisPeriod": "This period",
       "zeroHint": "No charges this period. Paid plans go through Stripe Checkout — we never take a card on this page.",
       "planHint": "After payment, sign out and sign in again so the session picks up the new plan.",
@@ -454,7 +454,8 @@
       "portalError": "Could not open the Stripe portal.",
       "hermesBadge": "Includes Hermes",
       "hermesOwn": "A Hermes instance of your own",
-      "hermesOwnBody": "Besides service access, Pro includes a Hermes agent that is yours — skills, memory and tools in your account. Not the public site chat.",
+      "hermesOwnBody": "Besides service access, Basic and Pro include a Hermes agent that is yours — skills, memory and tools in your account. Not the public site chat.",
+      "disk": "{gb} GB disk",
       "openHermes": "Open Hermes",
       "features": {
         "free": [
@@ -463,13 +464,13 @@
         ],
         "basic": [
           "Everything in Free",
-          "Paid access to plan services",
+          "A Hermes instance of your own, with 5 GB disk",
           "Invoices in the Stripe portal"
         ],
         "pro": [
           "Everything in Basic",
-          "A Hermes instance of your own",
-          "Agent, skills and memory in your account"
+          "A Hermes instance of your own, with 20 GB disk",
+          "More space and priority for the agent"
         ]
       }
     },
@@ -500,18 +501,19 @@
     "hermes": {
       "eyebrow": "Agents",
       "title": "Hermes",
-      "subtitle": "Dedicated Hermes agent instances for Hermes plan subscribers.",
+      "subtitle": "Dedicated Hermes agent instances. Basic includes 5 GB disk; Pro includes 20 GB.",
       "badgeSoon": "Coming soon",
-      "badgePlan": "Hermes plan",
+      "badgePlan": "Subscriber",
       "badgeOperator": "Operator",
       "what1Title": "Isolated instance",
       "what1": "Each subscriber gets a Hermes agent of their own, not a shared chat on the public site.",
       "what2Title": "Skills and memory",
       "what2": "The agent keeps skills, memory and tools inside your Brenon Cloud account.",
-      "what3Title": "Same identity",
-      "what3": "Sign-in stays Authentik. The Hermes plan group is what unlocks provisioning.",
-      "lockedTitle": "Hermes plan required",
-      "locked": "This account can see Hermes but cannot provision agents yet. The Hermes plan is assigned on the account. If you already have it, sign out and sign in again so groups refresh.",
+      "what3Title": "Disk by plan",
+      "what3": "Basic ships 5 GB. Pro ships 20 GB. Sign-in stays Authentik.",
+      "disk": "{gb} GB disk on this plan",
+      "lockedTitle": "Basic or Pro required",
+      "locked": "A Hermes instance of your own comes with Basic (5 GB) or Pro (20 GB). Upgrade under Billing. If you already paid, sign out and sign in again so groups refresh.",
       "instances": "Instances",
       "emptyTitle": "No agent instances yet",
       "empty": "Provisioning is still rolling out. This page is where your Hermes agents will live — name, status and open.",
