@@ -557,6 +557,8 @@
       "publicSave": "Salvar endereço",
       "publicSaving": "Salvando…",
       "publicTaken": "Esse nome já está em uso.",
+      "publicLeftover": "Ainda há DNS ou volume deste nome. Criar apaga o resto e começa do zero.",
+      "publicWiping": "A instância anterior ainda está sendo apagada. Espere e tente de novo.",
       "publicReserved": "Esse nome é da plataforma.",
       "publicShort": "Use pelo menos 3 caracteres.",
       "publicInvalid": "Esse nome não serve.",
@@ -579,7 +581,11 @@
       "cliLimit": "Sandbox: 2 GB RAM e 1 CPU no Basic (4 GB e 2 CPU no Pro). Só o disco desta instância. Sem docker.sock.",
       "cliOpen": "Abrir terminal",
       "cliUser": "Usuário",
-      "cliPass": "Senha"
+      "cliPass": "Senha",
+      "dockTitle": "Hermes",
+      "dockNew": "Nova sessão",
+      "dockOpen": "Abrir conversa",
+      "dockClose": "Fechar Hermes"
     },
     "site": {
       "title": "Sua página",

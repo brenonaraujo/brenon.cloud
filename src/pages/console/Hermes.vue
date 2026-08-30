@@ -58,11 +58,12 @@
           >
         </div>
         <p v-if="previewHost" class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
+        <p v-if="slugHint" class="mt-2 text-sm text-amber-300">{{ slugHint }}</p>
         <p class="mt-2 text-xs leading-relaxed text-gray-500">{{ t('console.hermes.publicLater') }}</p>
         <button
           type="submit"
           class="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-600/40"
-          :disabled="creating || !previewSlug"
+          :disabled="creating || !previewSlug || slugBlocked"
         >
           {{ creating ? t('console.hermes.creating') : t('console.hermes.create') }}
         </button>
@@ -210,6 +211,7 @@ import {
 } from '../../config/console-taxonomy.mjs'
 import {
   agentSlug,
+  checkHermesSlug,
   createHermesInstance,
   deleteHermesInstance,
   fetchHermesInstances,
@@ -240,6 +242,8 @@ const destroying = ref('')
 const pending = ref(null)
 const error = ref('')
 const publicName = ref('')
+const slugState = ref({ available: true, leftover: false, reason: '' })
+let slugTimer = 0
 
 const defaultName = computed(() => {
   const fromUser = stripAgentPrefix(String(auth.username || '').trim())
@@ -260,6 +264,16 @@ const pageInstance = computed(() => {
 const previewSlug = computed(() => agentSlug(publicName.value || defaultName.value))
 const previewHost = computed(() => (previewSlug.value ? `${previewSlug.value}.brenon.cloud` : ''))
 const waiting = computed(() => instances.value.some(isStarting))
+const slugBlocked = computed(() => slugState.value.available === false)
+const slugHint = computed(() => {
+  const reason = String(slugState.value.reason || '')
+  if (/too short/i.test(reason)) return t('console.hermes.publicShort')
+  if (/reserved/i.test(reason)) return t('console.hermes.publicReserved')
+  if (/invalid/i.test(reason)) return t('console.hermes.publicInvalid')
+  if (!slugState.value.available) return t('console.hermes.publicTaken')
+  if (slugState.value.leftover) return t('console.hermes.publicLeftover')
+  return ''
+})
 
 function canOpen(row) {
   return Boolean(row?.ready && row.hostname)
@@ -279,6 +293,7 @@ function slugify(raw) {
 
 function mapSlugError(err, fallback) {
   const msg = humanHermesError(err, fallback)
+  if (/previous instance still deleting/i.test(msg)) return t('console.hermes.publicWiping')
   if (/subdomain taken/i.test(msg)) return t('console.hermes.publicTaken')
   if (/reserved/i.test(msg)) return t('console.hermes.publicReserved')
   if (/too short/i.test(msg)) return t('console.hermes.publicShort')
@@ -313,7 +328,7 @@ async function load(quiet = false) {
 }
 
 async function create() {
-  if (!auth.idToken || creating.value || hasLive.value) return
+  if (!auth.idToken || creating.value || hasLive.value || slugBlocked.value) return
   creating.value = true
   error.value = ''
   try {
@@ -393,6 +408,24 @@ watch(defaultName, (name) => {
   if (!hasLive.value && !publicName.value && name) publicName.value = name
 })
 
+async function pingSlug(slug) {
+  if (!auth.idToken || !slug || hasLive.value) return
+  try {
+    slugState.value = await checkHermesSlug(auth.idToken, slug)
+  } catch {
+    slugState.value = { available: true, leftover: false, reason: '' }
+  }
+}
+
+watch(previewSlug, (slug) => {
+  if (slugTimer) clearTimeout(slugTimer)
+  if (!slug || hasLive.value) {
+    slugState.value = { available: true, leftover: false, reason: '' }
+    return
+  }
+  slugTimer = setTimeout(() => pingSlug(slug), 400)
+}, { immediate: true })
+
 function planQuota(row) {
   const plan = String(row?.plan || '').toLowerCase()
   if (plan === 'pro') return { diskGb: 20, memoryGb: 4, cpus: 2 }
@@ -400,5 +433,8 @@ function planQuota(row) {
 }
 
 onMounted(load)
-onUnmounted(stopWait)
+onUnmounted(() => {
+  stopWait()
+  if (slugTimer) clearTimeout(slugTimer)
+})
 </script>
