@@ -19,8 +19,9 @@
           <div class="flex items-center gap-1">
             <button
               type="button"
-              class="rounded-full px-2.5 py-1 text-[11px] text-gray-400 hover:bg-white/5 hover:text-white"
-              @click="dock.restart()"
+              class="rounded-full px-2.5 py-1 text-[11px] text-gray-400 hover:bg-white/5 hover:text-white disabled:opacity-40"
+              :disabled="sending"
+              @click="restart"
             >
               {{ t('console.site.dockNew') }}
             </button>
@@ -36,14 +37,41 @@
             </button>
           </div>
         </div>
-        <iframe
-          v-if="chatSrc"
-          :key="dock.nonce"
-          class="min-h-0 w-full flex-1 border-0 bg-black"
-          :src="chatSrc"
-          :title="t('console.site.dockTitle')"
-          allow="clipboard-read; clipboard-write"
-        />
+
+        <div ref="scroller" class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-4">
+          <p v-if="!thread.length && !sending" class="text-sm leading-relaxed text-gray-400">
+            {{ t('console.site.dockEmpty') }}
+          </p>
+          <div
+            v-for="(m, i) in thread"
+            :key="i"
+            class="flex"
+            :class="m.role === 'user' ? 'justify-end' : 'justify-start'"
+          >
+            <div
+              class="max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed"
+              :class="m.role === 'user' ? 'bg-[#f4911e] text-gray-950' : 'bg-gray-900 text-gray-100'"
+            >{{ m.content }}</div>
+          </div>
+          <p v-if="sending" class="text-xs text-gray-500">{{ t('console.site.dockTyping') }}</p>
+          <p v-if="chatError" class="text-sm text-amber-300">{{ chatError }}</p>
+        </div>
+
+        <form class="flex gap-2 border-t border-white/10 p-3" @submit.prevent="send">
+          <input
+            v-model="draft"
+            class="h-11 flex-1 rounded-2xl border border-white/15 bg-gray-900 px-3 text-sm text-white outline-none focus:border-[#f4911e] disabled:opacity-60"
+            :placeholder="t('console.site.dockPlaceholder')"
+            :disabled="sending"
+          >
+          <button
+            type="submit"
+            class="h-11 min-w-[5.5rem] rounded-2xl bg-[#f4911e] px-4 text-sm font-semibold text-gray-950 disabled:opacity-70"
+            :disabled="sending || !draft.trim()"
+          >
+            {{ sending ? '…' : t('console.site.dockSend') }}
+          </button>
+        </form>
       </div>
     </transition>
 
@@ -59,14 +87,13 @@
       <span class="hermes-fab__face">
         <svg v-if="!dock.open" viewBox="0 0 32 32" class="h-6 w-6" fill="none" aria-hidden="true">
           <path
-            d="M8 9.5h16a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-6.2L11 27.2v-4.7H8A2.5 2.5 0 0 1 5.5 20v-8A2.5 2.5 0 0 1 8 9.5Z"
-            stroke="#111827"
-            stroke-width="1.7"
-            stroke-linejoin="round"
+            d="M16 5l2.1 6.6L25 14l-6.9 2.4L16 23l-2.1-6.6L7 14l6.9-2.4L16 5Z"
+            fill="#111827"
           />
-          <circle cx="12.5" cy="16" r="1.15" fill="#111827" />
-          <circle cx="16" cy="16" r="1.15" fill="#111827" />
-          <circle cx="19.5" cy="16" r="1.15" fill="#111827" />
+          <path
+            d="M24.5 20.5l.9 2.8 2.8.9-2.8.9-.9 2.8-.9-2.8-2.8-.9 2.8-.9.9-2.8Z"
+            fill="#111827"
+          />
         </svg>
         <svg v-else viewBox="0 0 16 16" class="h-4 w-4" fill="none" aria-hidden="true">
           <path d="M3 3l10 10M13 3L3 13" stroke="#111827" stroke-width="1.8" stroke-linecap="round" />
@@ -77,21 +104,61 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/authStore'
 import { useHermesDockStore } from '../stores/hermesDockStore'
 import { canManageHermes } from '../config/console-taxonomy.mjs'
-import { hermesChatUrl } from '../config/hermes-chat.mjs'
-import { fetchHermesInstances } from '../api/hermesApi.js'
+import { fetchHermesInstances, humanHermesError, sendHermesChat } from '../api/hermesApi.js'
 
 const { t } = useI18n()
 const auth = useAuthStore()
 const dock = useHermesDockStore()
 const instance = ref(null)
+const draft = ref('')
+const thread = ref([])
+const sending = ref(false)
+const chatError = ref('')
+const scroller = ref(null)
+const fresh = ref(true)
 
 const canChat = computed(() => Boolean(instance.value?.ready && instance.value?.hostname))
-const chatSrc = computed(() => (dock.open ? hermesChatUrl(instance.value?.hostname) : ''))
+
+function scrollEnd() {
+  nextTick(() => {
+    const el = scroller.value
+    if (el) el.scrollTop = el.scrollHeight
+  })
+}
+
+function restart() {
+  if (sending.value) return
+  thread.value = []
+  chatError.value = ''
+  fresh.value = true
+  dock.restart()
+}
+
+async function send() {
+  const text = draft.value.trim()
+  if (!text || sending.value || !auth.idToken) return
+  draft.value = ''
+  thread.value = [...thread.value, { role: 'user', content: text }]
+  sending.value = true
+  chatError.value = ''
+  scrollEnd()
+  try {
+    const data = await sendHermesChat(auth.idToken, text, { fresh: fresh.value })
+    fresh.value = false
+    const reply = String(data.reply || '').trim()
+    if (reply) thread.value = [...thread.value, { role: 'assistant', content: reply }]
+  } catch (err) {
+    chatError.value = humanHermesError(err, t('console.site.dockError'))
+  } finally {
+    sending.value = false
+    scrollEnd()
+  }
+}
 
 async function load() {
   if (!auth.isAuthenticated || !auth.idToken || !canManageHermes(auth.groups)) {
@@ -114,6 +181,15 @@ watch(
     if (auth.ready) load()
   },
   { immediate: true }
+)
+
+watch(
+  () => dock.nonce,
+  () => {
+    thread.value = []
+    chatError.value = ''
+    fresh.value = true
+  }
 )
 
 onMounted(load)

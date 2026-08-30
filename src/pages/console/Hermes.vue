@@ -105,12 +105,11 @@
             rel="noopener"
             class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
           >{{ t('console.hermes.openPage') }}</a>
-          <a
-            :href="pageInstance.launchUrl || ('https://' + pageInstance.hostname + '/hermes')"
-            target="_blank"
-            rel="noopener"
+          <button
+            type="button"
             class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
-          >{{ t('console.hermes.openAgent') }}</a>
+            @click="dock.startChat()"
+          >{{ t('console.hermes.openAgent') }}</button>
         </div>
         <p v-else-if="isStarting(pageInstance)" class="mt-6 text-sm text-gray-500">{{ t('console.hermes.starting') }}</p>
       </article>
@@ -202,6 +201,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
+import { useHermesDockStore } from '../../stores/hermesDockStore'
 import {
   canManageHermes,
   hermesQuota,
@@ -222,6 +222,7 @@ import ConsoleHostPage from '../../components/console/ConsoleHostPage.vue'
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const dock = useHermesDockStore()
 
 const canManage = computed(() => canManageHermes(auth.groups))
 const operator = computed(() => isHermesOperator(auth.groups))
