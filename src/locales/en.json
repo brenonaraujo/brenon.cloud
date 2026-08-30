@@ -428,10 +428,10 @@
     },
     "billing": {
       "title": "Billing",
-      "subtitle": "Plan, period charges and invoices for this account.",
+      "subtitle": "Subscribe for more services — Pro includes a Hermes instance of your own.",
       "thisPeriod": "This period",
-      "zeroHint": "No usage charges this period. Paid plans bill through Stripe Checkout — we never take a card on this page.",
-      "planHint": "The plan is written to Authentik groups after Stripe confirms payment. Sign out and sign in again so the session picks it up.",
+      "zeroHint": "No charges this period. Paid plans go through Stripe Checkout — we never take a card on this page.",
+      "planHint": "After payment, sign out and sign in again so the session picks up the new plan.",
       "invoices": "Invoices",
       "invoicesEmpty": "No invoices yet.",
       "colPeriod": "Period",
@@ -450,11 +450,27 @@
       "needSession": "Sign in again so billing can verify this account.",
       "loadError": "Could not load billing from the control plane.",
       "checkoutError": "Could not start Stripe Checkout.",
+      "checkoutSoon": "Checkout is not live yet. The plans are set; hosted payment lands when the control plane publishes the route.",
       "portalError": "Could not open the Stripe portal.",
+      "hermesBadge": "Includes Hermes",
+      "hermesOwn": "A Hermes instance of your own",
+      "hermesOwnBody": "Besides service access, Pro includes a Hermes agent that is yours — skills, memory and tools in your account. Not the public site chat.",
+      "openHermes": "Open Hermes",
       "features": {
-        "free": "Member console and Draw|Akash Console Air|Authentik login",
-        "basic": "Everything in Free|Paid plan group on Authentik|Stripe invoices in the portal",
-        "pro": "Everything in Basic|Hermes as a Service (plan-hermes)|Priority for new agent instances"
+        "free": [
+          "Console, Draw and Akash Console Air",
+          "Sign in with your Brenon Cloud account"
+        ],
+        "basic": [
+          "Everything in Free",
+          "Paid access to plan services",
+          "Invoices in the Stripe portal"
+        ],
+        "pro": [
+          "Everything in Basic",
+          "A Hermes instance of your own",
+          "Agent, skills and memory in your account"
+        ]
       }
     },
     "notifications": {

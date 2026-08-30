@@ -21,26 +21,55 @@
         v-for="plan in plans"
         :key="plan.id"
         class="flex flex-col rounded-lg border p-6"
-        :class="plan.id === currentPlan ? 'border-blue-500/50 bg-blue-500/10' : 'border-white/10 bg-gray-900'"
+        :class="plan.id === currentPlan
+          ? 'border-blue-500/50 bg-blue-500/10'
+          : plan.id === 'pro'
+            ? 'border-blue-500/25 bg-gray-900'
+            : 'border-white/10 bg-gray-900'"
       >
-        <p class="text-[11px] uppercase tracking-[0.12em] text-gray-500">{{ t('console.account.plan') }}</p>
+        <div class="flex items-center justify-between gap-2">
+          <p class="text-[11px] uppercase tracking-[0.12em] text-gray-500">{{ t('console.account.plan') }}</p>
+          <span
+            v-if="plan.id === 'pro' || plan.includesHermes"
+            class="rounded-full border border-blue-400/30 bg-blue-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-blue-200"
+          >
+            {{ t('console.billing.hermesBadge') }}
+          </span>
+        </div>
         <h2 class="mt-2 text-xl font-semibold text-white">{{ planLabel(plan.id) }}</h2>
         <p class="mt-3 text-3xl font-semibold tracking-tight text-white">{{ formatMoney(plan.amountCents, 'BRL', locale) }}</p>
         <p class="mt-1 text-xs text-gray-500">{{ t('console.billing.perMonth') }}</p>
+        <p v-if="plan.id === 'pro' || plan.includesHermes" class="mt-4 text-sm font-medium text-blue-200">
+          {{ t('console.billing.hermesOwn') }}
+        </p>
+        <p v-if="plan.id === 'pro' || plan.includesHermes" class="mt-1 text-sm leading-relaxed text-gray-400">
+          {{ t('console.billing.hermesOwnBody') }}
+        </p>
         <ul class="mt-6 space-y-2 text-sm leading-relaxed text-gray-300">
-          <li v-for="line in planLines(plan.id)" :key="line">{{ line }}</li>
+          <li v-for="line in planLines(plan.id)" :key="line" class="flex gap-2">
+            <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-gray-500" />
+            <span>{{ line }}</span>
+          </li>
         </ul>
         <div class="mt-8 flex-1" />
         <p v-if="plan.id === currentPlan" class="text-sm text-blue-300">{{ t('console.billing.current') }}</p>
-        <button
-          v-else-if="plan.id !== 'free'"
-          type="button"
-          class="inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
-          :disabled="busy"
-          @click="upgrade(plan.id)"
-        >
-          {{ t('console.billing.upgrade') }}
-        </button>
+        <div v-else-if="plan.id !== 'free'" class="flex flex-col gap-2">
+          <button
+            type="button"
+            class="inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
+            :disabled="busy"
+            @click="upgrade(plan.id)"
+          >
+            {{ t('console.billing.upgrade') }}
+          </button>
+          <router-link
+            v-if="plan.id === 'pro' || plan.includesHermes"
+            to="/console/hermes"
+            class="inline-flex min-h-[44px] items-center justify-center text-sm text-blue-300 hover:text-white"
+          >
+            {{ t('console.billing.openHermes') }}
+          </router-link>
+        </div>
       </article>
     </div>
 
@@ -80,6 +109,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { primaryPlan } from '../../config/console-taxonomy.mjs'
 import { currentPeriodLabel, formatMoney } from '../../config/console-overview.mjs'
+import { humanBillingError } from '../../config/console-billing.mjs'
 import {
   FALLBACK_PLANS,
   fetchBillingMe,
@@ -89,7 +119,7 @@ import {
 } from '../../api/billingApi.js'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 
-const { t, te, locale } = useI18n()
+const { t, te, tm, locale } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
 
@@ -127,11 +157,9 @@ function planLabel(id) {
 function planLines(id) {
   const key = `console.billing.features.${id}`
   if (!te(key)) return []
-  const value = t(key)
-  return String(value)
-    .split('|')
-    .map((s) => s.trim())
-    .filter(Boolean)
+  const value = tm(key)
+  if (Array.isArray(value)) return value.map((s) => String(s).trim()).filter(Boolean)
+  return []
 }
 
 async function load() {
@@ -145,9 +173,8 @@ async function load() {
   if (!auth.idToken) return
   try {
     me.value = await fetchBillingMe(auth.idToken)
-  } catch (err) {
+  } catch {
     me.value = null
-    error.value = err?.message || t('console.billing.loadError')
   }
 }
 
@@ -161,7 +188,7 @@ async function upgrade(plan) {
   try {
     window.location.href = await startCheckout(auth.idToken, plan)
   } catch (err) {
-    error.value = err?.message || t('console.billing.checkoutError')
+    error.value = humanBillingError(err, t('console.billing.checkoutSoon'))
     busy.value = false
   }
 }
@@ -172,7 +199,7 @@ async function portal() {
   try {
     window.location.href = await startPortal(auth.idToken)
   } catch (err) {
-    error.value = err?.message || t('console.billing.portalError')
+    error.value = humanBillingError(err, t('console.billing.portalError'))
     busy.value = false
   }
 }
