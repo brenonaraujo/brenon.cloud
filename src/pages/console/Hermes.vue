@@ -123,7 +123,7 @@
       class="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center"
       role="dialog"
       aria-modal="true"
-      :aria-labelledby="'hermes-destroy-title'"
+      aria-labelledby="hermes-destroy-title"
     >
       <div class="w-full max-w-md rounded-lg border border-white/10 bg-gray-900 p-6">
         <h2 id="hermes-destroy-title" class="text-lg font-semibold text-white">{{ t('console.hermes.destroyTitle') }}</h2>

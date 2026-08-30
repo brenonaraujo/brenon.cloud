@@ -503,7 +503,7 @@
     "hermes": {
       "eyebrow": "Agentes",
       "title": "Hermes",
-      "subtitle": "Seu agente Hermes em username.brenon.cloud. Basic inclui 5 GB de disco; Pro inclui 20 GB.",
+      "subtitle": "Seu agente fica em username.brenon.cloud/hermes. O host é seu — outros apps podem entrar depois. Basic inclui 5 GB de disco; Pro inclui 20 GB.",
       "badgeSoon": "Em breve",
       "badgePlan": "Assinante",
       "badgeOperator": "Operador",
@@ -525,7 +525,7 @@
       "loading": "Carregando instâncias…",
       "open": "Abrir",
       "createHint": "Cria o host username.brenon.cloud e já deixa os webhooks configurados.",
-      "createHintDone": "Uma instância por conta. Abra o host para conectar Telegram e outros canais.",
+      "createHintDone": "Uma instância por conta. Abra o host para a home, ou /hermes para o dashboard.",
       "loadFallback": "Não foi possível carregar as instâncias agora.",
       "createFallback": "Não foi possível criar a instância agora.",
       "colName": "Nome",
