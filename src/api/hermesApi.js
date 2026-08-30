@@ -22,11 +22,11 @@ export async function fetchHermesInstances(idToken) {
   return data
 }
 
-export async function createHermesInstance(idToken) {
+export async function createHermesInstance(idToken, slug) {
   const res = await fetch(`${BASE}/api/v1/hermes/instances`, {
     method: 'POST',
     headers: { ...authHeaders(idToken), 'Content-Type': 'application/json' },
-    body: '{}'
+    body: JSON.stringify({ slug: slug || '' })
   })
   const data = await readJSON(res)
   if (res.status === 409 && data.instance) return data.instance
@@ -41,6 +41,25 @@ export async function deleteHermesInstance(idToken, id) {
   )
   const data = await readJSON(res)
   if (!res.ok) throw new Error(data.error || `delete ${res.status}`)
+  return data
+}
+
+export async function renameHermesInstance(idToken, id, slug) {
+  const res = await fetch(`${BASE}/api/v1/hermes/instances/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    headers: { ...authHeaders(idToken), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug })
+  })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `rename ${res.status}`)
+  return data
+}
+
+export async function checkHermesSlug(idToken, name) {
+  const q = name ? `?name=${encodeURIComponent(name)}` : ''
+  const res = await fetch(`${BASE}/api/v1/hermes/slug${q}`, { headers: authHeaders(idToken) })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `slug ${res.status}`)
   return data
 }
 
