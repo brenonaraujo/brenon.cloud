@@ -23,6 +23,7 @@
         </div>
       </main>
     </div>
+    <HermesDock />
   </div>
   <div v-else class="min-h-screen bg-gray-950" aria-hidden="true" />
 </template>
@@ -37,6 +38,7 @@ import { useEntitlementStore } from '../stores/entitlementStore'
 import ConsoleSidebar from '../components/console/ConsoleSidebar.vue'
 import ConsoleTopbar from '../components/console/ConsoleTopbar.vue'
 import ConsoleBanner from '../components/console/ConsoleBanner.vue'
+import HermesDock from '../components/HermesDock.vue'
 
 const { t } = useI18n()
 const route = useRoute()
