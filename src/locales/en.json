@@ -557,6 +557,8 @@
       "publicSave": "Save address",
       "publicSaving": "Saving…",
       "publicTaken": "That name is already taken.",
+      "publicLeftover": "DNS or a volume for this name is still there. Creating wipes it and starts empty.",
+      "publicWiping": "The previous instance is still being deleted. Wait and try again.",
       "publicReserved": "That name belongs to the platform.",
       "publicShort": "Use at least 3 characters.",
       "publicInvalid": "That name will not work.",
@@ -579,7 +581,11 @@
       "cliLimit": "Sandbox: 2 GB RAM and 1 CPU on Basic (4 GB and 2 CPU on Pro). Only this instance’s disk. No docker.sock.",
       "cliOpen": "Open terminal",
       "cliUser": "Username",
-      "cliPass": "Password"
+      "cliPass": "Password",
+      "dockTitle": "Hermes",
+      "dockNew": "New session",
+      "dockOpen": "Open chat",
+      "dockClose": "Close Hermes"
     },
     "site": {
       "title": "Your page",
