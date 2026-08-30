@@ -80,11 +80,15 @@ export function isHermesSubscriber(groups) {
   return have.has('plan-hermes') || have.has('plan-pro') || have.has('plan-basic')
 }
 
-export function hermesDiskGb(groups) {
+export function hermesQuota(groups) {
   const plan = primaryPlan(groups)
-  if (plan === 'pro') return 20
-  if (plan === 'basic' || plan === 'hermes') return 5
-  return 0
+  if (plan === 'pro') return { diskGb: 20, memoryGb: 4, cpus: 2 }
+  if (plan === 'basic' || plan === 'hermes') return { diskGb: 5, memoryGb: 2, cpus: 1 }
+  return { diskGb: 0, memoryGb: 0, cpus: 0 }
+}
+
+export function hermesDiskGb(groups) {
+  return hermesQuota(groups).diskGb
 }
 
 export function isHermesOperator(groups) {
