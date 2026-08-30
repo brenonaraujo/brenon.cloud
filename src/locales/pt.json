@@ -493,39 +493,45 @@
           "body": "Entre de novo para atualizar plano e grupos de staff."
         },
         "hermesProvision": {
-          "title": "Instâncias Hermes ainda não estão no ar",
-          "body": "O provisionamento ainda está sendo preparado. Abra o Hermes para ver a lista de instâncias."
+          "title": "Hermes as a Service",
+          "body": "Crie sua instância em Hermes para ganhar username.brenon.cloud."
         }
       }
     },
     "hermes": {
       "eyebrow": "Agentes",
       "title": "Hermes",
-      "subtitle": "Instâncias dedicadas de agentes Hermes. Basic inclui 5 GB de disco; Pro inclui 20 GB.",
+      "subtitle": "Seu agente Hermes em username.brenon.cloud. Basic inclui 5 GB de disco; Pro inclui 20 GB.",
       "badgeSoon": "Em breve",
       "badgePlan": "Assinante",
       "badgeOperator": "Operador",
       "what1Title": "Instância isolada",
       "what1": "Cada assinante tem um agente Hermes próprio, não um chat compartilhado no site público.",
-      "what2Title": "Skills e memória",
-      "what2": "O agente guarda skills, memória e ferramentas dentro da sua conta Brenon Cloud.",
+      "what2Title": "Webhooks e canais",
+      "what2": "Webhooks e canais (Telegram e outros) já nascem ligados ao seu host. Você cola os tokens.",
       "what3Title": "Disco por plano",
-      "what3": "Basic vem com 5 GB. Pro vem com 20 GB. O login continua no Authentik.",
+      "what3": "Basic vem com 5 GB. Pro vem com 20 GB. O login continua no Authentik — sem segundo formulário Hermes.",
       "disk": "{gb} GB de disco neste plano",
       "lockedTitle": "Precisa do Basic ou Pro",
       "locked": "Uma instância Hermes só sua entra no Basic (5 GB) ou no Pro (20 GB). Faça o upgrade em Faturamento. Se você já pagou, saia e entre de novo para atualizar os grupos.",
       "instances": "Instâncias",
       "emptyTitle": "Nenhuma instância ainda",
-      "empty": "O provisionamento ainda está sendo preparado. Esta tela é onde seus agentes Hermes vão viver — nome, status e abrir.",
-      "emptyOperator": "Visão de operador. As instâncias dos clientes listam aqui quando o provisionamento estiver no ar.",
+      "empty": "Crie sua instância para ganhar username.brenon.cloud, com webhooks prontos.",
+      "emptyOperator": "Visão de operador. Todas as instâncias dos clientes listam aqui.",
       "create": "Criar instância",
-      "createHint": "O provisionamento ainda não está no ar.",
+      "creating": "Criando…",
+      "loading": "Carregando instâncias…",
+      "open": "Abrir",
+      "createHint": "Cria o host username.brenon.cloud e já deixa os webhooks configurados.",
+      "createHintDone": "Uma instância por conta. Abra o host para conectar Telegram e outros canais.",
+      "loadFallback": "Não foi possível carregar as instâncias agora.",
+      "createFallback": "Não foi possível criar a instância agora.",
       "colName": "Nome",
       "colStatus": "Status",
       "colPlan": "Plano",
       "colRegion": "Região",
       "homeCard": "Hermes as a Service",
-      "homeCardBody": "Instâncias de agentes para assinantes do plano Hermes. Provisionamento a caminho."
+      "homeCardBody": "Seu agente Hermes em username.brenon.cloud."
     },
     "plan": {
       "free": "Free",
