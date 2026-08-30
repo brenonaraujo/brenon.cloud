@@ -7,7 +7,7 @@
         <p class="text-[11px] uppercase tracking-[0.12em] text-blue-300/80">{{ t('console.hermes.eyebrow') }}</p>
         <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">{{ t('console.hermes.title') }}</h1>
         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.subtitle') }}</p>
-        <p v-if="disk" class="mt-2 text-sm text-blue-200">{{ t('console.hermes.disk', { gb: disk }) }}</p>
+        <p v-if="quota.diskGb" class="mt-2 text-sm text-blue-200">{{ t('console.hermes.quota', { ram: quota.memoryGb, cpu: quota.cpus, gb: quota.diskGb }) }}</p>
       </div>
       <span
         class="inline-flex w-fit items-center rounded-md px-2 py-1 text-[11px] font-medium uppercase tracking-wide"
@@ -118,7 +118,7 @@
                 <p class="text-xs text-gray-500">{{ row.username }}</p>
               </td>
               <td class="px-4 py-3 text-gray-300">{{ isStarting(row) ? t('console.hermes.starting') : row.status }}</td>
-              <td class="px-4 py-3 text-gray-300">{{ row.plan }} · {{ row.diskGb }} GB</td>
+              <td class="px-4 py-3 text-gray-300">{{ row.plan }} · {{ t('console.hermes.quotaShort', { ram: planQuota(row).memoryGb, cpu: planQuota(row).cpus, gb: row.diskGb || planQuota(row).diskGb }) }}</td>
               <td class="px-4 py-3 text-gray-300">{{ row.region }}</td>
               <td class="px-4 py-3 text-right">
                 <div class="flex flex-wrap items-center justify-end gap-2">
@@ -292,7 +292,7 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
 import {
   canManageHermes,
-  hermesDiskGb,
+  hermesQuota,
   isHermesOperator,
   isHermesSubscriber
 } from '../../config/console-taxonomy.mjs'
@@ -317,7 +317,8 @@ const auth = useAuthStore()
 
 const canManage = computed(() => canManageHermes(auth.groups))
 const operator = computed(() => isHermesOperator(auth.groups))
-const disk = computed(() => hermesDiskGb(auth.groups))
+const quota = computed(() => hermesQuota(auth.groups))
+const disk = computed(() => quota.value.diskGb)
 const badge = computed(() => {
   if (isHermesSubscriber(auth.groups)) return t('console.hermes.badgePlan')
   if (operator.value) return t('console.hermes.badgeOperator')
@@ -564,6 +565,12 @@ watch(providerId, (id) => {
   const p = providers.value.find((x) => x.id === id)
   if (p?.defaultModel && !pageInstance.value) modelName.value = p.defaultModel
 })
+
+function planQuota(row) {
+  const plan = String(row?.plan || '').toLowerCase()
+  if (plan === 'pro') return { diskGb: 20, memoryGb: 4, cpus: 2 }
+  return { diskGb: 5, memoryGb: 2, cpus: 1 }
+}
 
 onMounted(async () => {
   await loadCatalog()

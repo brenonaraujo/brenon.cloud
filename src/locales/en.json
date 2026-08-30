@@ -430,7 +430,7 @@
     },
     "billing": {
       "title": "Billing",
-      "subtitle": "Basic and Pro include a Hermes instance of your own. Disk: 5 GB on Basic, 20 GB on Pro.",
+      "subtitle": "Basic and Pro include a Hermes instance of your own. Basic: 2 GB RAM, 1 CPU, 5 GB. Pro: 4 GB RAM, 2 CPU, 20 GB.",
       "thisPeriod": "This period",
       "zeroHint": "No charges this period. Paid plans go through Stripe Checkout — we never take a card on this page.",
       "planHint": "After payment, sign out and sign in again so the session picks up the new plan.",
@@ -458,6 +458,7 @@
       "hermesOwn": "A Hermes instance of your own",
       "hermesOwnBody": "Besides service access, Basic and Pro include a Hermes agent that is yours — skills, memory and tools in your account. Not the public site chat.",
       "disk": "{gb} GB disk",
+      "quota": "{ram} GB RAM · {cpu} CPU · {gb} GB disk",
       "openHermes": "Open Hermes",
       "features": {
         "free": [
@@ -466,12 +467,12 @@
         ],
         "basic": [
           "Everything in Free",
-          "A Hermes instance of your own, with 5 GB disk",
+          "A Hermes instance of your own: 2 GB RAM, 1 CPU, 5 GB disk",
           "Invoices in the Stripe portal"
         ],
         "pro": [
           "Everything in Basic",
-          "A Hermes instance of your own, with 20 GB disk",
+          "A Hermes instance of your own: 4 GB RAM, 2 CPU, 20 GB disk",
           "More space and priority for the agent"
         ]
       }
@@ -503,7 +504,7 @@
     "hermes": {
       "eyebrow": "Agents",
       "title": "Hermes",
-      "subtitle": "Hermes lives at your-name.brenon.cloud/hermes. The host is your public address — other apps can join later. Basic includes 5 GB disk; Pro includes 20 GB.",
+      "subtitle": "Hermes lives at your-name.brenon.cloud/hermes. Basic: 2 GB RAM, 1 CPU, 5 GB disk. Pro: 4 GB RAM, 2 CPU, 20 GB disk.",
       "badgeSoon": "Coming soon",
       "badgePlan": "Subscriber",
       "badgeOperator": "Operator",
@@ -511,11 +512,13 @@
       "what1": "Each subscriber gets a Hermes agent of their own, not a shared chat on the public site.",
       "what2Title": "Webhooks and channels",
       "what2": "Webhooks and messaging (Telegram and others) are pre-wired to your host. You paste the tokens.",
-      "what3Title": "Disk by plan",
-      "what3": "Basic ships 5 GB. Pro ships 20 GB. Sign-in stays Authentik — no second Hermes form.",
+      "what3Title": "Plan limits",
+      "what3": "Basic: 2 GB RAM, 1 CPU, 5 GB disk. Pro: 4 GB RAM, 2 CPU, 20 GB disk. The container cannot exceed that. Login stays on Authentik.",
       "disk": "{gb} GB disk on this plan",
+      "quota": "{ram} GB RAM · {cpu} CPU · {gb} GB disk",
+      "quotaShort": "{ram} GB RAM · {cpu} CPU · {gb} GB disk",
       "lockedTitle": "Basic or Pro required",
-      "locked": "A Hermes instance of your own comes with Basic (5 GB) or Pro (20 GB). Upgrade under Billing. If you already paid, sign out and sign in again so groups refresh.",
+      "locked": "A Hermes instance of your own comes with Basic (2 GB RAM, 1 CPU, 5 GB) or Pro (4 GB RAM, 2 CPU, 20 GB). Upgrade under Billing. If you already paid, sign out and sign in again so groups refresh.",
       "instances": "Instances",
       "emptyTitle": "No agent instances yet",
       "empty": "Pick a public name to get your-name.brenon.cloud, with webhooks ready.",
@@ -541,7 +544,7 @@
       "destroy": "Delete",
       "destroying": "Deleting…",
       "destroyTitle": "Delete this instance?",
-      "destroyBody": "Everything on this instance is gone forever: chats, memory, skills, tokens, webhooks and disk. The host {host} stops existing. Your plan is not canceled.",
+      "destroyBody": "Gone forever: container, terminal, volume, chats, memory, skills, tokens, webhooks, DNS and the public page. The host {host} stops existing. Your plan is not canceled.",
       "destroyConfirm": "Delete forever",
       "destroyCancel": "Cancel",
       "destroyFallback": "Could not delete the instance right now.",

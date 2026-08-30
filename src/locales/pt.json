@@ -430,7 +430,7 @@
     },
     "billing": {
       "title": "Faturamento",
-      "subtitle": "Basic e Pro incluem uma instância Hermes só sua. Disco: 5 GB no Basic, 20 GB no Pro.",
+      "subtitle": "Basic e Pro incluem uma instância Hermes só sua. Basic: 2 GB RAM, 1 CPU, 5 GB. Pro: 4 GB RAM, 2 CPU, 20 GB.",
       "thisPeriod": "Este período",
       "zeroHint": "Nenhuma cobrança neste período. Planos pagos passam pelo Stripe Checkout — cartão nunca é digitado nesta página.",
       "planHint": "Depois do pagamento, saia e entre de novo para a sessão atualizar o plano.",
@@ -458,6 +458,7 @@
       "hermesOwn": "Uma instância Hermes para chamar de sua",
       "hermesOwnBody": "Além do acesso aos serviços, Basic e Pro incluem um agente Hermes só seu — skills, memória e ferramentas na sua conta. Não é o chat público do site.",
       "disk": "{gb} GB de disco",
+      "quota": "{ram} GB RAM · {cpu} CPU · {gb} GB de disco",
       "openHermes": "Ver Hermes",
       "features": {
         "free": [
@@ -466,12 +467,12 @@
         ],
         "basic": [
           "Tudo do Free",
-          "Uma instância Hermes só sua, com 5 GB de disco",
+          "Uma instância Hermes só sua: 2 GB RAM, 1 CPU, 5 GB de disco",
           "Faturas no portal Stripe"
         ],
         "pro": [
           "Tudo do Basic",
-          "Uma instância Hermes só sua, com 20 GB de disco",
+          "Uma instância Hermes só sua: 4 GB RAM, 2 CPU, 20 GB de disco",
           "Mais espaço e prioridade para o agente"
         ]
       }
@@ -503,7 +504,7 @@
     "hermes": {
       "eyebrow": "Agentes",
       "title": "Hermes",
-      "subtitle": "O Hermes fica em seu-nome.brenon.cloud/hermes. O host é o seu endereço público — outros apps podem entrar depois. Basic inclui 5 GB de disco; Pro inclui 20 GB.",
+      "subtitle": "O Hermes fica em seu-nome.brenon.cloud/hermes. Basic: 2 GB RAM, 1 CPU, 5 GB de disco. Pro: 4 GB RAM, 2 CPU, 20 GB de disco.",
       "badgeSoon": "Em breve",
       "badgePlan": "Assinante",
       "badgeOperator": "Operador",
@@ -511,11 +512,13 @@
       "what1": "Cada assinante tem um agente Hermes próprio, não um chat compartilhado no site público.",
       "what2Title": "Webhooks e canais",
       "what2": "Webhooks e canais (Telegram e outros) já nascem ligados ao seu host. Você cola os tokens.",
-      "what3Title": "Disco por plano",
-      "what3": "Basic vem com 5 GB. Pro vem com 20 GB. O login continua no Authentik — sem segundo formulário Hermes.",
+      "what3Title": "Limites do plano",
+      "what3": "Basic: 2 GB RAM, 1 CPU, 5 GB de disco. Pro: 4 GB RAM, 2 CPU, 20 GB de disco. O container não passa disso. Login continua no Authentik.",
       "disk": "{gb} GB de disco neste plano",
+      "quota": "{ram} GB RAM · {cpu} CPU · {gb} GB de disco",
+      "quotaShort": "{ram} GB RAM · {cpu} CPU · {gb} GB disco",
       "lockedTitle": "Precisa do Basic ou Pro",
-      "locked": "Uma instância Hermes só sua entra no Basic (5 GB) ou no Pro (20 GB). Faça o upgrade em Faturamento. Se você já pagou, saia e entre de novo para atualizar os grupos.",
+      "locked": "Uma instância Hermes só sua entra no Basic (2 GB RAM, 1 CPU, 5 GB) ou no Pro (4 GB RAM, 2 CPU, 20 GB). Faça o upgrade em Faturamento. Se você já pagou, saia e entre de novo para atualizar os grupos.",
       "instances": "Instâncias",
       "emptyTitle": "Nenhuma instância ainda",
       "empty": "Escolha um nome público para ganhar seu-nome.brenon.cloud, com webhooks prontos.",
@@ -541,7 +544,7 @@
       "destroy": "Apagar",
       "destroying": "Apagando…",
       "destroyTitle": "Apagar esta instância?",
-      "destroyBody": "Tudo nesta instância some para sempre: conversas, memória, skills, tokens, webhooks e disco. O host {host} deixa de existir. O plano não é cancelado.",
+      "destroyBody": "Some para sempre: container, terminal, volume, conversas, memória, skills, tokens, webhooks, DNS e a página pública. O host {host} deixa de existir. O plano não é cancelado.",
       "destroyConfirm": "Apagar para sempre",
       "destroyCancel": "Cancelar",
       "destroyFallback": "Não foi possível apagar a instância agora.",

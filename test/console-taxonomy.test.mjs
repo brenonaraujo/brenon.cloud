@@ -9,6 +9,7 @@ import {
   groupServices,
   displayPlan,
   hermesDiskGb,
+  hermesQuota,
   isHermesOperator,
   isHermesSubscriber,
   isStaff,
@@ -97,6 +98,8 @@ describe('plans and hermes access', () => {
     assert.equal(hermesDiskGb(['plan-basic']), 5)
     assert.equal(hermesDiskGb(['plan-pro']), 20)
     assert.equal(hermesDiskGb(['plan-free']), 0)
+    assert.deepEqual(hermesQuota(['plan-basic']), { diskGb: 5, memoryGb: 2, cpus: 1 })
+    assert.deepEqual(hermesQuota(['plan-pro']), { diskGb: 20, memoryGb: 4, cpus: 2 })
   })
 })
 
