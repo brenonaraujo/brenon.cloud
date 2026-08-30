@@ -41,9 +41,11 @@ espera o IdP.
 
 ## Hermes as a Service
 
-Página nativa `/console/hermes`, não tile. Basic **5 GB**, Pro **20 GB**.
-Webhook adiciona `plan-hermes` nos dois. Provisionamento de instância ainda
-não é live — não fingir lista de agents.
+Página nativa `/console/hermes`. Basic **5 GB**, Pro **20 GB**.
+O membro cria **uma** instância; o host é `username.brenon.cloud`.
+Edge Traefik (`haas-edge`, `:19080`) e túnel `*.brenon.cloud` já existem.
+A API `GET/POST /api/v1/hermes/instances` está no repo do control plane —
+precisa da imagem nova + skip-auth `api/v1/hermes/` no oauth2-proxy live.
 
 ## Console Air
 
@@ -83,7 +85,8 @@ Nunca commit. Nunca print `sk_live`.
 
 ## Próximo (ainda não feito)
 
-- Provisionar de fato a instância Hermes (disco 5/20 GB).
-- Re-login / silent renew para `all_groups` depois do pagamento (ACL Hermes).
+- Enforcement de cota de disco 5/20 GB no volume.
+- Policy Authentik hostname == username (hoje o OIDC do dashboard aceita o app `hermes-haas`).
+- Re-login / silent renew para `all_groups` depois do pagamento.
 - Customer Portal Stripe (configs estavam vazias na conta nova).
 - Rotacionar sk se vazou em chat.

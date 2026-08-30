@@ -493,39 +493,45 @@
           "body": "Sign in again so plan and staff groups refresh."
         },
         "hermesProvision": {
-          "title": "Hermes instances are not live yet",
-          "body": "Provisioning is still rolling out. Open Hermes to see the instance list."
+          "title": "Hermes as a Service",
+          "body": "Create your instance under Hermes to get username.brenon.cloud."
         }
       }
     },
     "hermes": {
       "eyebrow": "Agents",
       "title": "Hermes",
-      "subtitle": "Dedicated Hermes agent instances. Basic includes 5 GB disk; Pro includes 20 GB.",
+      "subtitle": "Your own Hermes agent at username.brenon.cloud. Basic includes 5 GB disk; Pro includes 20 GB.",
       "badgeSoon": "Coming soon",
       "badgePlan": "Subscriber",
       "badgeOperator": "Operator",
       "what1Title": "Isolated instance",
       "what1": "Each subscriber gets a Hermes agent of their own, not a shared chat on the public site.",
-      "what2Title": "Skills and memory",
-      "what2": "The agent keeps skills, memory and tools inside your Brenon Cloud account.",
+      "what2Title": "Webhooks and channels",
+      "what2": "Webhooks and messaging (Telegram and others) are pre-wired to your host. You paste the tokens.",
       "what3Title": "Disk by plan",
-      "what3": "Basic ships 5 GB. Pro ships 20 GB. Sign-in stays Authentik.",
+      "what3": "Basic ships 5 GB. Pro ships 20 GB. Sign-in stays Authentik — no second Hermes form.",
       "disk": "{gb} GB disk on this plan",
       "lockedTitle": "Basic or Pro required",
       "locked": "A Hermes instance of your own comes with Basic (5 GB) or Pro (20 GB). Upgrade under Billing. If you already paid, sign out and sign in again so groups refresh.",
       "instances": "Instances",
       "emptyTitle": "No agent instances yet",
-      "empty": "Provisioning is still rolling out. This page is where your Hermes agents will live — name, status and open.",
-      "emptyOperator": "Operator view. Customer instances will list here when provisioning is live.",
+      "empty": "Create your instance to get username.brenon.cloud, with webhooks ready.",
+      "emptyOperator": "Operator view. Every customer instance lists here.",
       "create": "Create instance",
-      "createHint": "Provisioning is not live yet.",
+      "creating": "Creating…",
+      "loading": "Loading instances…",
+      "open": "Open",
+      "createHint": "Creates your host as username.brenon.cloud and pre-configures webhooks.",
+      "createHintDone": "One instance per account. Open the host to connect Telegram and other channels.",
+      "loadFallback": "Could not load instances right now.",
+      "createFallback": "Could not create the instance right now.",
       "colName": "Name",
       "colStatus": "Status",
       "colPlan": "Plan",
       "colRegion": "Region",
       "homeCard": "Hermes as a Service",
-      "homeCardBody": "Agent instances for Hermes plan subscribers. Provisioning is on the way."
+      "homeCardBody": "Your Hermes agent at username.brenon.cloud."
     },
     "plan": {
       "free": "Free",
