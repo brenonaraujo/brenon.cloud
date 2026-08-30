@@ -6,6 +6,7 @@ import { visibleForGroups } from '../src/config/console-acl.mjs'
 import {
   canManageHermes,
   groupServices,
+  hermesDiskGb,
   isHermesOperator,
   isHermesSubscriber,
   isStaff,
@@ -61,8 +62,9 @@ describe('groupServices / searchServices', () => {
 })
 
 describe('plans and hermes access', () => {
-  it('prefers plan-pro, then hermes, then basic, then free', () => {
+  it('prefers plan-pro, then basic (even with plan-hermes), then hermes, then free', () => {
     assert.equal(primaryPlan(['plan-free', 'plan-pro']), 'pro')
+    assert.equal(primaryPlan(['plan-free', 'plan-basic', 'plan-hermes']), 'basic')
     assert.equal(primaryPlan(['plan-free', 'plan-hermes']), 'hermes')
     assert.equal(primaryPlan(['plan-free', 'plan-basic']), 'basic')
     assert.equal(primaryPlan(['plan-free']), 'free')
@@ -74,12 +76,17 @@ describe('plans and hermes access', () => {
     assert.equal(isStaff(['plan-free']), false)
     assert.equal(isHermesSubscriber(['plan-hermes']), true)
     assert.equal(isHermesSubscriber(['plan-pro']), true)
+    assert.equal(isHermesSubscriber(['plan-basic']), true)
     assert.equal(isHermesSubscriber(['hermes-owner']), false)
     assert.equal(isHermesOperator(['hermes-owner']), true)
     assert.equal(canManageHermes(['plan-hermes']), true)
     assert.equal(canManageHermes(['plan-pro']), true)
+    assert.equal(canManageHermes(['plan-basic']), true)
     assert.equal(canManageHermes(['hermes-owner']), true)
     assert.equal(canManageHermes(['plan-free']), false)
+    assert.equal(hermesDiskGb(['plan-basic']), 5)
+    assert.equal(hermesDiskGb(['plan-pro']), 20)
+    assert.equal(hermesDiskGb(['plan-free']), 0)
   })
 })
 

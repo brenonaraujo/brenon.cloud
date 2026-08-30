@@ -428,7 +428,7 @@
     },
     "billing": {
       "title": "Faturamento",
-      "subtitle": "Assine para abrir mais serviços e, no Pro, ter uma instância Hermes só sua.",
+      "subtitle": "Basic e Pro incluem uma instância Hermes só sua. Disco: 5 GB no Basic, 20 GB no Pro.",
       "thisPeriod": "Este período",
       "zeroHint": "Nenhuma cobrança neste período. Planos pagos passam pelo Stripe Checkout — cartão nunca é digitado nesta página.",
       "planHint": "Depois do pagamento, saia e entre de novo para a sessão atualizar o plano.",
@@ -454,7 +454,8 @@
       "portalError": "Não foi possível abrir o portal Stripe.",
       "hermesBadge": "Inclui Hermes",
       "hermesOwn": "Uma instância Hermes para chamar de sua",
-      "hermesOwnBody": "Além do acesso aos serviços, o Pro inclui um agente Hermes só seu — skills, memória e ferramentas na sua conta. Não é o chat público do site.",
+      "hermesOwnBody": "Além do acesso aos serviços, Basic e Pro incluem um agente Hermes só seu — skills, memória e ferramentas na sua conta. Não é o chat público do site.",
+      "disk": "{gb} GB de disco",
       "openHermes": "Ver Hermes",
       "features": {
         "free": [
@@ -463,13 +464,13 @@
         ],
         "basic": [
           "Tudo do Free",
-          "Acesso pago aos serviços do plano",
+          "Uma instância Hermes só sua, com 5 GB de disco",
           "Faturas no portal Stripe"
         ],
         "pro": [
           "Tudo do Basic",
-          "Uma instância Hermes só sua",
-          "Agente, skills e memória na sua conta"
+          "Uma instância Hermes só sua, com 20 GB de disco",
+          "Mais espaço e prioridade para o agente"
         ]
       }
     },
@@ -500,18 +501,19 @@
     "hermes": {
       "eyebrow": "Agentes",
       "title": "Hermes",
-      "subtitle": "Instâncias dedicadas de agentes Hermes para assinantes do plano Hermes.",
+      "subtitle": "Instâncias dedicadas de agentes Hermes. Basic inclui 5 GB de disco; Pro inclui 20 GB.",
       "badgeSoon": "Em breve",
-      "badgePlan": "Plano Hermes",
+      "badgePlan": "Assinante",
       "badgeOperator": "Operador",
       "what1Title": "Instância isolada",
       "what1": "Cada assinante tem um agente Hermes próprio, não um chat compartilhado no site público.",
       "what2Title": "Skills e memória",
       "what2": "O agente guarda skills, memória e ferramentas dentro da sua conta Brenon Cloud.",
-      "what3Title": "A mesma identidade",
-      "what3": "O login continua no Authentik. O grupo do plano Hermes é o que libera o provisionamento.",
-      "lockedTitle": "Precisa do plano Hermes",
-      "locked": "Esta conta vê o Hermes, mas ainda não provisiona agentes. O plano Hermes entra na conta. Se você já tem, saia e entre de novo para atualizar os grupos.",
+      "what3Title": "Disco por plano",
+      "what3": "Basic vem com 5 GB. Pro vem com 20 GB. O login continua no Authentik.",
+      "disk": "{gb} GB de disco neste plano",
+      "lockedTitle": "Precisa do Basic ou Pro",
+      "locked": "Uma instância Hermes só sua entra no Basic (5 GB) ou no Pro (20 GB). Faça o upgrade em Faturamento. Se você já pagou, saia e entre de novo para atualizar os grupos.",
       "instances": "Instâncias",
       "emptyTitle": "Nenhuma instância ainda",
       "empty": "O provisionamento ainda está sendo preparado. Esta tela é onde seus agentes Hermes vão viver — nome, status e abrir.",

@@ -54,8 +54,8 @@ export function searchServices(services, query, locale = 'en') {
 export function primaryPlan(groups) {
   const have = (groups || []).map((g) => String(g).toLowerCase())
   if (have.includes('plan-pro')) return 'pro'
-  if (have.includes('plan-hermes')) return 'hermes'
   if (have.includes('plan-basic')) return 'basic'
+  if (have.includes('plan-hermes')) return 'hermes'
   if (have.includes('plan-free')) return 'free'
   const plans = have.filter((g) => g.startsWith('plan-'))
   if (plans.length) return plans[0].slice('plan-'.length)
@@ -69,7 +69,14 @@ export function isStaff(groups) {
 
 export function isHermesSubscriber(groups) {
   const have = new Set((groups || []).map((g) => String(g).toLowerCase()))
-  return have.has('plan-hermes') || have.has('plan-pro')
+  return have.has('plan-hermes') || have.has('plan-pro') || have.has('plan-basic')
+}
+
+export function hermesDiskGb(groups) {
+  const plan = primaryPlan(groups)
+  if (plan === 'pro') return 20
+  if (plan === 'basic' || plan === 'hermes') return 5
+  return 0
 }
 
 export function isHermesOperator(groups) {
