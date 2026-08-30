@@ -35,6 +35,7 @@
         >
           {{ t('navbar.console') }}
         </router-link>
+        <p class="px-3 pb-1 pt-2 text-[10px] uppercase tracking-[0.12em] text-gray-500">{{ t('console.nav.products') }}</p>
         <router-link
           to="/console/hermes"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"

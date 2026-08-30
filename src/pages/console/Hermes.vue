@@ -7,39 +7,43 @@
         <p class="text-[11px] uppercase tracking-[0.12em] text-blue-300/80">{{ t('console.hermes.eyebrow') }}</p>
         <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">{{ t('console.hermes.title') }}</h1>
         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.subtitle') }}</p>
-        <p v-if="quota.diskGb" class="mt-2 text-sm text-blue-200">{{ t('console.hermes.quota', { ram: quota.memoryGb, cpu: quota.cpus, gb: quota.diskGb }) }}</p>
+        <p v-if="quota.diskGb" class="mt-3 text-sm text-blue-200">{{ t('console.hermes.quota', { ram: quota.memoryGb, cpu: quota.cpus, gb: quota.diskGb }) }}</p>
       </div>
       <span
-        class="inline-flex w-fit items-center rounded-md px-2 py-1 text-[11px] font-medium uppercase tracking-wide"
+        class="inline-flex min-h-[44px] w-fit items-center rounded-md px-3 text-[11px] font-medium uppercase tracking-wide"
         :class="canManage ? 'bg-blue-500/20 text-blue-300' : 'bg-white/5 text-gray-400'"
       >
         {{ badge }}
       </span>
     </div>
 
-    <section class="mt-10 grid gap-4 md:grid-cols-3">
-      <article v-for="item in features" :key="item.title" class="rounded-lg border border-white/10 bg-gray-900 p-4">
-        <h2 class="text-base font-semibold text-white">{{ item.title }}</h2>
-        <p class="mt-2 text-sm leading-relaxed text-gray-400">{{ item.body }}</p>
-      </article>
+    <section
+      v-if="!canManage"
+      class="mt-10 rounded-lg border border-white/10 bg-gray-900 px-6 py-10"
+    >
+      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.lockedTitle') }}</h2>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.locked') }}</p>
+      <router-link
+        to="/console/billing"
+        class="mt-6 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"
+      >
+        {{ t('console.nav.billing') }}
+      </router-link>
     </section>
 
-    <section v-if="canManage" class="mt-10">
-      <div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.instances') }}</h2>
-      </div>
-      <p id="hermes-create-hint" class="mb-4 text-sm text-gray-500">{{ hint }}</p>
-      <p v-if="error" class="mb-4 text-sm text-amber-300">{{ error }}</p>
-      <p v-if="waiting" class="mb-4 rounded-md border border-blue-400/20 bg-blue-500/10 px-4 py-3 text-sm text-blue-100">
+    <template v-else>
+      <p v-if="error" class="mt-8 text-sm text-amber-300">{{ error }}</p>
+      <p v-if="waiting" class="mt-8 rounded-md border border-blue-400/20 bg-blue-500/10 px-4 py-3 text-sm text-blue-100">
         {{ t('console.hermes.startingHint') }}
       </p>
 
       <form
         v-if="!hasLive && !loading"
-        class="mb-8 rounded-lg border border-white/10 bg-gray-900 p-5"
+        class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-6"
         @submit.prevent="create"
       >
-        <label for="hermes-public-name" class="block text-sm font-medium text-white">{{ t('console.hermes.publicName') }}</label>
+        <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.create') }}</h2>
+        <label for="hermes-public-name" class="mt-6 block text-sm font-medium text-white">{{ t('console.hermes.publicName') }}</label>
         <p class="mt-1 text-sm leading-relaxed text-gray-400">{{ t('console.hermes.publicNameHint') }}</p>
         <div class="mt-4 flex min-h-[44px] max-w-lg overflow-hidden rounded-md border border-white/15 bg-black/30">
           <span class="flex items-center border-r border-white/10 px-3 font-mono text-sm text-gray-400">agent-</span>
@@ -55,207 +59,115 @@
         </div>
         <p v-if="previewHost" class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
         <p class="mt-2 text-xs leading-relaxed text-gray-500">{{ t('console.hermes.publicLater') }}</p>
-
-        <label for="hermes-provider" class="mt-6 block text-sm font-medium text-white">{{ t('console.hermes.modelTitle') }}</label>
-        <p class="mt-1 text-sm leading-relaxed text-gray-400">{{ t('console.hermes.modelHint') }}</p>
-        <div class="mt-3 grid gap-3 sm:grid-cols-2">
-          <select
-            id="hermes-provider"
-            v-model="providerId"
-            class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
-          >
-            <option v-for="p in providers" :key="p.id" :value="p.id">{{ p.label }}</option>
-          </select>
-          <input
-            v-model="modelName"
-            type="text"
-            class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
-            :placeholder="t('console.hermes.modelPlaceholder')"
-          >
-        </div>
-        <input
-          v-model="apiKey"
-          type="password"
-          autocomplete="off"
-          class="mt-3 min-h-[44px] w-full rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
-          :placeholder="t('console.hermes.apiKeyPlaceholder')"
-        >
         <button
           type="submit"
-          class="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-600/40 disabled:text-white/70"
-          :disabled="creating || !previewSlug || !apiKey"
+          class="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-600/40"
+          :disabled="creating || !previewSlug"
         >
           {{ creating ? t('console.hermes.creating') : t('console.hermes.create') }}
         </button>
       </form>
 
-      <div class="overflow-x-auto rounded-lg border border-white/10">
-        <table class="w-full min-w-[36rem] text-left text-sm">
-          <thead class="border-b border-white/10 bg-gray-900 text-xs uppercase tracking-[0.12em] text-gray-500">
-            <tr>
-              <th class="px-4 py-3 font-medium">{{ t('console.hermes.colName') }}</th>
-              <th class="px-4 py-3 font-medium">{{ t('console.hermes.colStatus') }}</th>
-              <th class="px-4 py-3 font-medium">{{ t('console.hermes.colPlan') }}</th>
-              <th class="px-4 py-3 font-medium">{{ t('console.hermes.colRegion') }}</th>
-              <th class="px-4 py-3 font-medium"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="loading">
-              <td colspan="5" class="px-4 py-12 text-center text-sm text-gray-500">{{ t('console.hermes.loading') }}</td>
-            </tr>
-            <tr v-else-if="!instances.length">
-              <td colspan="5" class="px-4 py-12 text-center">
-                <InboxIcon class="mx-auto h-8 w-8 text-gray-600" />
-                <p class="mt-4 font-medium text-white">{{ t('console.hermes.emptyTitle') }}</p>
-                <p class="mt-2 text-sm text-gray-400">{{ t('console.hermes.empty') }}</p>
-                <p v-if="operator" class="mt-2 text-sm text-gray-500">{{ t('console.hermes.emptyOperator') }}</p>
-              </td>
-            </tr>
-            <tr v-for="row in instances" :key="row.id" class="border-t border-white/5">
-              <td class="px-4 py-3 text-white">
-                <p class="font-medium">{{ row.hostname || row.slug }}</p>
-                <p class="text-xs text-gray-500">{{ row.username }}</p>
-              </td>
-              <td class="px-4 py-3 text-gray-300">{{ isStarting(row) ? t('console.hermes.starting') : row.status }}</td>
-              <td class="px-4 py-3 text-gray-300">{{ row.plan }} · {{ t('console.hermes.quotaShort', { ram: planQuota(row).memoryGb, cpu: planQuota(row).cpus, gb: row.diskGb || planQuota(row).diskGb }) }}</td>
-              <td class="px-4 py-3 text-gray-300">{{ row.region }}</td>
-              <td class="px-4 py-3 text-right">
-                <div class="flex flex-wrap items-center justify-end gap-2">
-                  <a
-                    v-if="canOpen(row) && row.cliUrl"
-                    :href="row.cliUrl"
-                    target="_blank"
-                    rel="noopener"
-                    class="inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-500"
-                  >{{ t('console.hermes.cliOpen') }}</a>
-                  <a
-                    v-if="canOpen(row)"
-                    :href="'https://' + row.hostname + '/'"
-                    target="_blank"
-                    rel="noopener"
-                    class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-3 text-sm text-gray-200 hover:bg-white/5"
-                  >{{ t('console.hermes.openPage') }}</a>
-                  <a
-                    v-if="canOpen(row)"
-                    :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
-                    target="_blank"
-                    rel="noopener"
-                    class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-3 text-sm text-gray-200 hover:bg-white/5"
-                  >{{ t('console.hermes.openAgent') }}</a>
-                  <span v-else-if="isStarting(row)" class="text-sm text-gray-500">{{ t('console.hermes.starting') }}</span>
-                  <button
-                    v-if="row.status !== 'deleted'"
-                    type="button"
-                    class="inline-flex min-h-[44px] items-center px-3 text-sm text-red-300 hover:text-red-200 disabled:opacity-40"
-                    :disabled="destroying === row.id"
-                    @click="askDestroy(row)"
-                  >{{ destroying === row.id ? t('console.hermes.destroying') : t('console.hermes.destroy') }}</button>
-                </div>
-                <p v-if="row.error" class="mt-1 text-xs text-amber-300">{{ row.error }}</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <p v-if="loading" class="mt-10 text-sm text-gray-500">{{ t('console.hermes.loading') }}</p>
 
-    <section
-      v-else
-      class="mt-10 rounded-lg border border-white/10 bg-gray-900 px-6 py-10"
-    >
-      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.lockedTitle') }}</h2>
-      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.locked') }}</p>
-      <router-link
-        to="/console/billing"
-        class="mt-6 inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
+      <article
+        v-if="pageInstance"
+        class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-6"
       >
-        {{ t('console.nav.billing') }}
-      </router-link>
-    </section>
-
-    <section
-      v-if="canManage && pageInstance"
-      class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-5"
-    >
-      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.publicTitle') }}</h2>
-      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.publicRenameHint') }}</p>
-      <form class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center" @submit.prevent="rename">
-        <div class="flex min-h-[44px] max-w-lg flex-1 overflow-hidden rounded-md border border-white/15 bg-black/30">
-          <span class="flex items-center border-r border-white/10 px-3 font-mono text-sm text-gray-400">agent-</span>
-          <input
-            v-model="publicName"
-            type="text"
-            autocomplete="off"
-            spellcheck="false"
-            class="min-w-0 flex-1 bg-transparent px-3 text-sm text-white focus:outline-none"
-          >
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.12em] text-gray-500">{{ t('console.hermes.instances') }}</p>
+            <h2 class="mt-2 font-mono text-lg font-semibold text-white">{{ pageInstance.hostname || pageInstance.slug }}</h2>
+            <p class="mt-2 text-sm text-gray-400">
+              {{ isStarting(pageInstance) ? t('console.hermes.starting') : pageInstance.status }}
+              · {{ t('console.hermes.quotaShort', { ram: planQuota(pageInstance).memoryGb, cpu: planQuota(pageInstance).cpus, gb: pageInstance.diskGb || planQuota(pageInstance).diskGb }) }}
+            </p>
+          </div>
+          <button
+            type="button"
+            class="inline-flex min-h-[44px] items-center text-sm text-red-300 hover:text-red-200 disabled:opacity-40"
+            :disabled="destroying === pageInstance.id"
+            @click="askDestroy(pageInstance)"
+          >{{ destroying === pageInstance.id ? t('console.hermes.destroying') : t('console.hermes.destroy') }}</button>
         </div>
-        <button
-          type="submit"
-          class="inline-flex min-h-[44px] items-center justify-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5 disabled:opacity-40"
-          :disabled="renaming || !previewSlug || previewSlug === pageInstance.slug"
-        >
-          {{ renaming ? t('console.hermes.publicSaving') : t('console.hermes.publicSave') }}
-        </button>
-      </form>
-      <p class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
-      <p v-if="pageInstance.hostname" class="mt-2 text-xs text-gray-500">{{ t('console.hermes.webhookHint', { url: 'https://' + pageInstance.hostname + '/hermes/hooks' }) }}</p>
-    </section>
+        <p v-if="pageInstance.error" class="mt-3 text-xs text-amber-300">{{ pageInstance.error }}</p>
+        <div v-if="canOpen(pageInstance)" class="mt-6 flex flex-wrap gap-2">
+          <a
+            v-if="pageInstance.cliUrl"
+            :href="pageInstance.cliUrl"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"
+          >{{ t('console.hermes.cliOpen') }}</a>
+          <a
+            :href="'https://' + pageInstance.hostname + '/'"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
+          >{{ t('console.hermes.openPage') }}</a>
+          <a
+            :href="pageInstance.launchUrl || ('https://' + pageInstance.hostname + '/hermes')"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
+          >{{ t('console.hermes.openAgent') }}</a>
+        </div>
+        <p v-else-if="isStarting(pageInstance)" class="mt-6 text-sm text-gray-500">{{ t('console.hermes.starting') }}</p>
+      </article>
 
-    <section
-      v-if="canManage && pageInstance && pageInstance.cliUrl"
-      class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-5"
-    >
-      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.cliTitle') }}</h2>
-      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.cliHint') }}</p>
-      <a
-        :href="pageInstance.cliUrl"
-        target="_blank"
-        rel="noopener"
-        class="mt-4 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"
-      >{{ t('console.hermes.cliOpen') }}</a>
-    </section>
-
-    <section
-      v-if="canManage && pageInstance"
-      class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-5"
-    >
-      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.modelTitle') }}</h2>
-      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.modelHint') }}</p>
-      <p v-if="providerStatus?.configured" class="mt-2 text-sm text-blue-200">{{ t('console.hermes.modelConfigured', { provider: providerStatus.id, model: providerStatus.model }) }}</p>
-      <div class="mt-4 grid gap-3 sm:grid-cols-2">
-        <select
-          v-model="providerId"
-          class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
-        >
-          <option v-for="p in providers" :key="p.id" :value="p.id">{{ p.label }}</option>
-        </select>
-        <input
-          v-model="modelName"
-          type="text"
-          class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
-          :placeholder="t('console.hermes.modelPlaceholder')"
-        >
-      </div>
-      <input
-        v-model="apiKey"
-        type="password"
-        autocomplete="off"
-        class="mt-3 min-h-[44px] w-full rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
-        :placeholder="providerStatus?.configured ? t('console.hermes.apiKeyReplace') : t('console.hermes.apiKeyPlaceholder')"
+      <section
+        v-if="pageInstance && pageInstance.cliUrl"
+        class="mt-8 rounded-lg border border-white/10 bg-gray-900 p-6"
       >
-      <button
-        type="button"
-        class="mt-4 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-40"
-        :disabled="savingProvider || !apiKey || !providerId"
-        @click="saveProvider"
-      >
-        {{ savingProvider ? t('console.hermes.modelSaving') : t('console.hermes.modelSave') }}
-      </button>
-    </section>
+        <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.cliTitle') }}</h2>
+        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.cliHint') }}</p>
+        <ol class="mt-6 max-w-2xl list-decimal space-y-3 pl-5 text-sm leading-relaxed text-gray-300">
+          <li>{{ t('console.hermes.cliStep1') }}</li>
+          <li>{{ t('console.hermes.cliStep2') }}</li>
+          <li>{{ t('console.hermes.cliStep3') }}</li>
+        </ol>
+        <p class="mt-6 max-w-2xl rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm leading-relaxed text-gray-400">
+          {{ t('console.hermes.cliLimit') }}
+        </p>
+        <a
+          :href="pageInstance.cliUrl"
+          target="_blank"
+          rel="noopener"
+          class="mt-6 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"
+        >{{ t('console.hermes.cliOpen') }}</a>
+      </section>
 
-    <ConsoleHostPage v-if="canManage && pageInstance" :instance="pageInstance" />
+      <section
+        v-if="pageInstance"
+        class="mt-8 rounded-lg border border-white/10 bg-gray-900 p-6"
+      >
+        <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.publicTitle') }}</h2>
+        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.publicRenameHint') }}</p>
+        <form class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center" @submit.prevent="rename">
+          <div class="flex min-h-[44px] max-w-lg flex-1 overflow-hidden rounded-md border border-white/15 bg-black/30">
+            <span class="flex items-center border-r border-white/10 px-3 font-mono text-sm text-gray-400">agent-</span>
+            <input
+              v-model="publicName"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              class="min-w-0 flex-1 bg-transparent px-3 text-sm text-white focus:outline-none"
+            >
+          </div>
+          <button
+            type="submit"
+            class="inline-flex min-h-[44px] items-center justify-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5 disabled:opacity-40"
+            :disabled="renaming || !previewSlug || previewSlug === pageInstance.slug"
+          >
+            {{ renaming ? t('console.hermes.publicSaving') : t('console.hermes.publicSave') }}
+          </button>
+        </form>
+        <p class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
+        <p v-if="pageInstance.hostname" class="mt-2 text-xs text-gray-500">{{ t('console.hermes.webhookHint', { url: 'https://' + pageInstance.hostname + '/hermes/hooks' }) }}</p>
+      </section>
+
+      <ConsoleHostPage v-if="pageInstance" :instance="pageInstance" />
+    </template>
 
     <div
       v-if="pending"
@@ -301,16 +213,12 @@ import {
   createHermesInstance,
   deleteHermesInstance,
   fetchHermesInstances,
-  fetchHermesProvider,
-  fetchHermesProviders,
   humanHermesError,
   renameHermesInstance,
-  saveHermesProvider,
   stripAgentPrefix
 } from '../../api/hermesApi.js'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 import ConsoleHostPage from '../../components/console/ConsoleHostPage.vue'
-import { InboxIcon } from '../../components/icons/Icons.js'
 
 const { t } = useI18n()
 const auth = useAuthStore()
@@ -318,18 +226,11 @@ const auth = useAuthStore()
 const canManage = computed(() => canManageHermes(auth.groups))
 const operator = computed(() => isHermesOperator(auth.groups))
 const quota = computed(() => hermesQuota(auth.groups))
-const disk = computed(() => quota.value.diskGb)
 const badge = computed(() => {
   if (isHermesSubscriber(auth.groups)) return t('console.hermes.badgePlan')
   if (operator.value) return t('console.hermes.badgeOperator')
   return t('console.hermes.badgeSoon')
 })
-
-const features = computed(() => [
-  { title: t('console.hermes.what1Title'), body: t('console.hermes.what1') },
-  { title: t('console.hermes.what2Title'), body: t('console.hermes.what2') },
-  { title: t('console.hermes.what3Title'), body: t('console.hermes.what3') }
-])
 
 const instances = ref([])
 const loading = ref(false)
@@ -339,12 +240,6 @@ const destroying = ref('')
 const pending = ref(null)
 const error = ref('')
 const publicName = ref('')
-const providers = ref([])
-const providerId = ref('xai')
-const modelName = ref('grok-4.6')
-const apiKey = ref('')
-const providerStatus = ref(null)
-const savingProvider = ref(false)
 
 const defaultName = computed(() => {
   const fromUser = stripAgentPrefix(String(auth.username || '').trim())
@@ -365,11 +260,6 @@ const pageInstance = computed(() => {
 const previewSlug = computed(() => agentSlug(publicName.value || defaultName.value))
 const previewHost = computed(() => (previewSlug.value ? `${previewSlug.value}.brenon.cloud` : ''))
 const waiting = computed(() => instances.value.some(isStarting))
-const hint = computed(() => {
-  if (waiting.value) return t('console.hermes.startingHint')
-  if (hasLive.value) return t('console.hermes.createHintDone')
-  return t('console.hermes.createHint')
-})
 
 function canOpen(row) {
   return Boolean(row?.ready && row.hostname)
@@ -427,15 +317,10 @@ async function create() {
   creating.value = true
   error.value = ''
   try {
-    const row = await createHermesInstance(auth.idToken, previewSlug.value, {
-      provider: providerId.value,
-      apiKey: apiKey.value,
-      model: modelName.value
-    })
+    const row = await createHermesInstance(auth.idToken, previewSlug.value)
     if (row?.id) {
       instances.value = [row, ...instances.value.filter((x) => x.id !== row.id)]
       syncPublicName()
-      apiKey.value = ''
     } else {
       await load()
     }
@@ -485,52 +370,6 @@ async function destroy() {
   }
 }
 
-async function saveProvider() {
-  const row = pageInstance.value
-  if (!auth.idToken || !row?.id || savingProvider.value || !apiKey.value) return
-  savingProvider.value = true
-  error.value = ''
-  try {
-    providerStatus.value = await saveHermesProvider(auth.idToken, row.id, {
-      provider: providerId.value,
-      apiKey: apiKey.value,
-      model: modelName.value
-    })
-    apiKey.value = ''
-  } catch (err) {
-    error.value = humanHermesError(err, t('console.hermes.modelSaveFallback'))
-  } finally {
-    savingProvider.value = false
-  }
-}
-
-async function loadCatalog() {
-  if (!auth.idToken) return
-  try {
-    const data = await fetchHermesProviders(auth.idToken)
-    providers.value = Array.isArray(data.providers) ? data.providers : []
-    if (!providerId.value && providers.value[0]) providerId.value = providers.value[0].id
-  } catch {
-    providers.value = [{ id: 'xai', label: 'xAI', defaultModel: 'grok-4.6' }]
-  }
-}
-
-async function loadProviderStatus() {
-  const row = pageInstance.value
-  if (!auth.idToken || !row?.id) {
-    providerStatus.value = null
-    return
-  }
-  try {
-    const st = await fetchHermesProvider(auth.idToken, row.id)
-    providerStatus.value = st
-    if (st.id) providerId.value = st.id
-    if (st.model) modelName.value = st.model
-  } catch {
-    providerStatus.value = null
-  }
-}
-
 let waitTimer = 0
 function stopWait() {
   if (waitTimer) {
@@ -554,28 +393,12 @@ watch(defaultName, (name) => {
   if (!hasLive.value && !publicName.value && name) publicName.value = name
 })
 
-watch(
-  () => pageInstance.value?.id,
-  () => {
-    loadProviderStatus()
-  }
-)
-
-watch(providerId, (id) => {
-  const p = providers.value.find((x) => x.id === id)
-  if (p?.defaultModel && !pageInstance.value) modelName.value = p.defaultModel
-})
-
 function planQuota(row) {
   const plan = String(row?.plan || '').toLowerCase()
   if (plan === 'pro') return { diskGb: 20, memoryGb: 4, cpus: 2 }
   return { diskGb: 5, memoryGb: 2, cpus: 1 }
 }
 
-onMounted(async () => {
-  await loadCatalog()
-  await load()
-  await loadProviderStatus()
-})
+onMounted(load)
 onUnmounted(stopWait)
 </script>
