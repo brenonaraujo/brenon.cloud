@@ -44,6 +44,38 @@ export async function deleteHermesInstance(idToken, id) {
   return data
 }
 
+export async function fetchHermesSite(idToken, slug) {
+  const q = slug ? `?slug=${encodeURIComponent(slug)}` : ''
+  const res = await fetch(`${BASE}/api/v1/hermes/site${q}`, { headers: authHeaders(idToken) })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `site ${res.status}`)
+  return data
+}
+
+export async function saveHermesSite(idToken, body, slug) {
+  const q = slug ? `?slug=${encodeURIComponent(slug)}` : ''
+  const res = await fetch(`${BASE}/api/v1/hermes/site${q}`, {
+    method: 'PUT',
+    headers: { ...authHeaders(idToken), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `site ${res.status}`)
+  return data
+}
+
+export async function grantHostSession(idToken, host) {
+  const res = await fetch(`${BASE}/api/v1/hermes/site/session`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { ...authHeaders(idToken), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ host })
+  })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `session ${res.status}`)
+  return data
+}
+
 export function humanHermesError(err, fallback) {
   const msg = String(err?.message || err || '')
   if (/load failed|failed to fetch|networkerror/i.test(msg)) return fallback

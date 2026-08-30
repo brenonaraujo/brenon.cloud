@@ -74,6 +74,13 @@
                 <div class="flex items-center justify-end gap-4">
                   <a
                     v-if="row.status === 'running' && row.hostname"
+                    :href="'https://' + row.hostname + '/'"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-sm text-blue-300 hover:text-blue-200"
+                  >{{ t('console.site.open') }}</a>
+                  <a
+                    v-if="row.status === 'running' && row.hostname"
                     :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
                     target="_blank"
                     rel="noopener"
@@ -108,6 +115,8 @@
         {{ t('console.nav.billing') }}
       </router-link>
     </section>
+
+    <ConsoleHostPage v-if="canManage && pageInstance" :instance="pageInstance" />
 
     <div
       v-if="pending"
@@ -150,6 +159,7 @@ import {
 } from '../../config/console-taxonomy.mjs'
 import { createHermesInstance, deleteHermesInstance, fetchHermesInstances, humanHermesError } from '../../api/hermesApi.js'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
+import ConsoleHostPage from '../../components/console/ConsoleHostPage.vue'
 import { InboxIcon } from '../../components/icons/Icons.js'
 
 const { t } = useI18n()
@@ -180,6 +190,12 @@ const error = ref('')
 const hasLive = computed(() =>
   instances.value.some((row) => ['pending', 'provisioning', 'running', 'stopped'].includes(row.status))
 )
+const pageInstance = computed(() => {
+  const live = instances.value.filter((row) =>
+    ['running', 'provisioning', 'pending', 'stopped'].includes(row.status)
+  )
+  return live.find((row) => row.email === auth.email) || live[0] || null
+})
 const hint = computed(() => {
   if (hasLive.value) return t('console.hermes.createHintDone')
   return t('console.hermes.createHint')
