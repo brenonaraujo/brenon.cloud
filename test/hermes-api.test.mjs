@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { agentSlug, humanHermesError, stripAgentPrefix } from '../src/api/hermesApi.js'
-import { hermesChatUrl } from '../src/config/hermes-chat.mjs'
 
 describe('humanHermesError', () => {
   it('does not surface fetch failures', () => {
@@ -19,10 +19,17 @@ describe('agentSlug', () => {
   })
 })
 
-describe('hermesChatUrl', () => {
-  it('opens the tenant chat tab, not the dashboard root', () => {
-    assert.equal(hermesChatUrl('agent-brenonaraujo.brenon.cloud'), 'https://agent-brenonaraujo.brenon.cloud/hermes/chat')
-    assert.equal(hermesChatUrl('https://agent-x.brenon.cloud/hermes'), 'https://agent-x.brenon.cloud/hermes/chat')
-    assert.equal(hermesChatUrl(''), '')
+describe('Hermes dock stays on brenon.cloud', () => {
+  it('does not iframe or link out to the tenant dashboard', () => {
+    const dock = readFileSync(new URL('../src/components/HermesDock.vue', import.meta.url), 'utf8')
+    const page = readFileSync(new URL('../src/pages/console/Hermes.vue', import.meta.url), 'utf8')
+    for (const src of [dock, page]) {
+      assert.equal(src.includes('<iframe'), false)
+      assert.equal(src.includes('hermes/sessions'), false)
+      assert.equal(src.includes('hermes-mascot'), false)
+      assert.equal(/href=.*\/hermes['"]/.test(src), false)
+    }
+    assert.match(dock, /sendHermesChat/)
+    assert.match(dock, /hermes-fab/)
   })
 })
