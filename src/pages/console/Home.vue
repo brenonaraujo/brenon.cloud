@@ -102,7 +102,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
 import { useConsoleStore } from '../../stores/consoleStore'
-import { isStaff, primaryPlan } from '../../config/console-taxonomy.mjs'
+import { useEntitlementStore } from '../../stores/entitlementStore'
+import { displayPlan, isStaff } from '../../config/console-taxonomy.mjs'
 import {
   billingSnapshot,
   buildNotifications,
@@ -116,6 +117,7 @@ import ConsoleServiceRow from '../../components/console/ConsoleServiceRow.vue'
 const { t, te, locale } = useI18n()
 const auth = useAuthStore()
 const catalog = useConsoleStore()
+const entitlement = useEntitlementStore()
 
 const firstName = computed(() => {
   const name = auth.displayName || auth.email || ''
@@ -124,7 +126,7 @@ const firstName = computed(() => {
 
 const staff = computed(() => isStaff(auth.groups))
 const planLabel = computed(() => {
-  const plan = primaryPlan(auth.groups)
+  const plan = displayPlan(auth.groups, entitlement.billing)
   const key = `console.plan.${plan}`
   return te(key) ? t(key) : plan
 })

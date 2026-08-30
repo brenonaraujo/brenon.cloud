@@ -117,7 +117,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
 import { useConsoleStore } from '../../stores/consoleStore'
-import { primaryPlan } from '../../config/console-taxonomy.mjs'
+import { displayPlan } from '../../config/console-taxonomy.mjs'
+import { useEntitlementStore } from '../../stores/entitlementStore'
 import { buildNotifications } from '../../config/console-overview.mjs'
 import { unreadNotifications } from '../../config/console-prefs.mjs'
 import { useConsoleUi } from '../../composables/useConsoleUi'
@@ -130,12 +131,13 @@ defineEmits(['toggle-sidebar'])
 const { t, te } = useI18n()
 const auth = useAuthStore()
 const catalog = useConsoleStore()
+const entitlement = useEntitlementStore()
 const { initials } = useConsoleUi()
 const menuOpen = ref(false)
 const menuRoot = ref(null)
 
 const planLabel = computed(() => {
-  const plan = primaryPlan(auth.groups)
+  const plan = displayPlan(auth.groups, entitlement.billing)
   const key = `console.plan.${plan}`
   return te(key) ? t(key) : plan
 })

@@ -212,5 +212,11 @@ async function portal() {
   }
 }
 
-onMounted(load)
+onMounted(async () => {
+  await load()
+  if (route.query.checkout !== 'success') return
+  const fromGroups = primaryPlan(auth.groups)
+  if (fromGroups === 'basic' || fromGroups === 'pro') return
+  await auth.login('/console')
+})
 </script>
