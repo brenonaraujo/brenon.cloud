@@ -571,7 +571,7 @@
       "modelConfigured": "Active: {provider} · {model}",
       "modelSaveFallback": "Could not save the model right now.",
       "cliTitle": "Hermes terminal",
-      "cliHint": "A terminal on your container. Same Authentik login as chat — no extra username/password. Then: hermes setup, hermes model, hermes auth with your own keys.",
+      "cliHint": "A shell inside this instance’s container. PATH already includes Hermes: hermes setup, hermes model, hermes auth. Same Authentik login as chat — no extra password.",
       "cliOpen": "Open terminal",
       "cliUser": "Username",
       "cliPass": "Password"

@@ -571,7 +571,7 @@
       "modelConfigured": "Ativo: {provider} · {model}",
       "modelSaveFallback": "Não foi possível salvar o modelo agora.",
       "cliTitle": "Terminal Hermes",
-      "cliHint": "Terminal no teu container. Entra com o mesmo login Authentik do chat — sem usuário/senha extra. Lá: hermes setup, hermes model, hermes auth com as tuas keys.",
+      "cliHint": "Shell no container desta instância. PATH já inclui o Hermes: hermes setup, hermes model, hermes auth. Sem usuário/senha extra — mesmo Authentik do chat.",
       "cliOpen": "Abrir terminal",
       "cliUser": "Usuário",
       "cliPass": "Senha"
