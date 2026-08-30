@@ -68,16 +68,18 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
-import { isStaff, primaryPlan } from '../../config/console-taxonomy.mjs'
+import { displayPlan, isStaff } from '../../config/console-taxonomy.mjs'
+import { useEntitlementStore } from '../../stores/entitlementStore'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 
 const { t, te } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
+const entitlement = useEntitlementStore()
 
 const staff = computed(() => isStaff(auth.groups))
 const planLabel = computed(() => {
-  const plan = primaryPlan(auth.groups)
+  const plan = displayPlan(auth.groups, entitlement.billing)
   const key = `console.plan.${plan}`
   return te(key) ? t(key) : plan
 })

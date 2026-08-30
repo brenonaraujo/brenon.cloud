@@ -51,6 +51,14 @@ export function searchServices(services, query, locale = 'en') {
   })
 }
 
+export function displayPlan(groups, billing) {
+  const paid = String(billing?.plan || '').toLowerCase()
+  const status = String(billing?.status || '').toLowerCase()
+  const live = status === 'active' || status === 'trialing' || status === 'past_due'
+  if (live && (paid === 'basic' || paid === 'pro')) return paid
+  return primaryPlan(groups)
+}
+
 export function primaryPlan(groups) {
   const have = (groups || []).map((g) => String(g).toLowerCase())
   if (have.includes('plan-pro')) return 'pro'

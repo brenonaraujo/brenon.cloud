@@ -6,6 +6,7 @@ import { visibleForGroups } from '../src/config/console-acl.mjs'
 import {
   canManageHermes,
   groupServices,
+  displayPlan,
   hermesDiskGb,
   isHermesOperator,
   isHermesSubscriber,
@@ -62,6 +63,13 @@ describe('groupServices / searchServices', () => {
 })
 
 describe('plans and hermes access', () => {
+  it('prefers an active Stripe plan over a stale JWT', () => {
+    assert.equal(displayPlan(['plan-free'], { plan: 'basic', status: 'active' }), 'basic')
+    assert.equal(displayPlan(['plan-free'], { plan: 'pro', status: 'trialing' }), 'pro')
+    assert.equal(displayPlan(['plan-free'], { plan: 'basic', status: 'canceled' }), 'free')
+    assert.equal(displayPlan(['plan-free'], { plan: 'free', status: 'none' }), 'free')
+  })
+
   it('prefers plan-pro, then basic (even with plan-hermes), then hermes, then free', () => {
     assert.equal(primaryPlan(['plan-free', 'plan-pro']), 'pro')
     assert.equal(primaryPlan(['plan-free', 'plan-basic', 'plan-hermes']), 'basic')

@@ -36,6 +36,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { useConsoleStore } from '../stores/consoleStore'
+import { useEntitlementStore } from '../stores/entitlementStore'
 import ConsoleSidebar from '../components/console/ConsoleSidebar.vue'
 import ConsoleTopbar from '../components/console/ConsoleTopbar.vue'
 import ConsoleBanner from '../components/console/ConsoleBanner.vue'
@@ -44,6 +45,7 @@ const { t } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
 const catalog = useConsoleStore()
+const entitlement = useEntitlementStore()
 const sidebarOpen = ref(false)
 
 const ensureSession = () => {
@@ -57,6 +59,7 @@ onMounted(() => {
   catalog.load()
   ensureSession()
   if (auth.email) catalog.hydratePrefs(auth.email)
+  if (auth.idToken) entitlement.load(auth.idToken)
 })
 
 watch(() => auth.ready, ensureSession)
@@ -64,6 +67,12 @@ watch(
   () => auth.email,
   (email) => {
     if (email) catalog.hydratePrefs(email)
+  }
+)
+watch(
+  () => auth.idToken,
+  (token) => {
+    if (token) entitlement.load(token)
   }
 )
 watch(
