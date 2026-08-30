@@ -22,15 +22,21 @@ export async function fetchHermesInstances(idToken) {
   return data
 }
 
-export async function createHermesInstance(idToken, slug) {
+export async function createHermesInstance(idToken, slug, extra = {}) {
   const res = await fetch(`${BASE}/api/v1/hermes/instances`, {
     method: 'POST',
     headers: { ...authHeaders(idToken), 'Content-Type': 'application/json' },
-    body: JSON.stringify({ slug: slug || '' })
+    body: JSON.stringify({
+      slug: slug || '',
+      provider: extra.provider || '',
+      apiKey: extra.apiKey || '',
+      model: extra.model || ''
+    })
   })
   const data = await readJSON(res)
   if (res.status === 409 && data.instance) return data.instance
   if (!res.ok) throw new Error(data.error || `create ${res.status}`)
+  if (data.instance?.id) return data.instance
   return data
 }
 
@@ -93,6 +99,44 @@ export async function grantHostSession(idToken, host) {
   const data = await readJSON(res)
   if (!res.ok) throw new Error(data.error || `session ${res.status}`)
   return data
+}
+
+export async function fetchHermesProviders(idToken) {
+  const res = await fetch(`${BASE}/api/v1/hermes/providers`, { headers: authHeaders(idToken) })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `providers ${res.status}`)
+  return data
+}
+
+export async function fetchHermesProvider(idToken, id) {
+  const res = await fetch(`${BASE}/api/v1/hermes/instances/${encodeURIComponent(id)}/provider`, {
+    headers: authHeaders(idToken)
+  })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `provider ${res.status}`)
+  return data
+}
+
+export async function saveHermesProvider(idToken, id, body) {
+  const res = await fetch(`${BASE}/api/v1/hermes/instances/${encodeURIComponent(id)}/provider`, {
+    method: 'PUT',
+    headers: { ...authHeaders(idToken), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `provider ${res.status}`)
+  return data
+}
+
+export function stripAgentPrefix(raw) {
+  let s = String(raw || '').toLowerCase().trim()
+  while (s.startsWith('agent-')) s = s.slice(6)
+  return s.replace(/^-+|-+$/g, '')
+}
+
+export function agentSlug(raw) {
+  const suffix = stripAgentPrefix(raw)
+  return suffix ? `agent-${suffix}` : ''
 }
 
 export function humanHermesError(err, fallback) {
