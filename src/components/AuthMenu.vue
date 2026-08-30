@@ -70,7 +70,7 @@
           type="button"
           class="block w-full border-t border-white/10 px-3 py-2 text-left text-sm text-gray-400 hover:bg-white/5 hover:text-white"
           role="menuitem"
-          @click="auth.logout()"
+          @click="open = false; auth.logout()"
         >
           {{ t('navbar.logout') }}
         </button>
