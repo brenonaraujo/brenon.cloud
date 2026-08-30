@@ -41,26 +41,52 @@
       >
         <label for="hermes-public-name" class="block text-sm font-medium text-white">{{ t('console.hermes.publicName') }}</label>
         <p class="mt-1 text-sm leading-relaxed text-gray-400">{{ t('console.hermes.publicNameHint') }}</p>
-        <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div class="mt-4 flex min-h-[44px] max-w-lg overflow-hidden rounded-md border border-white/15 bg-black/30">
+          <span class="flex items-center border-r border-white/10 px-3 font-mono text-sm text-gray-400">agent-</span>
           <input
             id="hermes-public-name"
             v-model="publicName"
             type="text"
             autocomplete="off"
             spellcheck="false"
-            class="min-h-[44px] w-full rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white placeholder:text-gray-600 focus:border-blue-400 focus:outline-none sm:max-w-xs"
+            class="min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-gray-600 focus:outline-none"
             :placeholder="defaultName"
           >
-          <button
-            type="submit"
-            class="inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-600/40 disabled:text-white/70"
-            :disabled="creating || !previewSlug"
-          >
-            {{ creating ? t('console.hermes.creating') : t('console.hermes.create') }}
-          </button>
         </div>
         <p v-if="previewHost" class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
         <p class="mt-2 text-xs leading-relaxed text-gray-500">{{ t('console.hermes.publicLater') }}</p>
+
+        <label for="hermes-provider" class="mt-6 block text-sm font-medium text-white">{{ t('console.hermes.modelTitle') }}</label>
+        <p class="mt-1 text-sm leading-relaxed text-gray-400">{{ t('console.hermes.modelHint') }}</p>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          <select
+            id="hermes-provider"
+            v-model="providerId"
+            class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
+          >
+            <option v-for="p in providers" :key="p.id" :value="p.id">{{ p.label }}</option>
+          </select>
+          <input
+            v-model="modelName"
+            type="text"
+            class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
+            :placeholder="t('console.hermes.modelPlaceholder')"
+          >
+        </div>
+        <input
+          v-model="apiKey"
+          type="password"
+          autocomplete="off"
+          class="mt-3 min-h-[44px] w-full rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
+          :placeholder="t('console.hermes.apiKeyPlaceholder')"
+        >
+        <button
+          type="submit"
+          class="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-600/40 disabled:text-white/70"
+          :disabled="creating || !previewSlug || !apiKey"
+        >
+          {{ creating ? t('console.hermes.creating') : t('console.hermes.create') }}
+        </button>
       </form>
 
       <div class="overflow-x-auto rounded-lg border border-white/10">
@@ -148,13 +174,16 @@
       <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.publicTitle') }}</h2>
       <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.publicRenameHint') }}</p>
       <form class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center" @submit.prevent="rename">
-        <input
-          v-model="publicName"
-          type="text"
-          autocomplete="off"
-          spellcheck="false"
-          class="min-h-[44px] w-full rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white focus:border-blue-400 focus:outline-none sm:max-w-xs"
-        >
+        <div class="flex min-h-[44px] max-w-lg flex-1 overflow-hidden rounded-md border border-white/15 bg-black/30">
+          <span class="flex items-center border-r border-white/10 px-3 font-mono text-sm text-gray-400">agent-</span>
+          <input
+            v-model="publicName"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            class="min-w-0 flex-1 bg-transparent px-3 text-sm text-white focus:outline-none"
+          >
+        </div>
         <button
           type="submit"
           class="inline-flex min-h-[44px] items-center justify-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5 disabled:opacity-40"
@@ -164,6 +193,45 @@
         </button>
       </form>
       <p class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
+      <p v-if="pageInstance.hostname" class="mt-2 text-xs text-gray-500">{{ t('console.hermes.webhookHint', { url: 'https://' + pageInstance.hostname + '/hermes/hooks' }) }}</p>
+    </section>
+
+    <section
+      v-if="canManage && pageInstance"
+      class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-5"
+    >
+      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.modelTitle') }}</h2>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.modelHint') }}</p>
+      <p v-if="providerStatus?.configured" class="mt-2 text-sm text-blue-200">{{ t('console.hermes.modelConfigured', { provider: providerStatus.id, model: providerStatus.model }) }}</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <select
+          v-model="providerId"
+          class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
+        >
+          <option v-for="p in providers" :key="p.id" :value="p.id">{{ p.label }}</option>
+        </select>
+        <input
+          v-model="modelName"
+          type="text"
+          class="min-h-[44px] rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
+          :placeholder="t('console.hermes.modelPlaceholder')"
+        >
+      </div>
+      <input
+        v-model="apiKey"
+        type="password"
+        autocomplete="off"
+        class="mt-3 min-h-[44px] w-full rounded-md border border-white/15 bg-black/30 px-3 text-sm text-white"
+        :placeholder="providerStatus?.configured ? t('console.hermes.apiKeyReplace') : t('console.hermes.apiKeyPlaceholder')"
+      >
+      <button
+        type="button"
+        class="mt-4 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-40"
+        :disabled="savingProvider || !apiKey || !providerId"
+        @click="saveProvider"
+      >
+        {{ savingProvider ? t('console.hermes.modelSaving') : t('console.hermes.modelSave') }}
+      </button>
     </section>
 
     <ConsoleHostPage v-if="canManage && pageInstance" :instance="pageInstance" />
@@ -208,11 +276,16 @@ import {
   isHermesSubscriber
 } from '../../config/console-taxonomy.mjs'
 import {
+  agentSlug,
   createHermesInstance,
   deleteHermesInstance,
   fetchHermesInstances,
+  fetchHermesProvider,
+  fetchHermesProviders,
   humanHermesError,
-  renameHermesInstance
+  renameHermesInstance,
+  saveHermesProvider,
+  stripAgentPrefix
 } from '../../api/hermesApi.js'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 import ConsoleHostPage from '../../components/console/ConsoleHostPage.vue'
@@ -244,9 +317,15 @@ const destroying = ref('')
 const pending = ref(null)
 const error = ref('')
 const publicName = ref('')
+const providers = ref([])
+const providerId = ref('xai')
+const modelName = ref('grok-4.6')
+const apiKey = ref('')
+const providerStatus = ref(null)
+const savingProvider = ref(false)
 
 const defaultName = computed(() => {
-  const fromUser = String(auth.username || '').trim()
+  const fromUser = stripAgentPrefix(String(auth.username || '').trim())
   if (fromUser) return slugify(fromUser)
   const local = String(auth.email || '').split('@')[0]
   return slugify(local)
@@ -261,7 +340,7 @@ const pageInstance = computed(() => {
   )
   return live.find((row) => row.email === auth.email) || live[0] || null
 })
-const previewSlug = computed(() => slugify(publicName.value) || defaultName.value)
+const previewSlug = computed(() => agentSlug(publicName.value || defaultName.value))
 const previewHost = computed(() => (previewSlug.value ? `${previewSlug.value}.brenon.cloud` : ''))
 const waiting = computed(() => instances.value.some(isStarting))
 const hint = computed(() => {
@@ -297,7 +376,7 @@ function mapSlugError(err, fallback) {
 
 function syncPublicName() {
   if (pageInstance.value?.slug) {
-    publicName.value = pageInstance.value.slug
+    publicName.value = stripAgentPrefix(pageInstance.value.slug)
     return
   }
   if (!publicName.value) publicName.value = defaultName.value
@@ -326,10 +405,15 @@ async function create() {
   creating.value = true
   error.value = ''
   try {
-    const row = await createHermesInstance(auth.idToken, previewSlug.value)
+    const row = await createHermesInstance(auth.idToken, previewSlug.value, {
+      provider: providerId.value,
+      apiKey: apiKey.value,
+      model: modelName.value
+    })
     if (row?.id) {
       instances.value = [row, ...instances.value.filter((x) => x.id !== row.id)]
       syncPublicName()
+      apiKey.value = ''
     } else {
       await load()
     }
@@ -379,6 +463,52 @@ async function destroy() {
   }
 }
 
+async function saveProvider() {
+  const row = pageInstance.value
+  if (!auth.idToken || !row?.id || savingProvider.value || !apiKey.value) return
+  savingProvider.value = true
+  error.value = ''
+  try {
+    providerStatus.value = await saveHermesProvider(auth.idToken, row.id, {
+      provider: providerId.value,
+      apiKey: apiKey.value,
+      model: modelName.value
+    })
+    apiKey.value = ''
+  } catch (err) {
+    error.value = humanHermesError(err, t('console.hermes.modelSaveFallback'))
+  } finally {
+    savingProvider.value = false
+  }
+}
+
+async function loadCatalog() {
+  if (!auth.idToken) return
+  try {
+    const data = await fetchHermesProviders(auth.idToken)
+    providers.value = Array.isArray(data.providers) ? data.providers : []
+    if (!providerId.value && providers.value[0]) providerId.value = providers.value[0].id
+  } catch {
+    providers.value = [{ id: 'xai', label: 'xAI', defaultModel: 'grok-4.6' }]
+  }
+}
+
+async function loadProviderStatus() {
+  const row = pageInstance.value
+  if (!auth.idToken || !row?.id) {
+    providerStatus.value = null
+    return
+  }
+  try {
+    const st = await fetchHermesProvider(auth.idToken, row.id)
+    providerStatus.value = st
+    if (st.id) providerId.value = st.id
+    if (st.model) modelName.value = st.model
+  } catch {
+    providerStatus.value = null
+  }
+}
+
 let waitTimer = 0
 function stopWait() {
   if (waitTimer) {
@@ -402,6 +532,22 @@ watch(defaultName, (name) => {
   if (!hasLive.value && !publicName.value && name) publicName.value = name
 })
 
-onMounted(load)
+watch(
+  () => pageInstance.value?.id,
+  () => {
+    loadProviderStatus()
+  }
+)
+
+watch(providerId, (id) => {
+  const p = providers.value.find((x) => x.id === id)
+  if (p?.defaultModel && !pageInstance.value) modelName.value = p.defaultModel
+})
+
+onMounted(async () => {
+  await loadCatalog()
+  await load()
+  await loadProviderStatus()
+})
 onUnmounted(stopWait)
 </script>
