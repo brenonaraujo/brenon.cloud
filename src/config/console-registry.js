@@ -1,10 +1,7 @@
 /**
  * Offline fallback for the member console.
  * Live catalog: GET https://control.brenon.cloud/api/v1/catalog
- * ACL: src/config/console-acl.mjs
- *
- * groups: ['*'] = any Authentik session
- * otherwise the user needs at least one listed group (all_groups claim)
+ * Do not add tiles here to ship a service — register it on the control plane.
  */
 import { visibleForGroups } from './console-acl.mjs'
 
@@ -20,6 +17,18 @@ export const CONSOLE_SERVICES = [
     groups: ['*'],
     icon: 'draw',
     color: 'blue'
+  },
+  {
+    id: 'console-air',
+    title: { en: 'Akash Console Air', pt: 'Akash Console Air' },
+    description: {
+      en: 'Self-custodial Akash deployments. Any signed-in account, including Free.',
+      pt: 'Deployments self-custodial na Akash. Qualquer conta logada, inclusive Free.'
+    },
+    url: 'https://akash.brenon.cloud',
+    groups: ['*'],
+    icon: 'bolt',
+    color: 'red'
   },
   {
     id: 'grafana',
@@ -68,6 +77,30 @@ export const CONSOLE_SERVICES = [
     groups: ['brenon-admins'],
     icon: 'settings',
     color: 'green'
+  },
+  {
+    id: 'konga',
+    title: { en: 'Konga', pt: 'Konga' },
+    description: {
+      en: 'Kong API gateway admin UI. api-owner only.',
+      pt: 'UI de administracao do Kong API gateway. So api-owner.'
+    },
+    url: 'https://konga.brenon.cloud',
+    groups: ['api-owner'],
+    icon: 'settings',
+    color: 'purple'
+  },
+  {
+    id: 'authentik',
+    title: { en: 'Authentik', pt: 'Authentik' },
+    description: {
+      en: 'Identity provider admin. Brenon admins only.',
+      pt: 'Admin do provedor de identidade. Só admins Brenon.'
+    },
+    url: 'https://auth.brenon.cloud/if/admin/',
+    groups: ['brenon-admins'],
+    icon: 'settings',
+    color: 'orange'
   }
 ]
 

@@ -1,6 +1,5 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { mergeCatalog } from '../src/config/console-native.mjs'
 import { factsFor } from '../src/config/console-service-facts.mjs'
 import { visibleForGroups } from '../src/config/console-acl.mjs'
 import {
@@ -124,20 +123,26 @@ describe('console prefs', () => {
   })
 })
 
-describe('native authentik + console-air tiles', () => {
-  it('is admin-only and merges without duplicating the catalog', () => {
-    const merged = mergeCatalog([{ id: 'draw', groups: ['*'] }])
-    assert.equal(merged.some((s) => s.id === 'authentik'), true)
-    assert.equal(visibleForGroups(merged, ['plan-free']).some((s) => s.id === 'authentik'), false)
-    assert.equal(visibleForGroups(merged, ['brenon-admins']).some((s) => s.id === 'authentik'), true)
-    const again = mergeCatalog([{ id: 'authentik', groups: ['brenon-admins'] }])
-    assert.equal(again.filter((s) => s.id === 'authentik').length, 1)
+describe('catalog ACL (no SPA tile bypass)', () => {
+  const catalog = [
+    { id: 'draw', groups: ['*'], url: 'https://draw.brenon.cloud' },
+    { id: 'authentik', groups: ['brenon-admins'], url: 'https://auth.brenon.cloud/if/admin/' },
+    { id: 'console-air', groups: ['*'], url: 'https://akash.brenon.cloud' }
+  ]
+
+  it('hides Authentik from free and shows it to admins only when the catalog says so', () => {
+    assert.equal(visibleForGroups(catalog, ['plan-free']).some((s) => s.id === 'authentik'), false)
+    assert.equal(visibleForGroups(catalog, ['brenon-admins']).some((s) => s.id === 'authentik'), true)
   })
 
-  it('shows Console Air to any signed-in account including free', () => {
-    const merged = mergeCatalog([{ id: 'draw', groups: ['*'] }])
-    assert.equal(visibleForGroups(merged, ['plan-free']).some((s) => s.id === 'console-air'), true)
+  it('shows Console Air to any signed-in account including free when the catalog lists it', () => {
+    assert.equal(visibleForGroups(catalog, ['plan-free']).some((s) => s.id === 'console-air'), true)
     assert.equal(serviceKind({ id: 'console-air', groups: ['*'] }), 'platform')
+  })
+
+  it('does not invent tiles that are missing from the catalog', () => {
+    const onlyDraw = [{ id: 'draw', groups: ['*'], url: 'https://draw.brenon.cloud' }]
+    assert.equal(visibleForGroups(onlyDraw, ['brenon-admins']).some((s) => s.id === 'authentik'), false)
   })
 })
 
