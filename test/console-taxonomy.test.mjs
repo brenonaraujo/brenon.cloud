@@ -22,6 +22,7 @@ import {
   recordVisit,
   resolveByIds,
   toggleFavorite,
+  setSidebarFavoritesHidden,
   markNotificationsRead,
   unreadNotifications,
   paginate
@@ -113,12 +114,19 @@ describe('console prefs', () => {
     const prefs = readPrefs(mem, 'a@x.com')
     assert.deepEqual(prefs.recent, ['draw', 'grafana'])
     assert.deepEqual(prefs.favorites, ['draw'])
+    assert.equal(prefs.sidebarFavoritesHidden, false)
     assert.equal(prefsKey('A@x.com'), 'brenon-console:a@x.com')
     const resolved = resolveByIds(
       [{ id: 'draw' }, { id: 'grafana' }],
       prefs.recent
     )
     assert.deepEqual(resolved.map((s) => s.id), ['draw', 'grafana'])
+    const hidden = setSidebarFavoritesHidden(mem, 'a@x.com', true)
+    assert.equal(hidden.sidebarFavoritesHidden, true)
+    assert.deepEqual(hidden.favorites, ['draw'])
+    assert.equal(readPrefs(mem, 'a@x.com').sidebarFavoritesHidden, true)
+    const shown = setSidebarFavoritesHidden(mem, 'a@x.com', false)
+    assert.equal(shown.sidebarFavoritesHidden, false)
   })
 
   it('marks notifications read and paginates', () => {

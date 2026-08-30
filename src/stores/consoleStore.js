@@ -8,7 +8,8 @@ import {
   recordVisit,
   resolveByIds,
   toggleFavorite,
-  markNotificationsRead
+  markNotificationsRead,
+  setSidebarFavoritesHidden
 } from '../config/console-prefs.mjs'
 import { groupServices, searchServices } from '../config/console-taxonomy.mjs'
 
@@ -29,6 +30,7 @@ export const useConsoleStore = defineStore('console', () => {
   const recentIds = ref([])
   const favoriteIds = ref([])
   const readNotificationIds = ref([])
+  const sidebarFavoritesHidden = ref(false)
   const prefsEmail = ref('')
 
   const offline = computed(() => loaded.value && source.value === 'fallback' && Boolean(error.value))
@@ -79,30 +81,30 @@ export const useConsoleStore = defineStore('console', () => {
     if (prefsEmail.value === nextEmail) return
     prefsEmail.value = nextEmail
     const prefs = readPrefs(browserStorage(), nextEmail)
+    applyPrefs(prefs)
+  }
+
+  function applyPrefs(prefs) {
     recentIds.value = prefs.recent
     favoriteIds.value = prefs.favorites
     readNotificationIds.value = prefs.readNotifications
+    sidebarFavoritesHidden.value = Boolean(prefs.sidebarFavoritesHidden)
   }
 
   function visit(id, email) {
-    const prefs = recordVisit(browserStorage(), email, id)
-    recentIds.value = prefs.recent
-    favoriteIds.value = prefs.favorites
-    readNotificationIds.value = prefs.readNotifications
+    applyPrefs(recordVisit(browserStorage(), email, id))
   }
 
   function star(id, email) {
-    const prefs = toggleFavorite(browserStorage(), email, id)
-    recentIds.value = prefs.recent
-    favoriteIds.value = prefs.favorites
-    readNotificationIds.value = prefs.readNotifications
+    applyPrefs(toggleFavorite(browserStorage(), email, id))
+  }
+
+  function hideSidebarFavorites(hidden, email) {
+    applyPrefs(setSidebarFavoritesHidden(browserStorage(), email, hidden))
   }
 
   function markNotesRead(ids, email) {
-    const prefs = markNotificationsRead(browserStorage(), email, ids)
-    recentIds.value = prefs.recent
-    favoriteIds.value = prefs.favorites
-    readNotificationIds.value = prefs.readNotifications
+    applyPrefs(markNotificationsRead(browserStorage(), email, ids))
   }
 
   function isNoteRead(id) {
@@ -131,6 +133,7 @@ export const useConsoleStore = defineStore('console', () => {
     recentIds,
     favoriteIds,
     readNotificationIds,
+    sidebarFavoritesHidden,
     load,
     appsFor,
     groupedFor,
@@ -138,6 +141,7 @@ export const useConsoleStore = defineStore('console', () => {
     hydratePrefs,
     visit,
     star,
+    hideSidebarFavorites,
     markNotesRead,
     isNoteRead,
     isFavorite,
