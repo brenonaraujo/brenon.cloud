@@ -35,7 +35,10 @@ nascem ligados a esse host. Free não cria instância.
 3. Login humano é **só Authentik**. Sem formulário Hermes, sem Nous Portal
    como identidade do cliente. Depois do SSO, o host tem de pertencer
    àquela conta (operador pode impersonar, com auditoria).
-4. Landings públicas continuam públicas. `username.brenon.cloud` não.
+4. Landings públicas continuam públicas. A **raiz** de
+   `username.brenon.cloud` é a página do membro (padrão Brenon Cloud,
+   HTML próprio, ou 404). Pode exigir login Brenon Cloud. Hermes e
+   webhooks **não** são essa página — ficam em `/hermes` e `/hermes/hooks`.
 5. Cancelar o plano remove o direito de uso; o disco não vaza para outro
    membro.
 6. A console **não inventa** lista de agents. Só mostra o que o control
@@ -63,6 +66,8 @@ nascem ligados a esse host. Free não cria instância.
   não entra na instância alheia. Operador entra.
 - A tabela da console lista nome, status, plano e abre o host quando
   `running`. Não mostra instância inventada.
+- O dono (ou operador) pode apagar a instância. A UI avisa que tudo
+  some para sempre. Depois o slug pode ser criado de novo.
 - Webhook inbound no mesmo host não exige login (assinatura HMAC).
 
 ## Fora desta versão

@@ -24,6 +24,7 @@ import ConsoleHome from './pages/console/Home.vue'
 import ConsoleServices from './pages/console/Services.vue'
 import ConsoleService from './pages/console/Service.vue'
 import ConsoleHermes from './pages/console/Hermes.vue'
+import ConsoleHostAuth from './pages/console/HostAuth.vue'
 import ConsoleAccount from './pages/console/Account.vue'
 import ConsoleBilling from './pages/console/Billing.vue'
 import ConsoleNotifications from './pages/console/Notifications.vue'
@@ -123,6 +124,11 @@ const router = createRouter({
           path: 'hermes',
           name: 'console-hermes',
           component: ConsoleHermes
+        },
+        {
+          path: 'host-auth',
+          name: 'console-host-auth',
+          component: ConsoleHostAuth
         },
         {
           path: 'account',

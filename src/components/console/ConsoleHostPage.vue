@@ -1,0 +1,158 @@
+<template>
+  <section v-if="instance" class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-6">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h2 class="text-lg font-semibold text-white">{{ t('console.site.title') }}</h2>
+        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.site.subtitle') }}</p>
+      </div>
+      <a
+        v-if="instance.hostname"
+        :href="'https://' + instance.hostname + '/'"
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-[44px] items-center text-sm text-blue-300 hover:text-blue-200"
+      >{{ t('console.site.open') }}</a>
+    </div>
+
+    <p v-if="error" class="mt-4 text-sm text-amber-300">{{ error }}</p>
+    <p v-else-if="saved" class="mt-4 text-sm text-emerald-300">{{ t('console.site.saved') }}</p>
+
+    <form class="mt-6 flex flex-col gap-6" @submit.prevent="save">
+      <label class="flex items-center gap-3 text-sm text-gray-200">
+        <input v-model="enabled" type="checkbox" class="h-4 w-4 rounded border-white/20 bg-gray-950" />
+        {{ t('console.site.enabled') }}
+      </label>
+
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-medium text-gray-200">{{ t('console.site.visibility') }}</span>
+        <select v-model="visibility" class="min-h-[44px] rounded-md border border-white/15 bg-gray-950 px-3 text-sm text-gray-100">
+          <option value="public">{{ t('console.site.visPublic') }}</option>
+          <option value="members">{{ t('console.site.visMembers') }}</option>
+          <option value="allowlist">{{ t('console.site.visAllowlist') }}</option>
+          <option value="disabled">{{ t('console.site.visDisabled') }}</option>
+        </select>
+        <span class="text-xs text-gray-500">{{ visHint }}</span>
+      </label>
+
+      <label v-if="visibility === 'allowlist'" class="flex flex-col gap-2">
+        <span class="text-sm font-medium text-gray-200">{{ t('console.site.allowlist') }}</span>
+        <textarea
+          v-model="allowlistText"
+          rows="3"
+          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 text-sm text-gray-100"
+          :placeholder="t('console.site.allowlistHint')"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-medium text-gray-200">{{ t('console.site.html') }}</span>
+        <textarea
+          v-model="html"
+          rows="8"
+          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 font-mono text-sm text-gray-100"
+          :placeholder="t('console.site.htmlHint')"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-medium text-gray-200">{{ t('console.site.css') }}</span>
+        <textarea
+          v-model="css"
+          rows="4"
+          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 font-mono text-sm text-gray-100"
+          :placeholder="t('console.site.cssHint')"
+        />
+      </label>
+
+      <button
+        type="submit"
+        class="inline-flex min-h-[44px] w-fit items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-40"
+        :disabled="saving"
+      >
+        {{ saving ? t('console.site.saving') : t('console.site.save') }}
+      </button>
+    </form>
+  </section>
+</template>
+
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '../../stores/authStore'
+import { fetchHermesSite, humanHermesError, saveHermesSite } from '../../api/hermesApi.js'
+
+const props = defineProps({
+  instance: { type: Object, default: null }
+})
+
+const { t } = useI18n()
+const auth = useAuthStore()
+
+const enabled = ref(true)
+const visibility = ref('public')
+const html = ref('')
+const css = ref('')
+const allowlistText = ref('')
+const saving = ref(false)
+const saved = ref(false)
+const error = ref('')
+
+const visHint = computed(() => {
+  if (visibility.value === 'members') return t('console.site.hintMembers')
+  if (visibility.value === 'allowlist') return t('console.site.hintAllowlist')
+  if (visibility.value === 'disabled') return t('console.site.hintDisabled')
+  return t('console.site.hintPublic')
+})
+
+function apply(site) {
+  enabled.value = site?.enabled !== false
+  visibility.value = site?.visibility || 'public'
+  html.value = site?.html || ''
+  css.value = site?.css || ''
+  allowlistText.value = (site?.allowlist || []).join('\n')
+}
+
+async function load() {
+  if (!auth.idToken || !props.instance?.slug) return
+  error.value = ''
+  try {
+    const data = await fetchHermesSite(auth.idToken, props.instance.slug)
+    apply(data.site)
+  } catch (err) {
+    error.value = humanHermesError(err, t('console.site.loadFallback'))
+  }
+}
+
+async function save() {
+  if (!auth.idToken || saving.value || !props.instance?.slug) return
+  saving.value = true
+  saved.value = false
+  error.value = ''
+  try {
+    const allowlist = allowlistText.value
+      .split(/[\n,]+/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+    const data = await saveHermesSite(
+      auth.idToken,
+      {
+        enabled: enabled.value,
+        visibility: visibility.value,
+        html: html.value,
+        css: css.value,
+        allowlist
+      },
+      props.instance.slug
+    )
+    apply(data.site)
+    saved.value = true
+  } catch (err) {
+    error.value = humanHermesError(err, t('console.site.saveFallback'))
+  } finally {
+    saving.value = false
+  }
+}
+
+onMounted(load)
+watch(() => props.instance?.id, load)
+</script>
