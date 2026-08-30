@@ -69,5 +69,13 @@ export const useEntitlementStore = defineStore('entitlement', () => {
     }
   }
 
-  return { plan, status, customerId, loaded, billing, hydrate, load }
+  function clear() {
+    plan.value = ''
+    status.value = ''
+    customerId.value = ''
+    loaded.value = false
+    emailKey.value = ''
+  }
+
+  return { plan, status, customerId, loaded, billing, hydrate, load, clear }
 })

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { UserManager } from 'oidc-client-ts'
-import { ENROLLMENT_FLOW, oidcSettings } from '../config/auth'
+import { ENROLLMENT_FLOW, oidcSettings, postLogoutRedirectUri } from '../config/auth'
+import { useEntitlementStore } from './entitlementStore'
 
 let manager
 let loginStarted = false
@@ -76,7 +77,28 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    await getManager().signoutRedirect()
+    const mgr = getManager()
+    const hint = user.value?.id_token
+    user.value = null
+    try {
+      useEntitlementStore().clear()
+    } catch {
+      /* pinia may not be ready in tests */
+    }
+    const home = postLogoutRedirectUri()
+    try {
+      await mgr.signoutRedirect({
+        id_token_hint: hint,
+        post_logout_redirect_uri: home
+      })
+    } catch {
+      try {
+        await mgr.removeUser()
+      } catch {
+        /* still send them home */
+      }
+      window.location.replace(home)
+    }
   }
 
   return {

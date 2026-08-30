@@ -31,7 +31,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { useConsoleStore } from '../stores/consoleStore'
 import { useEntitlementStore } from '../stores/entitlementStore'
@@ -42,6 +42,7 @@ import HermesDock from '../components/HermesDock.vue'
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
 const auth = useAuthStore()
 const catalog = useConsoleStore()
 const entitlement = useEntitlementStore()
@@ -68,6 +69,12 @@ watch(
   () => route.fullPath,
   () => {
     sidebarOpen.value = false
+  }
+)
+watch(
+  () => auth.isAuthenticated,
+  (ok, was) => {
+    if (was && !ok) router.replace('/')
   }
 )
 </script>
