@@ -22,16 +22,14 @@
     </ul>
     <p class="mt-4 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.site.agentBuilds') }}</p>
 
-    <a
-      v-if="chatUrl"
-      :href="chatUrl"
-      target="_blank"
-      rel="noopener"
-      class="mt-6 inline-flex min-h-[44px] items-center gap-3 rounded-md bg-blue-600 px-4 pr-5 text-sm font-medium text-white hover:bg-blue-500"
+    <button
+      v-if="instance.ready && instance.hostname"
+      type="button"
+      class="mt-6 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"
+      @click="dock.startChat()"
     >
-      <img src="/images/hermes-mascot.png" alt="" class="h-10 w-10 shrink-0" width="40" height="40">
       {{ t('console.site.startChat') }}
-    </a>
+    </button>
     <p v-else class="mt-6 text-sm text-gray-500">{{ t('console.hermes.starting') }}</p>
 
     <p v-if="error" class="mt-4 text-sm text-amber-300">{{ error }}</p>
@@ -89,6 +87,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
+import { useHermesDockStore } from '../../stores/hermesDockStore'
 import { fetchHermesSite, humanHermesError, resetHermesSite, saveHermesSite } from '../../api/hermesApi.js'
 
 const props = defineProps({
@@ -97,6 +96,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const dock = useHermesDockStore()
 
 const enabled = ref(true)
 const visibility = ref('public')
@@ -114,12 +114,6 @@ const visHint = computed(() => {
   if (visibility.value === 'allowlist') return t('console.site.hintAllowlist')
   if (visibility.value === 'disabled') return t('console.site.hintDisabled')
   return t('console.site.hintPublic')
-})
-
-const chatUrl = computed(() => {
-  const row = props.instance
-  if (!row?.ready || !row.hostname) return ''
-  return row.launchUrl || `https://${row.hostname}/hermes`
 })
 
 function apply(site) {
