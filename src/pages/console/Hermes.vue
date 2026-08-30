@@ -71,14 +71,23 @@
               <td class="px-4 py-3 text-gray-300">{{ row.plan }} · {{ row.diskGb }} GB</td>
               <td class="px-4 py-3 text-gray-300">{{ row.region }}</td>
               <td class="px-4 py-3 text-right">
-                <a
-                  v-if="row.status === 'running' && row.hostname"
-                  :href="'https://' + row.hostname"
-                  target="_blank"
-                  rel="noopener"
-                  class="text-sm text-blue-300 hover:text-blue-200"
-                >{{ t('console.hermes.open') }}</a>
-                <span v-else-if="row.error" class="text-xs text-amber-300">{{ row.error }}</span>
+                <div class="flex items-center justify-end gap-4">
+                  <a
+                    v-if="row.status === 'running' && row.hostname"
+                    :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-sm text-blue-300 hover:text-blue-200"
+                  >{{ t('console.hermes.open') }}</a>
+                  <button
+                    v-if="row.status !== 'deleted'"
+                    type="button"
+                    class="text-sm text-red-300 hover:text-red-200 disabled:opacity-40"
+                    :disabled="destroying === row.id"
+                    @click="askDestroy(row)"
+                  >{{ destroying === row.id ? t('console.hermes.destroying') : t('console.hermes.destroy') }}</button>
+                </div>
+                <p v-if="row.error" class="mt-1 text-xs text-amber-300">{{ row.error }}</p>
               </td>
             </tr>
           </tbody>
@@ -99,6 +108,33 @@
         {{ t('console.nav.billing') }}
       </router-link>
     </section>
+
+    <div
+      v-if="pending"
+      class="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="hermes-destroy-title"
+    >
+      <div class="w-full max-w-md rounded-lg border border-white/10 bg-gray-900 p-6">
+        <h2 id="hermes-destroy-title" class="text-lg font-semibold text-white">{{ t('console.hermes.destroyTitle') }}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-gray-300">{{ t('console.hermes.destroyBody', { host: pending.hostname || pending.slug }) }}</p>
+        <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            class="inline-flex min-h-[44px] items-center justify-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5"
+            :disabled="!!destroying"
+            @click="pending = null"
+          >{{ t('console.hermes.destroyCancel') }}</button>
+          <button
+            type="button"
+            class="inline-flex min-h-[44px] items-center justify-center rounded-md bg-red-600 px-4 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-40"
+            :disabled="!!destroying"
+            @click="destroy"
+          >{{ destroying ? t('console.hermes.destroying') : t('console.hermes.destroyConfirm') }}</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -112,7 +148,7 @@ import {
   isHermesOperator,
   isHermesSubscriber
 } from '../../config/console-taxonomy.mjs'
-import { createHermesInstance, fetchHermesInstances, humanHermesError } from '../../api/hermesApi.js'
+import { createHermesInstance, deleteHermesInstance, fetchHermesInstances, humanHermesError } from '../../api/hermesApi.js'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 import { InboxIcon } from '../../components/icons/Icons.js'
 
@@ -137,6 +173,8 @@ const features = computed(() => [
 const instances = ref([])
 const loading = ref(false)
 const creating = ref(false)
+const destroying = ref('')
+const pending = ref(null)
 const error = ref('')
 
 const hasLive = computed(() =>
@@ -177,6 +215,27 @@ async function create() {
     error.value = humanHermesError(err, t('console.hermes.createFallback'))
   } finally {
     creating.value = false
+  }
+}
+
+function askDestroy(row) {
+  if (!row?.id || destroying.value) return
+  pending.value = row
+}
+
+async function destroy() {
+  const row = pending.value
+  if (!auth.idToken || !row?.id || destroying.value) return
+  destroying.value = row.id
+  error.value = ''
+  try {
+    await deleteHermesInstance(auth.idToken, row.id)
+    pending.value = null
+    instances.value = instances.value.filter((x) => x.id !== row.id)
+  } catch (err) {
+    error.value = humanHermesError(err, t('console.hermes.destroyFallback'))
+  } finally {
+    destroying.value = ''
   }
 }
 
