@@ -89,6 +89,17 @@ export async function saveHermesSite(idToken, body, slug) {
   return data
 }
 
+export async function resetHermesSite(idToken, slug) {
+  const q = slug ? `?slug=${encodeURIComponent(slug)}` : ''
+  const res = await fetch(`${BASE}/api/v1/hermes/site/reset${q}`, {
+    method: 'POST',
+    headers: authHeaders(idToken)
+  })
+  const data = await readJSON(res)
+  if (!res.ok) throw new Error(data.error || `reset ${res.status}`)
+  return data
+}
+
 export async function grantHostSession(idToken, host) {
   const res = await fetch(`${BASE}/api/v1/hermes/site/session`, {
     method: 'POST',
