@@ -19,9 +19,7 @@
           <template v-else>
             <ConsoleBanner />
             <router-view v-slot="{ Component }">
-              <transition name="console-page" mode="out-in">
-                <component :is="Component" />
-              </transition>
+              <component :is="Component" />
             </router-view>
           </template>
         </div>
@@ -58,22 +56,20 @@ const ensureSession = () => {
 onMounted(() => {
   catalog.load()
   ensureSession()
-  if (auth.email) catalog.hydratePrefs(auth.email)
-  if (auth.idToken) entitlement.load(auth.idToken)
 })
 
 watch(() => auth.ready, ensureSession)
 watch(
-  () => auth.email,
-  (email) => {
-    if (email) catalog.hydratePrefs(email)
-  }
-)
-watch(
-  () => auth.idToken,
-  (token) => {
-    if (token) entitlement.load(token)
-  }
+  () => [auth.ready, auth.email, auth.idToken],
+  () => {
+    if (!auth.ready) return
+    if (auth.email) {
+      catalog.hydratePrefs(auth.email)
+      entitlement.hydrate(auth.email)
+    }
+    if (auth.idToken) entitlement.load(auth.idToken, auth.email)
+  },
+  { immediate: true }
 )
 watch(
   () => route.fullPath,

@@ -2,6 +2,7 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { factsFor } from '../src/config/console-service-facts.mjs'
 import { humanBillingError } from '../src/config/console-billing.mjs'
+import { readEntitlement, writeEntitlement } from '../src/config/console-entitlement.mjs'
 import { visibleForGroups } from '../src/config/console-acl.mjs'
 import {
   canManageHermes,
@@ -188,5 +189,25 @@ describe('billing errors and plan copy', () => {
     assert.match(pt.console.billing.hermesOwn, /instância Hermes/)
     assert.match(en.console.billing.hermesOwn, /Hermes instance/)
     assert.equal(String(pt.console.billing.features.free).includes('|'), false)
+  })
+})
+
+describe('entitlement cache', () => {
+  it('round-trips a paid plan and expires after 24h', () => {
+    const storage = new Map()
+    const mem = {
+      getItem: (k) => (storage.has(k) ? storage.get(k) : null),
+      setItem: (k, v) => storage.set(k, v),
+      removeItem: (k) => storage.delete(k)
+    }
+    writeEntitlement(mem, 'a@x.com', { plan: 'basic', status: 'active', customerId: 'cus_1' })
+    const hit = readEntitlement(mem, 'a@x.com')
+    assert.equal(hit.plan, 'basic')
+    assert.equal(hit.status, 'active')
+    assert.equal(hit.customerId, 'cus_1')
+    const stale = JSON.parse(storage.get('brenon-console-plan:a@x.com'))
+    stale.at = Date.now() - 25 * 60 * 60 * 1000
+    storage.set('brenon-console-plan:a@x.com', JSON.stringify(stale))
+    assert.equal(readEntitlement(mem, 'a@x.com'), null)
   })
 })
