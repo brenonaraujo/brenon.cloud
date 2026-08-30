@@ -80,16 +80,16 @@
         <p class="mt-2 text-sm text-gray-400">{{ period }}</p>
         <p class="mt-4 text-4xl font-semibold tracking-tight text-white">{{ amount }}</p>
         <p class="mt-4 max-w-xl text-sm leading-relaxed text-gray-400">
-          {{ me?.status && me.status !== 'none' ? t('console.billing.stripeHint') : t('console.billing.zeroHint') }}
+          {{ entitlement.status && entitlement.status !== 'none' ? t('console.billing.stripeHint') : t('console.billing.zeroHint') }}
         </p>
       </section>
       <section class="rounded-lg border border-white/10 bg-gray-900 p-6">
         <h2 class="text-sm font-semibold text-white">{{ t('console.billing.payment') }}</h2>
         <p class="mt-2 text-sm leading-relaxed text-gray-400">
-          {{ me?.customerId ? t('console.billing.paymentReady') : t('console.billing.paymentEmpty') }}
+          {{ entitlement.customerId ? t('console.billing.paymentReady') : t('console.billing.paymentEmpty') }}
         </p>
         <button
-          v-if="me?.customerId"
+          v-if="entitlement.customerId"
           type="button"
           class="mt-6 inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-4 text-sm text-gray-200 hover:bg-white/5 disabled:opacity-50"
           :disabled="busy"
@@ -108,35 +108,25 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
-import { primaryPlan } from '../../config/console-taxonomy.mjs'
+import { useEntitlementStore } from '../../stores/entitlementStore'
+import { displayPlan } from '../../config/console-taxonomy.mjs'
 import { currentPeriodLabel, formatMoney } from '../../config/console-overview.mjs'
 import { humanBillingError } from '../../config/console-billing.mjs'
-import {
-  FALLBACK_PLANS,
-  fetchBillingMe,
-  fetchBillingPlans,
-  startCheckout,
-  startPortal
-} from '../../api/billingApi.js'
+import { FALLBACK_PLANS, startCheckout, startPortal } from '../../api/billingApi.js'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 
 const { t, te, tm, locale } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
+const entitlement = useEntitlementStore()
 
-const plans = ref(FALLBACK_PLANS)
-const me = ref(null)
+const plans = FALLBACK_PLANS
 const error = ref('')
 const busy = ref(false)
 
-const currentPlan = computed(() => {
-  if (me.value?.plan && me.value.status && me.value.status !== 'canceled' && me.value.status !== 'none') {
-    return me.value.plan
-  }
-  return primaryPlan(auth.groups)
-})
+const currentPlan = computed(() => displayPlan(auth.groups, entitlement.billing))
 const amount = computed(() => {
-  const row = plans.value.find((p) => p.id === currentPlan.value)
+  const row = plans.find((p) => p.id === currentPlan.value)
   return formatMoney(row?.amountCents || 0, 'BRL', locale.value)
 })
 const period = computed(() => currentPeriodLabel(locale.value))
@@ -170,22 +160,6 @@ function planDisk(plan) {
   return 0
 }
 
-async function load() {
-  error.value = ''
-  try {
-    const data = await fetchBillingPlans()
-    if (Array.isArray(data.plans) && data.plans.length) plans.value = data.plans
-  } catch {
-    plans.value = FALLBACK_PLANS
-  }
-  if (!auth.idToken) return
-  try {
-    me.value = await fetchBillingMe(auth.idToken)
-  } catch {
-    me.value = null
-  }
-}
-
 async function upgrade(plan) {
   error.value = ''
   if (!auth.idToken) {
@@ -213,10 +187,8 @@ async function portal() {
 }
 
 onMounted(async () => {
-  await load()
-  if (route.query.checkout !== 'success') return
-  const fromGroups = primaryPlan(auth.groups)
-  if (fromGroups === 'basic' || fromGroups === 'pro') return
-  await auth.login('/console')
+  if (route.query.checkout === 'success' && auth.idToken) {
+    await entitlement.load(auth.idToken, auth.email, { force: true })
+  }
 })
 </script>
