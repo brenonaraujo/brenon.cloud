@@ -121,33 +121,33 @@
               <td class="px-4 py-3 text-gray-300">{{ row.plan }} · {{ row.diskGb }} GB</td>
               <td class="px-4 py-3 text-gray-300">{{ row.region }}</td>
               <td class="px-4 py-3 text-right">
-                <div class="flex items-center justify-end gap-4">
-                  <a
-                    v-if="canOpen(row)"
-                    :href="'https://' + row.hostname + '/'"
-                    target="_blank"
-                    rel="noopener"
-                    class="text-sm text-blue-300 hover:text-blue-200"
-                  >{{ t('console.site.open') }}</a>
-                  <a
-                    v-if="canOpen(row)"
-                    :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
-                    target="_blank"
-                    rel="noopener"
-                    class="text-sm text-blue-300 hover:text-blue-200"
-                  >{{ t('console.hermes.open') }}</a>
+                <div class="flex flex-wrap items-center justify-end gap-2">
                   <a
                     v-if="canOpen(row) && row.cliUrl"
                     :href="row.cliUrl"
                     target="_blank"
                     rel="noopener"
-                    class="text-sm text-blue-300 hover:text-blue-200"
+                    class="inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-500"
                   >{{ t('console.hermes.cliOpen') }}</a>
+                  <a
+                    v-if="canOpen(row)"
+                    :href="'https://' + row.hostname + '/'"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-3 text-sm text-gray-200 hover:bg-white/5"
+                  >{{ t('console.hermes.openPage') }}</a>
+                  <a
+                    v-if="canOpen(row)"
+                    :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex min-h-[44px] items-center rounded-md border border-white/15 px-3 text-sm text-gray-200 hover:bg-white/5"
+                  >{{ t('console.hermes.openAgent') }}</a>
                   <span v-else-if="isStarting(row)" class="text-sm text-gray-500">{{ t('console.hermes.starting') }}</span>
                   <button
                     v-if="row.status !== 'deleted'"
                     type="button"
-                    class="text-sm text-red-300 hover:text-red-200 disabled:opacity-40"
+                    class="inline-flex min-h-[44px] items-center px-3 text-sm text-red-300 hover:text-red-200 disabled:opacity-40"
                     :disabled="destroying === row.id"
                     @click="askDestroy(row)"
                   >{{ destroying === row.id ? t('console.hermes.destroying') : t('console.hermes.destroy') }}</button>
@@ -209,8 +209,6 @@
     >
       <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.cliTitle') }}</h2>
       <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.cliHint') }}</p>
-      <p class="mt-3 font-mono text-sm text-blue-200">{{ t('console.hermes.cliUser') }}: {{ pageInstance.cliUser }}</p>
-      <p class="font-mono text-sm text-blue-200">{{ t('console.hermes.cliPass') }}: {{ pageInstance.cliPassword }}</p>
       <a
         :href="pageInstance.cliUrl"
         target="_blank"
