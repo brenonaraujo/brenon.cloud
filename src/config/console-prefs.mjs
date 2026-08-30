@@ -5,7 +5,7 @@ export function prefsKey(email) {
 }
 
 export function emptyPrefs() {
-  return { recent: [], favorites: [], readNotifications: [], sidebarFavoritesHidden: false }
+  return { recent: [], favorites: [], readNotifications: [], sidebarFavoritesHidden: false, lastVisit: {} }
 }
 
 export function readPrefs(storage, email) {
@@ -20,7 +20,8 @@ export function readPrefs(storage, email) {
       readNotifications: Array.isArray(parsed.readNotifications)
         ? parsed.readNotifications.map(String).filter(Boolean)
         : [],
-      sidebarFavoritesHidden: Boolean(parsed.sidebarFavoritesHidden)
+      sidebarFavoritesHidden: Boolean(parsed.sidebarFavoritesHidden),
+      lastVisit: normalizeLastVisit(parsed.lastVisit)
     }
   } catch {
     return emptyPrefs()
@@ -33,18 +34,36 @@ export function writePrefs(storage, email, prefs) {
     recent: (prefs?.recent || []).slice(0, MAX_RECENT),
     favorites: [...new Set(prefs?.favorites || [])],
     readNotifications: [...new Set(prefs?.readNotifications || [])],
-    sidebarFavoritesHidden: Boolean(prefs?.sidebarFavoritesHidden)
+    sidebarFavoritesHidden: Boolean(prefs?.sidebarFavoritesHidden),
+    lastVisit: normalizeLastVisit(prefs?.lastVisit)
   }
   storage.setItem(prefsKey(email), JSON.stringify(next))
   return next
 }
 
-export function recordVisit(storage, email, id) {
+function normalizeLastVisit(raw) {
+  const out = {}
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return out
+  for (const [id, at] of Object.entries(raw)) {
+    const key = String(id || '').trim()
+    const ts = Number(at)
+    if (key && Number.isFinite(ts) && ts > 0) out[key] = ts
+  }
+  return out
+}
+
+export function recordVisit(storage, email, id, at = Date.now()) {
   const key = String(id || '').trim()
   const prefs = readPrefs(storage, email)
   if (!key) return prefs
   const recent = [key, ...prefs.recent.filter((item) => item !== key)].slice(0, MAX_RECENT)
-  return writePrefs(storage, email, { ...prefs, recent })
+  const lastVisit = { ...prefs.lastVisit, [key]: Number(at) || Date.now() }
+  return writePrefs(storage, email, { ...prefs, recent, lastVisit })
+}
+
+export function lastVisitAt(prefs, id) {
+  const ts = Number(prefs?.lastVisit?.[id])
+  return Number.isFinite(ts) && ts > 0 ? ts : null
 }
 
 export function setSidebarFavoritesHidden(storage, email, hidden) {

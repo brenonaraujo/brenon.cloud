@@ -23,7 +23,7 @@
       <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div class="flex items-start gap-4">
           <div
-            class="flex h-12 w-12 items-center justify-center rounded-md"
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md"
             :class="iconWrap(app.color)"
           >
             <component :is="iconOf(app.icon)" class="h-6 w-6" :class="iconColor(app.color)" />
@@ -58,10 +58,18 @@
         </div>
       </div>
 
-      <dl class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <h2 class="mt-10 text-sm font-semibold text-white">{{ t('console.services.details') }}</h2>
+      <dl class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="rounded-lg border border-white/10 bg-gray-900 p-4">
           <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.host') }}</dt>
-          <dd class="mt-2 font-mono text-sm text-gray-200">{{ host(app.url) }}</dd>
+          <dd class="mt-2">
+            <a
+              :href="app.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-sm text-gray-200 hover:text-white"
+            >{{ details.host }}</a>
+          </dd>
         </div>
         <div class="rounded-lg border border-white/10 bg-gray-900 p-4">
           <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.required') }}</dt>
@@ -71,22 +79,31 @@
           <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.plan') }}</dt>
           <dd class="mt-2 text-sm text-gray-200">{{ planLabel }}</dd>
         </div>
+        <div class="rounded-lg border border-white/10 bg-gray-900 p-4">
+          <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.identity') }}</dt>
+          <dd class="mt-2 text-sm text-gray-200">{{ t('console.services.identityValue') }}</dd>
+        </div>
+        <div v-if="lastOpenedLabel" class="rounded-lg border border-white/10 bg-gray-900 p-4">
+          <dt class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ t('console.services.lastOpened') }}</dt>
+          <dd class="mt-2 text-sm text-gray-200" :title="lastOpenedAbsolute">{{ lastOpenedLabel }}</dd>
+          <p class="mt-1 text-xs text-gray-500">{{ t('console.services.lastOpenedHint') }}</p>
+        </div>
       </dl>
 
-      <section v-if="facts?.bullets?.length" class="mt-8 rounded-lg border border-white/10 bg-gray-900 p-6">
+      <section v-if="details?.bullets?.length" class="mt-8 rounded-lg border border-white/10 bg-gray-900 p-6">
         <h2 class="text-sm font-semibold text-white">{{ t('console.services.about') }}</h2>
-        <ul class="mt-4 space-y-2 text-sm leading-relaxed text-gray-300">
-          <li v-for="line in facts.bullets" :key="line">{{ line }}</li>
+        <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-gray-300">
+          <li v-for="line in details.bullets" :key="line">{{ line }}</li>
         </ul>
         <div class="mt-6 flex flex-wrap gap-4 text-sm">
           <a
-            v-if="facts.docsUrl"
-            :href="facts.docsUrl"
+            v-if="details.docsUrl"
+            :href="details.docsUrl"
             class="text-blue-300 hover:text-white"
           >{{ t('console.services.docs') }}</a>
           <a
-            v-if="facts.statusUrl"
-            :href="facts.statusUrl"
+            v-if="details.statusUrl"
+            :href="details.statusUrl"
             target="_blank"
             rel="noopener noreferrer"
             class="text-blue-300 hover:text-white"
@@ -99,14 +116,18 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useConsoleStore } from '../../stores/consoleStore'
 import { useConsoleUi } from '../../composables/useConsoleUi'
 import { serviceKind } from '../../config/console-taxonomy.mjs'
-import { factsFor } from '../../config/console-service-facts.mjs'
+import {
+  formatAbsoluteTime,
+  formatRelativeTime,
+  serviceDetails
+} from '../../config/console-service-details.mjs'
 import ConsoleBreadcrumb from '../../components/console/ConsoleBreadcrumb.vue'
 import { ExternalIcon, InboxIcon, StarIcon, StarSolidIcon } from '../../components/icons/Icons.js'
 
@@ -114,26 +135,30 @@ const { t, te, locale } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
 const catalog = useConsoleStore()
-const { label, host, iconOf, iconWrap, iconColor } = useConsoleUi()
+const { label, iconOf, iconWrap, iconColor } = useConsoleUi()
+
+const previousVisitAt = ref(null)
 
 const app = computed(() => catalog.appsFor(auth.groups).find((item) => item.id === route.params.id) || null)
 const starred = computed(() => app.value && catalog.isFavorite(app.value.id))
+const details = computed(() => (app.value ? serviceDetails(app.value, locale.value) : null))
 const kindLabel = computed(() =>
   app.value && serviceKind(app.value) === 'application'
     ? t('console.services.kindApplication')
     : t('console.services.kindPlatform')
 )
-const accessLabel = computed(() => {
-  const groups = app.value?.groups || []
-  if (groups.includes('*')) return t('console.services.anyAccount')
-  return groups.join(', ')
-})
-const facts = computed(() => (app.value ? factsFor(app.value.id, locale.value) : null))
+const accessLabel = computed(() =>
+  details.value?.access === 'any' ? t('console.services.anyAccount') : t('console.services.staffOnly')
+)
 const planLabel = computed(() => {
-  const plan = facts.value?.plan || 'free'
+  const plan = details.value?.plan || 'staff'
   const key = plan === 'staff' ? 'console.account.staff' : `console.plan.${plan}`
   return te(key) ? t(key) : plan
 })
+const lastOpenedLabel = computed(() =>
+  formatRelativeTime(previousVisitAt.value, Date.now(), locale.value)
+)
+const lastOpenedAbsolute = computed(() => formatAbsoluteTime(previousVisitAt.value, locale.value))
 const crumbs = computed(() => [
   { label: t('console.nav.services'), to: '/console/services' },
   { label: app.value ? label(app.value.title) : t('console.services.notFoundTitle') }
@@ -142,7 +167,12 @@ const crumbs = computed(() => [
 watch(
   [app, () => auth.email],
   ([svc, email]) => {
-    if (svc && email) catalog.visit(svc.id, email)
+    if (!svc || !email) {
+      previousVisitAt.value = null
+      return
+    }
+    previousVisitAt.value = catalog.lastVisitAt(svc.id)
+    catalog.visit(svc.id, email)
   },
   { immediate: true }
 )

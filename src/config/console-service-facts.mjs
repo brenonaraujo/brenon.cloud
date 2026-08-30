@@ -120,6 +120,23 @@ export const SERVICE_FACTS = {
       ]
     }
   },
+  vserver: {
+    plan: 'staff',
+    statusUrl: 'https://status.brenon.cloud',
+    docsUrl: 'https://brenon.cloud/service?service=vserver',
+    facts: {
+      en: [
+        'GPU machine console at vserver.brenon.cloud — local AI or mining hosts, with live monitoring.',
+        'Staff only (admins and ops). Sign-in is Authentik (oauth2-proxy).',
+        'Public /api/health reports vserver-brenon-cloud v2. Metrics stay Bearer-gated.'
+      ],
+      pt: [
+        'Console de máquinas GPU em vserver.brenon.cloud — hosts de IA local ou mineração, com monitoramento ao vivo.',
+        'Só staff (admins e ops). Login é Authentik (oauth2-proxy).',
+        '/api/health público responde vserver-brenon-cloud v2. Métricas continuam com Bearer.'
+      ]
+    }
+  },
   'console-air': {
     plan: 'free',
     statusUrl: 'https://status.brenon.cloud',
