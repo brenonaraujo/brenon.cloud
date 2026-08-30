@@ -11,7 +11,6 @@ import {
   markNotificationsRead
 } from '../config/console-prefs.mjs'
 import { groupServices, searchServices } from '../config/console-taxonomy.mjs'
-import { mergeCatalog } from '../config/console-native.mjs'
 
 function browserStorage() {
   try {
@@ -60,8 +59,7 @@ export const useConsoleStore = defineStore('console', () => {
   }
 
   function catalogList() {
-    const list = services.value.length ? services.value : CONSOLE_SERVICES
-    return mergeCatalog(list)
+    return services.value.length ? services.value : CONSOLE_SERVICES
   }
 
   function appsFor(userGroups) {
