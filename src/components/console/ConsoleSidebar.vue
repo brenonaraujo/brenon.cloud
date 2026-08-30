@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-60 lg:shrink-0">
+  <div class="min-h-0 lg:flex lg:h-full lg:w-60 lg:min-h-0 lg:shrink-0 lg:flex-col">
     <transition name="console-drawer">
       <button
         v-if="open"
@@ -11,10 +11,10 @@
     </transition>
 
     <aside
-      class="fixed inset-y-0 left-0 z-50 flex w-60 shrink-0 flex-col border-r border-white/10 bg-gray-950 transition-transform duration-200 lg:static lg:translate-x-0"
+      class="fixed inset-y-0 left-0 z-50 flex h-full min-h-0 w-60 shrink-0 flex-col overflow-hidden border-r border-white/10 bg-gray-950 transition-transform duration-200 lg:static lg:h-full lg:translate-x-0"
       :class="open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
     >
-      <div class="flex h-14 items-center gap-2 border-b border-white/10 px-4">
+      <div class="flex h-14 shrink-0 items-center gap-2 border-b border-white/10 px-4">
         <router-link to="/console" class="flex min-w-0 items-center gap-2" @click="$emit('close')">
           <img src="/brenon-cloud-logo.png" alt="" class="h-8 w-8" />
           <div class="min-w-0">
@@ -26,7 +26,7 @@
         </router-link>
       </div>
 
-      <nav class="flex-1 overflow-y-auto px-2 py-4" :aria-label="t('console.title')">
+      <nav class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-2 py-4" :aria-label="t('console.title')">
         <ul class="flex flex-col gap-1">
           <li>
             <router-link
@@ -69,20 +69,43 @@
           </li>
         </ul>
 
-        <p v-if="favorites.length" class="console-nav-label">{{ t('console.nav.favorites') }}</p>
-        <ul v-if="favorites.length" class="flex flex-col gap-1">
-          <li v-for="app in favorites" :key="'fav-' + app.id">
-            <router-link
-              :to="'/console/services/' + app.id"
-              class="console-nav-link"
-              :class="exactActive('/console/services/' + app.id)"
-              @click="$emit('close')"
-            >
-              <StarSolidIcon class="h-4 w-4 text-amber-400" />
-              <span class="truncate">{{ label(app.title) }}</span>
-            </router-link>
-          </li>
-        </ul>
+        <div v-if="favorites.length">
+          <button
+            type="button"
+            class="console-nav-label flex w-full cursor-pointer items-center justify-between gap-2 bg-transparent text-left hover:text-gray-300"
+            :aria-expanded="!catalog.sidebarFavoritesHidden"
+            aria-controls="console-sidebar-favorites"
+            :aria-label="
+              catalog.sidebarFavoritesHidden
+                ? t('console.nav.showFavorites')
+                : t('console.nav.hideFavorites')
+            "
+            @click="toggleFavoritesHidden"
+          >
+            <span>{{ t('console.nav.favorites') }}</span>
+            <ChevronRightIcon
+              class="h-3 w-3 shrink-0 transition-transform duration-150"
+              :class="catalog.sidebarFavoritesHidden ? '' : 'rotate-90'"
+            />
+          </button>
+          <ul
+            v-show="!catalog.sidebarFavoritesHidden"
+            id="console-sidebar-favorites"
+            class="flex flex-col gap-1"
+          >
+            <li v-for="app in favorites" :key="'fav-' + app.id">
+              <router-link
+                :to="'/console/services/' + app.id"
+                class="console-nav-link"
+                :class="exactActive('/console/services/' + app.id)"
+                @click="$emit('close')"
+              >
+                <StarSolidIcon class="h-4 w-4 shrink-0 text-amber-400" />
+                <span class="truncate">{{ label(app.title) }}</span>
+              </router-link>
+            </li>
+          </ul>
+        </div>
 
         <p v-if="applications.length" class="console-nav-label">{{ t('console.nav.applications') }}</p>
         <ul v-if="applications.length" class="flex flex-col gap-1">
@@ -115,7 +138,7 @@
         </ul>
       </nav>
 
-      <div class="border-t border-white/10 px-2 py-4">
+      <div class="shrink-0 border-t border-white/10 px-2 py-4">
         <ul class="flex flex-col gap-1">
           <li>
             <router-link
@@ -190,6 +213,7 @@ import {
   BellIcon,
   BoltIcon,
   ChartIcon,
+  ChevronRightIcon,
   ExternalIcon,
   GridIcon,
   HomeIcon,
@@ -213,6 +237,10 @@ const grouped = computed(() => catalog.groupedFor(auth.groups))
 const applications = computed(() => grouped.value.applications)
 const platform = computed(() => grouped.value.platform)
 const favorites = computed(() => catalog.favoriteApps(auth.groups))
+
+const toggleFavoritesHidden = () => {
+  catalog.hideSidebarFavorites(!catalog.sidebarFavoritesHidden, auth.email)
+}
 
 const hermesBadge = computed(() => {
   if (isHermesSubscriber(auth.groups)) return t('console.hermes.badgePlan')

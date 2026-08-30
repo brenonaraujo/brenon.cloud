@@ -374,6 +374,8 @@
       "applications": "Aplicações",
       "platform": "Plataforma",
       "favorites": "Favoritos",
+      "hideFavorites": "Ocultar favoritos",
+      "showFavorites": "Mostrar favoritos",
       "status": "Status",
       "site": "brenon.cloud",
       "backToSite": "Voltar ao site",

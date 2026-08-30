@@ -5,7 +5,7 @@ export function prefsKey(email) {
 }
 
 export function emptyPrefs() {
-  return { recent: [], favorites: [], readNotifications: [] }
+  return { recent: [], favorites: [], readNotifications: [], sidebarFavoritesHidden: false }
 }
 
 export function readPrefs(storage, email) {
@@ -19,7 +19,8 @@ export function readPrefs(storage, email) {
       favorites: Array.isArray(parsed.favorites) ? parsed.favorites.map(String).filter(Boolean) : [],
       readNotifications: Array.isArray(parsed.readNotifications)
         ? parsed.readNotifications.map(String).filter(Boolean)
-        : []
+        : [],
+      sidebarFavoritesHidden: Boolean(parsed.sidebarFavoritesHidden)
     }
   } catch {
     return emptyPrefs()
@@ -31,7 +32,8 @@ export function writePrefs(storage, email, prefs) {
   const next = {
     recent: (prefs?.recent || []).slice(0, MAX_RECENT),
     favorites: [...new Set(prefs?.favorites || [])],
-    readNotifications: [...new Set(prefs?.readNotifications || [])]
+    readNotifications: [...new Set(prefs?.readNotifications || [])],
+    sidebarFavoritesHidden: Boolean(prefs?.sidebarFavoritesHidden)
   }
   storage.setItem(prefsKey(email), JSON.stringify(next))
   return next
@@ -43,6 +45,11 @@ export function recordVisit(storage, email, id) {
   if (!key) return prefs
   const recent = [key, ...prefs.recent.filter((item) => item !== key)].slice(0, MAX_RECENT)
   return writePrefs(storage, email, { ...prefs, recent })
+}
+
+export function setSidebarFavoritesHidden(storage, email, hidden) {
+  const prefs = readPrefs(storage, email)
+  return writePrefs(storage, email, { ...prefs, sidebarFavoritesHidden: Boolean(hidden) })
 }
 
 export function toggleFavorite(storage, email, id) {
