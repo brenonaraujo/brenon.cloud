@@ -30,6 +30,9 @@
       </div>
       <p id="hermes-create-hint" class="mb-4 text-sm text-gray-500">{{ hint }}</p>
       <p v-if="error" class="mb-4 text-sm text-amber-300">{{ error }}</p>
+      <p v-if="waiting" class="mb-4 rounded-md border border-blue-400/20 bg-blue-500/10 px-4 py-3 text-sm text-blue-100">
+        {{ t('console.hermes.startingHint') }}
+      </p>
 
       <form
         v-if="!hasLive && !loading"
@@ -88,25 +91,26 @@
                 <p class="font-medium">{{ row.hostname || row.slug }}</p>
                 <p class="text-xs text-gray-500">{{ row.username }}</p>
               </td>
-              <td class="px-4 py-3 text-gray-300">{{ row.status }}</td>
+              <td class="px-4 py-3 text-gray-300">{{ isStarting(row) ? t('console.hermes.starting') : row.status }}</td>
               <td class="px-4 py-3 text-gray-300">{{ row.plan }} · {{ row.diskGb }} GB</td>
               <td class="px-4 py-3 text-gray-300">{{ row.region }}</td>
               <td class="px-4 py-3 text-right">
                 <div class="flex items-center justify-end gap-4">
                   <a
-                    v-if="row.status === 'running' && row.hostname"
+                    v-if="canOpen(row)"
                     :href="'https://' + row.hostname + '/'"
                     target="_blank"
                     rel="noopener"
                     class="text-sm text-blue-300 hover:text-blue-200"
                   >{{ t('console.site.open') }}</a>
                   <a
-                    v-if="row.status === 'running' && row.hostname"
+                    v-if="canOpen(row)"
                     :href="row.launchUrl || ('https://' + row.hostname + '/hermes')"
                     target="_blank"
                     rel="noopener"
                     class="text-sm text-blue-300 hover:text-blue-200"
                   >{{ t('console.hermes.open') }}</a>
+                  <span v-else-if="isStarting(row)" class="text-sm text-gray-500">{{ t('console.hermes.starting') }}</span>
                   <button
                     v-if="row.status !== 'deleted'"
                     type="button"
@@ -194,7 +198,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/authStore'
 import {
@@ -259,10 +263,19 @@ const pageInstance = computed(() => {
 })
 const previewSlug = computed(() => slugify(publicName.value) || defaultName.value)
 const previewHost = computed(() => (previewSlug.value ? `${previewSlug.value}.brenon.cloud` : ''))
+const waiting = computed(() => instances.value.some(isStarting))
 const hint = computed(() => {
+  if (waiting.value) return t('console.hermes.startingHint')
   if (hasLive.value) return t('console.hermes.createHintDone')
   return t('console.hermes.createHint')
 })
+
+function canOpen(row) {
+  return Boolean(row?.ready && row.hostname)
+}
+function isStarting(row) {
+  return Boolean(row) && !row.ready && ['pending', 'provisioning', 'running'].includes(row.status)
+}
 
 function slugify(raw) {
   return String(raw || '')
@@ -290,19 +303,21 @@ function syncPublicName() {
   if (!publicName.value) publicName.value = defaultName.value
 }
 
-async function load() {
+async function load(quiet = false) {
   if (!canManage.value || !auth.idToken) return
-  loading.value = true
-  error.value = ''
+  if (!quiet) loading.value = true
+  if (!quiet) error.value = ''
   try {
     const data = await fetchHermesInstances(auth.idToken)
     instances.value = Array.isArray(data.instances) ? data.instances : []
     syncPublicName()
   } catch (err) {
-    error.value = humanHermesError(err, t('console.hermes.loadFallback'))
-    instances.value = []
+    if (!quiet) {
+      error.value = humanHermesError(err, t('console.hermes.loadFallback'))
+      instances.value = []
+    }
   } finally {
-    loading.value = false
+    if (!quiet) loading.value = false
   }
 }
 
@@ -364,9 +379,29 @@ async function destroy() {
   }
 }
 
+let waitTimer = 0
+function stopWait() {
+  if (waitTimer) {
+    clearInterval(waitTimer)
+    waitTimer = 0
+  }
+}
+function startWait() {
+  if (waitTimer) return
+  waitTimer = setInterval(() => {
+    load(true)
+  }, 2500)
+}
+
+watch(waiting, (on) => {
+  if (on) startWait()
+  else stopWait()
+}, { immediate: true })
+
 watch(defaultName, (name) => {
   if (!hasLive.value && !publicName.value && name) publicName.value = name
 })
 
 onMounted(load)
+onUnmounted(stopWait)
 </script>

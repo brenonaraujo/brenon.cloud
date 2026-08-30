@@ -528,6 +528,8 @@
       "createHintDone": "Uma instância por conta. O host é a página pública; /hermes é o dashboard.",
       "loadFallback": "Não foi possível carregar as instâncias agora.",
       "createFallback": "Não foi possível criar a instância agora.",
+      "starting": "Subindo…",
+      "startingHint": "O Hermes ainda está subindo. Os botões de abrir aparecem quando o dashboard responder.",
       "colName": "Nome",
       "colStatus": "Status",
       "colPlan": "Plano",

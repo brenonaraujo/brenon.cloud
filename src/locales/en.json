@@ -528,6 +528,8 @@
       "createHintDone": "One instance per account. The host is the public page; /hermes is the dashboard.",
       "loadFallback": "Could not load instances right now.",
       "createFallback": "Could not create the instance right now.",
+      "starting": "Starting…",
+      "startingHint": "Hermes is still coming up. Open buttons appear when the dashboard answers.",
       "colName": "Name",
       "colStatus": "Status",
       "colPlan": "Plan",
