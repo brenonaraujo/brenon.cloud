@@ -14,18 +14,38 @@
       >{{ t('console.site.open') }}</a>
     </div>
 
+    <ul class="mt-6 max-w-2xl space-y-2 text-sm leading-relaxed text-gray-300">
+      <li><span class="font-mono text-blue-200">/</span> — {{ t('console.site.factApex') }}</li>
+      <li><span class="font-mono text-blue-200">/hermes</span> — {{ t('console.site.factChat') }}</li>
+      <li><span class="font-mono text-blue-200">/hermes/cli</span> — {{ t('console.site.factCli') }}</li>
+      <li><span class="font-mono text-blue-200">/hermes/hooks</span> — {{ t('console.site.factHooks') }}</li>
+    </ul>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.site.agentBuilds') }}</p>
+
+    <a
+      v-if="chatUrl"
+      :href="chatUrl"
+      target="_blank"
+      rel="noopener"
+      class="mt-6 inline-flex min-h-[44px] items-center gap-3 rounded-md bg-blue-600 px-4 pr-5 text-sm font-medium text-white hover:bg-blue-500"
+    >
+      <img src="/images/hermes-mascot.png" alt="" class="h-10 w-10 shrink-0" width="40" height="40">
+      {{ t('console.site.startChat') }}
+    </a>
+    <p v-else class="mt-6 text-sm text-gray-500">{{ t('console.hermes.starting') }}</p>
+
     <p v-if="error" class="mt-4 text-sm text-amber-300">{{ error }}</p>
     <p v-else-if="saved" class="mt-4 text-sm text-emerald-300">{{ t('console.site.saved') }}</p>
 
-    <form class="mt-6 flex flex-col gap-6" @submit.prevent="save">
+    <form class="mt-8 flex flex-col gap-6 border-t border-white/10 pt-8" @submit.prevent="save">
       <label class="flex items-center gap-3 text-sm text-gray-200">
-        <input v-model="enabled" type="checkbox" class="h-4 w-4 rounded border-white/20 bg-gray-950" />
+        <input v-model="enabled" type="checkbox" class="h-4 w-4 rounded border-white/20 bg-gray-950">
         {{ t('console.site.enabled') }}
       </label>
 
       <label class="flex flex-col gap-2">
         <span class="text-sm font-medium text-gray-200">{{ t('console.site.visibility') }}</span>
-        <select v-model="visibility" class="min-h-[44px] rounded-md border border-white/15 bg-gray-950 px-3 text-sm text-gray-100">
+        <select v-model="visibility" class="min-h-[44px] max-w-lg rounded-md border border-white/15 bg-gray-950 px-3 text-sm text-gray-100">
           <option value="public">{{ t('console.site.visPublic') }}</option>
           <option value="members">{{ t('console.site.visMembers') }}</option>
           <option value="allowlist">{{ t('console.site.visAllowlist') }}</option>
@@ -39,38 +59,8 @@
         <textarea
           v-model="allowlistText"
           rows="3"
-          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 text-sm text-gray-100"
+          class="max-w-lg rounded-md border border-white/15 bg-gray-950 px-3 py-2 text-sm text-gray-100"
           :placeholder="t('console.site.allowlistHint')"
-        />
-      </label>
-
-      <label class="flex flex-col gap-2">
-        <span class="text-sm font-medium text-gray-200">{{ t('console.site.html') }}</span>
-        <textarea
-          v-model="html"
-          rows="8"
-          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 font-mono text-sm text-gray-100"
-          :placeholder="t('console.site.htmlHint')"
-        />
-      </label>
-
-      <label class="flex flex-col gap-2">
-        <span class="text-sm font-medium text-gray-200">{{ t('console.site.css') }}</span>
-        <textarea
-          v-model="css"
-          rows="4"
-          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 font-mono text-sm text-gray-100"
-          :placeholder="t('console.site.cssHint')"
-        />
-      </label>
-
-      <label class="flex flex-col gap-2">
-        <span class="text-sm font-medium text-gray-200">{{ t('console.site.js') }}</span>
-        <textarea
-          v-model="js"
-          rows="6"
-          class="rounded-md border border-white/15 bg-gray-950 px-3 py-2 font-mono text-sm text-gray-100"
-          :placeholder="t('console.site.jsHint')"
         />
       </label>
 
@@ -124,6 +114,12 @@ const visHint = computed(() => {
   if (visibility.value === 'allowlist') return t('console.site.hintAllowlist')
   if (visibility.value === 'disabled') return t('console.site.hintDisabled')
   return t('console.site.hintPublic')
+})
+
+const chatUrl = computed(() => {
+  const row = props.instance
+  if (!row?.ready || !row.hostname) return ''
+  return row.launchUrl || `https://${row.hostname}/hermes`
 })
 
 function apply(site) {

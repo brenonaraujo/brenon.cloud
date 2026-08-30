@@ -26,6 +26,7 @@
         <p class="text-gray-500">© {{ currentYear }} Brenon.Cloud — {{ t('footer.rights') }}</p>
       </div>
     </footer>
+    <HermesDock />
   </div>
 </template>
 
@@ -33,6 +34,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Navbar from '../components/Navbar.vue'
+import HermesDock from '../components/HermesDock.vue'
 import { profile, visibleSocialLinks } from '../config/profile'
 
 const { t } = useI18n()
