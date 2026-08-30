@@ -557,14 +557,19 @@
       "publicSaveFallback": "Não foi possível mudar o endereço agora.",
       "webhookHint": "Webhooks: {url}",
       "modelTitle": "Modelo",
-      "modelHint": "Cole a chave do provedor aqui. A instância não tem terminal — o modelo sobe no container.",
+      "modelHint": "Atalho: cola a key do teu provedor. O caminho completo é o terminal — hermes setup, hermes model, hermes auth.",
       "modelPlaceholder": "ex. grok-4.6",
       "apiKeyPlaceholder": "Chave de API",
       "apiKeyReplace": "Nova chave (substitui a atual)",
       "modelSave": "Salvar modelo",
       "modelSaving": "Salvando…",
       "modelConfigured": "Ativo: {provider} · {model}",
-      "modelSaveFallback": "Não foi possível salvar o modelo agora."
+      "modelSaveFallback": "Não foi possível salvar o modelo agora.",
+      "cliTitle": "Terminal Hermes",
+      "cliHint": "Shell no teu container. Usa hermes setup, hermes model e hermes auth com as tuas keys — a Brenon não coloca API key da plataforma no tenant.",
+      "cliOpen": "Abrir terminal",
+      "cliUser": "Usuário",
+      "cliPass": "Senha"
     },
     "site": {
       "title": "Sua página",

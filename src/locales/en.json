@@ -557,14 +557,19 @@
       "publicSaveFallback": "Could not change the address right now.",
       "webhookHint": "Webhooks: {url}",
       "modelTitle": "Model",
-      "modelHint": "Paste the provider key here. The instance has no terminal — the model is injected into the container.",
+      "modelHint": "Shortcut: paste your provider key. Full setup is the terminal — hermes setup, hermes model, hermes auth.",
       "modelPlaceholder": "e.g. grok-4.6",
       "apiKeyPlaceholder": "API key",
       "apiKeyReplace": "New key (replaces the current one)",
       "modelSave": "Save model",
       "modelSaving": "Saving…",
       "modelConfigured": "Active: {provider} · {model}",
-      "modelSaveFallback": "Could not save the model right now."
+      "modelSaveFallback": "Could not save the model right now.",
+      "cliTitle": "Hermes terminal",
+      "cliHint": "A shell on your container. Run hermes setup, hermes model and hermes auth with your own keys — Brenon does not put a platform API key in the tenant.",
+      "cliOpen": "Open terminal",
+      "cliUser": "Username",
+      "cliPass": "Password"
     },
     "site": {
       "title": "Your page",

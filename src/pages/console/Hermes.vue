@@ -136,6 +136,13 @@
                     rel="noopener"
                     class="text-sm text-blue-300 hover:text-blue-200"
                   >{{ t('console.hermes.open') }}</a>
+                  <a
+                    v-if="canOpen(row) && row.cliUrl"
+                    :href="row.cliUrl"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-sm text-blue-300 hover:text-blue-200"
+                  >{{ t('console.hermes.cliOpen') }}</a>
                   <span v-else-if="isStarting(row)" class="text-sm text-gray-500">{{ t('console.hermes.starting') }}</span>
                   <button
                     v-if="row.status !== 'deleted'"
@@ -194,6 +201,22 @@
       </form>
       <p class="mt-3 font-mono text-sm text-blue-200">{{ previewHost }}</p>
       <p v-if="pageInstance.hostname" class="mt-2 text-xs text-gray-500">{{ t('console.hermes.webhookHint', { url: 'https://' + pageInstance.hostname + '/hermes/hooks' }) }}</p>
+    </section>
+
+    <section
+      v-if="canManage && pageInstance && pageInstance.cliUrl"
+      class="mt-10 rounded-lg border border-white/10 bg-gray-900 p-5"
+    >
+      <h2 class="text-lg font-semibold text-white">{{ t('console.hermes.cliTitle') }}</h2>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{{ t('console.hermes.cliHint') }}</p>
+      <p class="mt-3 font-mono text-sm text-blue-200">{{ t('console.hermes.cliUser') }}: {{ pageInstance.cliUser }}</p>
+      <p class="font-mono text-sm text-blue-200">{{ t('console.hermes.cliPass') }}: {{ pageInstance.cliPassword }}</p>
+      <a
+        :href="pageInstance.cliUrl"
+        target="_blank"
+        rel="noopener"
+        class="mt-4 inline-flex min-h-[44px] items-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"
+      >{{ t('console.hermes.cliOpen') }}</a>
     </section>
 
     <section
