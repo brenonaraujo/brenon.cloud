@@ -50,6 +50,10 @@
               {{ t('console.nav.services') }}
             </router-link>
           </li>
+        </ul>
+
+        <p class="console-nav-label">{{ t('console.nav.products') }}</p>
+        <ul class="flex flex-col gap-1">
           <li>
             <router-link
               to="/console/hermes"

@@ -42,7 +42,7 @@
         <p v-if="plan.id === 'pro' || plan.includesHermes" class="mt-4 text-sm font-medium text-blue-200">
           {{ t('console.billing.hermesOwn') }}
         </p>
-        <p v-if="planDisk(plan)" class="mt-1 text-xs text-gray-400">{{ t('console.billing.disk', { gb: planDisk(plan) }) }}</p>
+        <p v-if="planQuotaLine(plan).gb" class="mt-1 text-xs text-gray-400">{{ t('console.billing.quota', planQuotaLine(plan)) }}</p>
         <p v-if="plan.id === 'pro' || plan.includesHermes" class="mt-1 text-sm leading-relaxed text-gray-400">
           {{ t('console.billing.hermesOwnBody') }}
         </p>
@@ -158,6 +158,14 @@ function planDisk(plan) {
   if (plan?.id === 'pro') return 20
   if (plan?.id === 'basic' || plan?.includesHermes) return 5
   return 0
+}
+
+function planQuotaLine(plan) {
+  const gb = planDisk(plan)
+  if (!gb) return { ram: 0, cpu: 0, gb: 0 }
+  if (plan?.memoryGb) return { ram: Number(plan.memoryGb), cpu: Number(plan.cpus || 1), gb }
+  if (plan?.id === 'pro') return { ram: 4, cpu: 2, gb: 20 }
+  return { ram: 2, cpu: 1, gb }
 }
 
 async function upgrade(plan) {

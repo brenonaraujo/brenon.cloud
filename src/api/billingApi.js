@@ -50,7 +50,7 @@ export async function startPortal(idToken) {
 }
 
 export const FALLBACK_PLANS = [
-  { id: 'free', amountCents: 0, interval: 'month', includesHermes: false, diskGb: 0 },
-  { id: 'basic', amountCents: 2990, interval: 'month', includesHermes: true, diskGb: 5 },
-  { id: 'pro', amountCents: 7990, interval: 'month', includesHermes: true, diskGb: 20 }
+  { id: 'free', amountCents: 0, interval: 'month', includesHermes: false, diskGb: 0, memoryGb: 0, cpus: 0 },
+  { id: 'basic', amountCents: 2990, interval: 'month', includesHermes: true, diskGb: 5, memoryGb: 2, cpus: 1 },
+  { id: 'pro', amountCents: 7990, interval: 'month', includesHermes: true, diskGb: 20, memoryGb: 4, cpus: 2 }
 ]
