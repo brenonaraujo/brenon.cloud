@@ -4,6 +4,7 @@ import { UserManager } from 'oidc-client-ts'
 import { ENROLLMENT_FLOW, oidcSettings } from '../config/auth'
 
 let manager
+let loginStarted = false
 
 function getManager() {
   if (!manager) {
@@ -47,10 +48,17 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(returnTo = '/console') {
+    if (loginStarted) return
     const next = typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/console'
-    await getManager().signinRedirect({
-      state: { returnTo: next }
-    })
+    loginStarted = true
+    try {
+      await getManager().signinRedirect({
+        state: { returnTo: next }
+      })
+    } catch (err) {
+      loginStarted = false
+      throw err
+    }
   }
 
   function signup() {

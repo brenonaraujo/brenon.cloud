@@ -1,5 +1,8 @@
 <template>
-  <div class="flex h-screen min-h-0 overflow-hidden bg-gray-950 text-gray-100">
+  <div
+    v-if="auth.ready && auth.isAuthenticated"
+    class="flex h-screen min-h-0 overflow-hidden bg-gray-950 text-gray-100"
+  >
     <a
       href="#console-main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-gray-900 focus:px-4 focus:py-2"
@@ -13,19 +16,15 @@
       <ConsoleTopbar @toggle-sidebar="sidebarOpen = !sidebarOpen" />
       <main id="console-main" class="flex-1 overflow-y-auto outline-none" tabindex="-1">
         <div class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-          <p v-if="!auth.ready || !auth.isAuthenticated" class="text-sm text-gray-400">
-            {{ t('console.loading') }}
-          </p>
-          <template v-else>
-            <ConsoleBanner />
-            <router-view v-slot="{ Component }">
-              <component :is="Component" />
-            </router-view>
-          </template>
+          <ConsoleBanner />
+          <router-view v-slot="{ Component }">
+            <component :is="Component" />
+          </router-view>
         </div>
       </main>
     </div>
   </div>
+  <div v-else class="min-h-screen bg-gray-950" aria-hidden="true" />
 </template>
 
 <script setup>
@@ -46,23 +45,15 @@ const catalog = useConsoleStore()
 const entitlement = useEntitlementStore()
 const sidebarOpen = ref(false)
 
-const ensureSession = () => {
-  if (auth.ready && !auth.isAuthenticated) {
-    const next = route.fullPath.startsWith('/console') ? route.fullPath : '/console'
-    auth.login(next)
-  }
-}
-
 onMounted(() => {
-  catalog.load()
-  ensureSession()
+  if (auth.isAuthenticated) catalog.load()
 })
 
-watch(() => auth.ready, ensureSession)
 watch(
   () => [auth.ready, auth.email, auth.idToken],
   () => {
-    if (!auth.ready) return
+    if (!auth.ready || !auth.isAuthenticated) return
+    catalog.load()
     if (auth.email) {
       catalog.hydratePrefs(auth.email)
       entitlement.hydrate(auth.email)

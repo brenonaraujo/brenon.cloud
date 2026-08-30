@@ -1,8 +1,10 @@
 <template>
-  <div class="mx-auto max-w-lg py-16">
-    <p class="text-[11px] uppercase tracking-[0.12em] text-blue-300/80">Brenon Cloud</p>
-    <h1 class="mt-2 text-2xl font-semibold text-white">{{ t('console.site.gateTitle') }}</h1>
-    <p class="mt-3 text-sm leading-relaxed text-gray-400">{{ message }}</p>
+  <div class="min-h-screen bg-gray-950 text-gray-100">
+    <div v-if="auth.isAuthenticated" class="mx-auto max-w-lg px-4 py-16">
+      <p class="text-[11px] uppercase tracking-[0.12em] text-blue-300/80">Brenon Cloud</p>
+      <h1 class="mt-2 text-2xl font-semibold text-white">{{ t('console.site.gateTitle') }}</h1>
+      <p class="mt-3 text-sm leading-relaxed text-gray-400">{{ message }}</p>
+    </div>
   </div>
 </template>
 
@@ -41,5 +43,13 @@ async function grant() {
   }
 }
 
-watch(() => [auth.ready, auth.idToken, host.value], grant, { immediate: true })
+watch(
+  () => [auth.ready, auth.isAuthenticated, auth.idToken, host.value],
+  () => {
+    if (!auth.ready) return
+    if (!auth.isAuthenticated) return
+    grant()
+  },
+  { immediate: true }
+)
 </script>

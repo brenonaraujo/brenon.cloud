@@ -102,6 +102,11 @@ const router = createRouter({
       ]
     },
     {
+      path: '/console/host-auth',
+      name: 'console-host-auth',
+      component: ConsoleHostAuth
+    },
+    {
       path: '/console',
       component: ConsoleLayout,
       children: [
@@ -124,11 +129,6 @@ const router = createRouter({
           path: 'hermes',
           name: 'console-hermes',
           component: ConsoleHermes
-        },
-        {
-          path: 'host-auth',
-          name: 'console-host-auth',
-          component: ConsoleHostAuth
         },
         {
           path: 'account',
@@ -192,6 +192,16 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(i18n)
+
+router.beforeEach(async (to) => {
+  if (!to.path.startsWith('/console')) return true
+  const auth = useAuthStore()
+  if (!auth.ready) await auth.hydrate()
+  if (auth.isAuthenticated) return true
+  await auth.login(to.fullPath)
+  return false
+})
+
 useAuthStore().hydrate()
 
 // Provide dependencies (Dependency Injection)
