@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen overflow-hidden bg-gray-950 text-gray-100">
+  <div class="flex h-screen min-h-0 overflow-hidden bg-gray-950 text-gray-100">
     <a
       href="#console-main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-gray-900 focus:px-4 focus:py-2"
@@ -9,7 +9,7 @@
 
     <ConsoleSidebar :open="sidebarOpen" @close="sidebarOpen = false" />
 
-    <div class="flex min-w-0 flex-1 flex-col">
+    <div class="flex min-h-0 min-w-0 flex-1 flex-col">
       <ConsoleTopbar @toggle-sidebar="sidebarOpen = !sidebarOpen" />
       <main id="console-main" class="flex-1 overflow-y-auto outline-none" tabindex="-1">
         <div class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
