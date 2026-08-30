@@ -7,9 +7,10 @@ Este documento descreve o produto. Detalhe de implementação:
 ## Visão
 
 Quem paga Basic ou Pro cria **um** agente Hermes isolado, acessível em
-`https://<username>.brenon.cloud`, com o mesmo login Authentik da
-console. Webhooks e canais (Telegram e o que o membro conectar) já
-nascem ligados a esse host. Free não cria instância.
+`https://<nome-publico>.brenon.cloud`, com o mesmo login Authentik da
+console. O nome público é escolhido na criação (padrão: username da
+conta) e pode ser mudado depois. Webhooks e canais (Telegram e o que o
+membro conectar) já nascem ligados a esse host. Free não cria instância.
 
 ## Personas
 
@@ -22,7 +23,7 @@ nascem ligados a esse host. Free não cria instância.
 ## Glossário
 
 - **Instância** — um Hermes só daquela conta (disco, memória, skills, gateway).
-- **Subdomínio** — `username.brenon.cloud`, derivado do username Authentik.
+- **Subdomínio** — `{nome}.brenon.cloud`, escolhido na criação (padrão: username Authentik).
 - **Nome reservado** — host já usado pela plataforma (`auth`, `control`, `hermes`, …).
 - **Webhook público** — URL HTTPS no subdomínio do membro para GitHub, Stripe, Telegram, etc.
 
@@ -30,8 +31,10 @@ nascem ligados a esse host. Free não cria instância.
 
 1. Free não provisiona. Basic (5 GB) e Pro (20 GB) sim. Operador pode
    provisionar para operar, Stripe nunca grava `hermes-owner`.
-2. Uma instância viva por conta. O subdomínio é o username sanitizado;
-   se colidir com nome reservado, usa-se o prefixo `u-`.
+2. Uma instância viva por conta. O subdomínio é o nome público escolhido
+   na criação (padrão: username sanitizado); se colidir com nome
+   reservado, a criação é recusada. Dá para mudar depois; o endereço
+   antigo para de abrir.
 3. Login humano é **só Authentik**. Sem formulário Hermes, sem Nous Portal
    como identidade do cliente. Depois do SSO, o host tem de pertencer
    àquela conta (operador pode impersonar, com auditoria).
@@ -49,8 +52,8 @@ nascem ligados a esse host. Free não cria instância.
 ## Fluxo
 
 1. Membro paga Basic/Pro (já existe).
-2. Abre `/console/hermes` → Criar instância.
-3. Em poucos minutos o host `https://<username>.brenon.cloud` resolve,
+2. Abre `/console/hermes` → escolhe o nome público (padrão: username) → Criar instância.
+3. Em poucos minutos o host `https://<nome>.brenon.cloud` resolve,
    pede o login Authentik (sessão da console costuma bastar) e abre o
    dashboard Hermes com webhooks no ar.
 4. Membro conecta Telegram (e o que quiser) no dashboard.
@@ -60,8 +63,9 @@ nascem ligados a esse host. Free não cria instância.
 - Free vê a página travada e o link de Billing. O botão Criar não existe.
 - Basic/Pro autenticado cria **uma** instância; a segunda tentativa é
   recusada com mensagem clara.
-- O host criado é `username.brenon.cloud` (ou `u-username` se reservado)
-  e resolve na internet (não só no lab).
+- O host criado é o nome público escolhido (padrão: username) e resolve
+  na internet (não só no lab). Nomes da plataforma (`auth`, `control`, …)
+  são recusados. Dá para mudar o nome depois.
 - Abrir o host sem login redireciona para Authentik. Outro membro logado
   não entra na instância alheia. Operador entra.
 - A tabela da console lista nome, status, plano e abre `/hermes` quando
