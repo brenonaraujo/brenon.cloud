@@ -170,3 +170,55 @@ export function humanHermesError(err, fallback) {
   if (/load failed|failed to fetch|networkerror/i.test(msg)) return fallback
   return msg || fallback
 }
+
+export function pickReadyHermesInstance(rows, email) {
+  const list = Array.isArray(rows) ? rows : []
+  const ready = list.filter((row) => Boolean(row?.ready && row?.hostname))
+  return ready.find((row) => row.email === email) || ready[0] || null
+}
+
+function isBrenonHost(host) {
+  const h = String(host || '')
+    .trim()
+    .toLowerCase()
+  if (!h || h.includes('/') || h.includes(':') || /\s/.test(h)) return false
+  return h.endsWith('.brenon.cloud') && h.length > '.brenon.cloud'.length
+}
+
+function parseTuiUrl(raw, expectedHost = '') {
+  const text = String(raw || '').trim()
+  if (!text) return ''
+  let u
+  try {
+    u = new URL(text)
+  } catch {
+    return ''
+  }
+  if (u.protocol !== 'https:') return ''
+  if (!isBrenonHost(u.hostname)) return ''
+  if (expectedHost && u.hostname !== expectedHost) return ''
+  let path = u.pathname || '/'
+  if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1)
+  if (path !== '/hermes/tui') return ''
+  return `${u.origin}/hermes/tui`
+}
+
+export function hermesTuiUrl(instance) {
+  const host = isBrenonHost(instance?.hostname)
+    ? String(instance.hostname).trim().toLowerCase()
+    : ''
+  const explicit = parseTuiUrl(instance?.tuiUrl, host)
+  if (explicit) return explicit
+  if (host) return `https://${host}/hermes/tui`
+  return ''
+}
+
+export function hermesTuiLoginUrl(instance) {
+  const tui = hermesTuiUrl(instance)
+  if (!tui) return ''
+  try {
+    return `${new URL(tui).origin}/hermes/login?next=/hermes/tui`
+  } catch {
+    return ''
+  }
+}

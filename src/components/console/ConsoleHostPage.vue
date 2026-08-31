@@ -17,6 +17,7 @@
     <ul class="mt-6 max-w-2xl space-y-2 text-sm leading-relaxed text-gray-300">
       <li><span class="font-mono text-blue-200">/</span> — {{ t('console.site.factApex') }}</li>
       <li><span class="font-mono text-blue-200">/hermes</span> — {{ t('console.site.factChat') }}</li>
+      <li><span class="font-mono text-blue-200">/hermes/tui</span> — {{ t('console.site.factTui') }}</li>
       <li><span class="font-mono text-blue-200">/hermes/cli</span> — {{ t('console.site.factCli') }}</li>
       <li><span class="font-mono text-blue-200">/hermes/hooks</span> — {{ t('console.site.factHooks') }}</li>
     </ul>

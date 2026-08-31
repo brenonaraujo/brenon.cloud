@@ -6,7 +6,7 @@
     <transition name="hermes-panel">
       <div
         v-if="dock.open"
-        class="hermes-panel pointer-events-auto flex h-[min(42rem,calc(100vh-5.5rem))] w-[min(36rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-3xl border border-white/10 bg-gray-950"
+        class="hermes-panel pointer-events-auto flex h-[min(52rem,calc(100vh-5.5rem))] w-[min(64rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-3xl border border-white/10 bg-gray-950"
         role="dialog"
         aria-modal="true"
         :aria-label="t('console.site.dockTitle')"
@@ -18,9 +18,16 @@
           </div>
           <div class="flex items-center gap-1">
             <button
+              v-if="loginSrc"
               type="button"
-              class="rounded-full px-2.5 py-1 text-[11px] text-gray-400 hover:bg-white/5 hover:text-white disabled:opacity-40"
-              :disabled="sending"
+              class="rounded-full px-2.5 py-1 text-[11px] text-gray-400 hover:bg-white/5 hover:text-white"
+              @click="openLogin"
+            >
+              {{ t('console.site.dockLogin') }}
+            </button>
+            <button
+              type="button"
+              class="rounded-full px-2.5 py-1 text-[11px] text-gray-400 hover:bg-white/5 hover:text-white"
               @click="restart"
             >
               {{ t('console.site.dockNew') }}
@@ -38,40 +45,19 @@
           </div>
         </div>
 
-        <div ref="scroller" class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-4">
-          <p v-if="!thread.length && !sending" class="text-sm leading-relaxed text-gray-400">
+        <div class="relative min-h-0 flex-1 bg-black">
+          <iframe
+            v-if="tuiSrc"
+            :key="frameKey"
+            class="h-full w-full border-0 bg-black"
+            :src="tuiSrc"
+            :title="t('console.site.dockTitle')"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+          />
+          <p v-else class="px-4 py-4 text-sm leading-relaxed text-gray-400">
             {{ t('console.site.dockEmpty') }}
           </p>
-          <div
-            v-for="(m, i) in thread"
-            :key="i"
-            class="flex"
-            :class="m.role === 'user' ? 'justify-end' : 'justify-start'"
-          >
-            <div
-              class="max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed"
-              :class="m.role === 'user' ? 'bg-[#f4911e] text-gray-950' : 'bg-gray-900 text-gray-100'"
-            >{{ m.content }}</div>
-          </div>
-          <p v-if="sending" class="text-xs text-gray-500">{{ t('console.site.dockTyping') }}</p>
-          <p v-if="chatError" class="text-sm text-amber-300">{{ chatError }}</p>
         </div>
-
-        <form class="flex gap-2 border-t border-white/10 p-3" @submit.prevent="send">
-          <input
-            v-model="draft"
-            class="h-11 flex-1 rounded-2xl border border-white/15 bg-gray-900 px-3 text-sm text-white outline-none focus:border-[#f4911e] disabled:opacity-60"
-            :placeholder="t('console.site.dockPlaceholder')"
-            :disabled="sending"
-          >
-          <button
-            type="submit"
-            class="h-11 min-w-[5.5rem] rounded-2xl bg-[#f4911e] px-4 text-sm font-semibold text-gray-950 disabled:opacity-70"
-            :disabled="sending || !draft.trim()"
-          >
-            {{ sending ? '…' : t('console.site.dockSend') }}
-          </button>
-        </form>
       </div>
     </transition>
 
@@ -104,60 +90,51 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/authStore'
 import { useHermesDockStore } from '../stores/hermesDockStore'
 import { canManageHermes } from '../config/console-taxonomy.mjs'
-import { fetchHermesInstances, humanHermesError, sendHermesChat } from '../api/hermesApi.js'
+import {
+  fetchHermesInstances,
+  hermesTuiLoginUrl,
+  hermesTuiUrl,
+  pickReadyHermesInstance
+} from '../api/hermesApi.js'
 
 const { t } = useI18n()
 const auth = useAuthStore()
 const dock = useHermesDockStore()
 const instance = ref(null)
-const draft = ref('')
-const thread = ref([])
-const sending = ref(false)
-const chatError = ref('')
-const scroller = ref(null)
-const fresh = ref(true)
+const frameGen = ref(0)
+let loginPoll = 0
 
 const canChat = computed(() => Boolean(instance.value?.ready && instance.value?.hostname))
+// iframe of tenant /hermes/tui only (ttyd exec hermes). Never dashboard routes.
+const tuiSrc = computed(() => hermesTuiUrl(instance.value))
+const loginSrc = computed(() => hermesTuiLoginUrl(instance.value))
+const frameKey = computed(() => `${dock.nonce}-${frameGen.value}`)
 
-function scrollEnd() {
-  nextTick(() => {
-    const el = scroller.value
-    if (el) el.scrollTop = el.scrollHeight
-  })
+function remountFrame() {
+  frameGen.value += 1
 }
 
 function restart() {
-  if (sending.value) return
-  thread.value = []
-  chatError.value = ''
-  fresh.value = true
   dock.restart()
 }
 
-async function send() {
-  const text = draft.value.trim()
-  if (!text || sending.value || !auth.idToken) return
-  draft.value = ''
-  thread.value = [...thread.value, { role: 'user', content: text }]
-  sending.value = true
-  chatError.value = ''
-  scrollEnd()
-  try {
-    const data = await sendHermesChat(auth.idToken, text, { fresh: fresh.value })
-    fresh.value = false
-    const reply = String(data.reply || '').trim()
-    if (reply) thread.value = [...thread.value, { role: 'assistant', content: reply }]
-  } catch (err) {
-    chatError.value = humanHermesError(err, t('console.site.dockError'))
-  } finally {
-    sending.value = false
-    scrollEnd()
-  }
+function openLogin() {
+  const url = loginSrc.value
+  if (!url) return
+  const popup = window.open(url, 'hermes-tui-login', 'width=520,height=720')
+  if (!popup) return
+  if (loginPoll) clearInterval(loginPoll)
+  loginPoll = setInterval(() => {
+    if (!popup.closed) return
+    clearInterval(loginPoll)
+    loginPoll = 0
+    remountFrame()
+  }, 400)
 }
 
 async function load() {
@@ -169,7 +146,7 @@ async function load() {
   try {
     const data = await fetchHermesInstances(auth.idToken)
     const rows = Array.isArray(data.instances) ? data.instances : []
-    instance.value = rows.find((row) => row.email === auth.email && row.ready) || null
+    instance.value = pickReadyHermesInstance(rows, auth.email)
   } catch {
     instance.value = null
   }
@@ -183,16 +160,10 @@ watch(
   { immediate: true }
 )
 
-watch(
-  () => dock.nonce,
-  () => {
-    thread.value = []
-    chatError.value = ''
-    fresh.value = true
-  }
-)
-
 onMounted(load)
+onUnmounted(() => {
+  if (loginPoll) clearInterval(loginPoll)
+})
 </script>
 
 <style scoped>
