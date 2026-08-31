@@ -1,13 +1,12 @@
 <template>
   <div class="relative shrink-0">
-    <button
+    <a
       v-if="!auth.isAuthenticated"
-      type="button"
+      href="https://console.brenon.cloud/"
       class="whitespace-nowrap rounded border border-white/20 px-3 py-1 text-sm text-gray-200 transition-colors hover:border-white/40 hover:text-white"
-      @click="auth.login()"
     >
       {{ t('navbar.console') }}
-    </button>
+    </a>
 
     <div v-else class="relative">
       <button
@@ -27,31 +26,31 @@
         class="absolute right-0 z-50 mt-2 min-w-[14rem] rounded-md border border-white/10 bg-gray-900/95 py-1 shadow-xl backdrop-blur-sm"
         role="menu"
       >
-        <router-link
-          to="/console"
+        <a
+          href="https://console.brenon.cloud/"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
           role="menuitem"
           @click="open = false"
         >
           {{ t('navbar.console') }}
-        </router-link>
+        </a>
         <p class="px-3 pb-1 pt-2 text-[10px] uppercase tracking-[0.12em] text-gray-500">{{ t('console.nav.products') }}</p>
-        <router-link
-          to="/console/hermes"
+        <a
+          href="https://console.brenon.cloud/hermes"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
           role="menuitem"
           @click="open = false"
         >
           {{ t('console.nav.hermes') }}
-        </router-link>
-        <router-link
-          to="/console/account"
+        </a>
+        <a
+          href="https://console.brenon.cloud/account"
           class="block px-3 py-2 text-sm text-gray-200 hover:bg-white/5 hover:text-white"
           role="menuitem"
           @click="open = false"
         >
           {{ t('console.nav.account') }}
-        </router-link>
+        </a>
         <div v-if="apps.length" class="max-h-72 overflow-y-auto border-t border-white/10">
           <a
             v-for="app in apps"

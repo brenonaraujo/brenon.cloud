@@ -36,6 +36,19 @@
   status = 200
   force = false
 
+# Member console lives on console.brenon.cloud (home.cloud F1.6 / issue #8).
+[[redirects]]
+  from = "/console"
+  to = "https://console.brenon.cloud/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/console/*"
+  to = "https://console.brenon.cloud/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/*"
   to   = "/index.html"
