@@ -412,7 +412,13 @@
       "plan": "Plan",
       "about": "About this service",
       "docs": "Learn more",
-      "status": "Status"
+      "status": "Status",
+      "details": "Details",
+      "staffOnly": "Staff only",
+      "identity": "Sign-in",
+      "identityValue": "Authentik SSO",
+      "lastOpened": "Last opened",
+      "lastOpenedHint": "On this browser, for this account."
     },
     "account": {
       "title": "Account",

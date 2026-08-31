@@ -21,6 +21,7 @@ import {
   prefsKey,
   readPrefs,
   recordVisit,
+  lastVisitAt,
   resolveByIds,
   toggleFavorite,
   setSidebarFavoritesHidden,
@@ -28,6 +29,12 @@ import {
   unreadNotifications,
   paginate
 } from '../src/config/console-prefs.mjs'
+import {
+  formatRelativeTime,
+  serviceAccess,
+  serviceDetails,
+  servicePlan
+} from '../src/config/console-service-details.mjs'
 
 describe('serviceKind', () => {
   it('treats wildcard products as applications', () => {
@@ -38,6 +45,7 @@ describe('serviceKind', () => {
     assert.equal(serviceKind({ id: 'konga', groups: ['api-owner'] }), 'platform')
     assert.equal(serviceKind({ id: 'portainer', groups: ['brenon-admins'] }), 'platform')
     assert.equal(serviceKind({ id: 'authentik', groups: ['brenon-admins'] }), 'platform')
+    assert.equal(serviceKind({ id: 'vserver', groups: ['brenon-admins', 'brenon-ops'] }), 'platform')
   })
 
   it('honors explicit kind from the control plane', () => {
@@ -118,6 +126,9 @@ describe('console prefs', () => {
     assert.deepEqual(prefs.recent, ['draw', 'grafana'])
     assert.deepEqual(prefs.favorites, ['draw'])
     assert.equal(prefs.sidebarFavoritesHidden, false)
+    assert.ok(lastVisitAt(prefs, 'draw'))
+    assert.ok(lastVisitAt(prefs, 'grafana'))
+    assert.equal(lastVisitAt(prefs, 'missing'), null)
     assert.equal(prefsKey('A@x.com'), 'brenon-console:a@x.com')
     const resolved = resolveByIds(
       [{ id: 'draw' }, { id: 'grafana' }],
@@ -181,6 +192,63 @@ describe('service facts', () => {
     assert.match(air.bullets[0], /akash\.brenon\.cloud/)
     const draw = factsFor('draw', 'pt')
     assert.match(draw.bullets[0], /draw\.brenon\.cloud/)
+  })
+})
+
+describe('service details', () => {
+  it('covers VServer with staff facts, not a free default', () => {
+    const vs = factsFor('vserver', 'pt')
+    assert.equal(vs.plan, 'staff')
+    assert.ok(vs.bullets[0].includes('vserver.brenon.cloud'))
+    const svc = {
+      id: 'vserver',
+      groups: ['brenon-admins', 'brenon-ops'],
+      url: 'https://vserver.brenon.cloud'
+    }
+    assert.equal(serviceAccess(svc), 'staff')
+    assert.equal(servicePlan(svc), 'staff')
+    assert.ok(serviceDetails(svc, 'en').bullets[0].includes('vserver.brenon.cloud'))
+  })
+
+  it('derives details for a catalog service without hardcoded facts', () => {
+    const svc = { id: 'new-lab', groups: ['brenon-admins'], url: 'https://lab.brenon.cloud' }
+    const details = serviceDetails(svc, 'en')
+    assert.equal(details.plan, 'staff')
+    assert.equal(details.access, 'staff')
+    assert.equal(details.host, 'lab.brenon.cloud')
+    assert.ok(details.bullets[0].includes('lab.brenon.cloud'))
+    const any = serviceDetails({ id: 'board', groups: ['*'], url: 'https://draw.brenon.cloud' }, 'pt')
+    assert.equal(any.plan, 'free')
+    assert.equal(any.access, 'any')
+  })
+})
+
+describe('last visit timestamps', () => {
+  it('reads old prefs without lastVisit as empty', () => {
+    const storage = new Map()
+    const mem = {
+      getItem: (k) => (storage.has(k) ? storage.get(k) : null),
+      setItem: (k, v) => storage.set(k, v)
+    }
+    storage.set('brenon-console:a@x.com', JSON.stringify({ recent: ['draw'], favorites: [] }))
+    const prefs = readPrefs(mem, 'a@x.com')
+    assert.deepEqual(prefs.lastVisit, {})
+    assert.equal(lastVisitAt(prefs, 'draw'), null)
+  })
+
+  it('records a timestamp and formats relative time', () => {
+    const storage = new Map()
+    const mem = {
+      getItem: (k) => (storage.has(k) ? storage.get(k) : null),
+      setItem: (k, v) => storage.set(k, v)
+    }
+    const at = Date.now() - 2 * 60 * 60 * 1000
+    recordVisit(mem, 'a@x.com', 'vserver', at)
+    const prefs = readPrefs(mem, 'a@x.com')
+    assert.equal(lastVisitAt(prefs, 'vserver'), at)
+    const rel = formatRelativeTime(at, Date.now(), 'en')
+    assert.ok(rel.includes('hour'))
+    assert.equal(formatRelativeTime(0, Date.now(), 'en'), '')
   })
 })
 

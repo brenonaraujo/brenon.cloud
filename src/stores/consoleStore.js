@@ -31,6 +31,7 @@ export const useConsoleStore = defineStore('console', () => {
   const favoriteIds = ref([])
   const readNotificationIds = ref([])
   const sidebarFavoritesHidden = ref(false)
+  const lastVisit = ref({})
   const prefsEmail = ref('')
 
   const offline = computed(() => loaded.value && source.value === 'fallback' && Boolean(error.value))
@@ -89,6 +90,7 @@ export const useConsoleStore = defineStore('console', () => {
     favoriteIds.value = prefs.favorites
     readNotificationIds.value = prefs.readNotifications
     sidebarFavoritesHidden.value = Boolean(prefs.sidebarFavoritesHidden)
+    lastVisit.value = prefs.lastVisit || {}
   }
 
   function visit(id, email) {
@@ -115,6 +117,11 @@ export const useConsoleStore = defineStore('console', () => {
     return favoriteIds.value.includes(id)
   }
 
+  function lastVisitAt(id) {
+    const ts = Number(lastVisit.value?.[id])
+    return Number.isFinite(ts) && ts > 0 ? ts : null
+  }
+
   function recentApps(userGroups) {
     return resolveByIds(appsFor(userGroups), recentIds.value)
   }
@@ -134,6 +141,7 @@ export const useConsoleStore = defineStore('console', () => {
     favoriteIds,
     readNotificationIds,
     sidebarFavoritesHidden,
+    lastVisit,
     load,
     appsFor,
     groupedFor,
@@ -145,6 +153,7 @@ export const useConsoleStore = defineStore('console', () => {
     markNotesRead,
     isNoteRead,
     isFavorite,
+    lastVisitAt,
     recentApps,
     favoriteApps
   }
