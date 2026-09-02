@@ -8,7 +8,6 @@ import './style.css'
 
 // Layouts
 import DefaultLayout from './layouts/DefaultLayout.vue'
-import ConsoleLayout from './layouts/ConsoleLayout.vue'
 
 // Pages
 import Home from './pages/Home.vue'
@@ -20,14 +19,6 @@ import Games from './pages/Games.vue'
 import GamePlayer from './pages/GamePlayer.vue'
 import AuthCallback from './pages/AuthCallback.vue'
 import AuthContinue from './pages/AuthContinue.vue'
-import ConsoleHome from './pages/console/Home.vue'
-import ConsoleServices from './pages/console/Services.vue'
-import ConsoleService from './pages/console/Service.vue'
-import ConsoleHermes from './pages/console/Hermes.vue'
-import ConsoleHostAuth from './pages/console/HostAuth.vue'
-import ConsoleAccount from './pages/console/Account.vue'
-import ConsoleBilling from './pages/console/Billing.vue'
-import ConsoleNotifications from './pages/console/Notifications.vue'
 
 // Clean Architecture Layers
 import { servicesApi } from './api/servicesApi'
@@ -102,52 +93,6 @@ const router = createRouter({
       ]
     },
     {
-      path: '/console/host-auth',
-      name: 'console-host-auth',
-      component: ConsoleHostAuth
-    },
-    {
-      path: '/console',
-      component: ConsoleLayout,
-      children: [
-        {
-          path: '',
-          name: 'console',
-          component: ConsoleHome
-        },
-        {
-          path: 'services',
-          name: 'console-services',
-          component: ConsoleServices
-        },
-        {
-          path: 'services/:id',
-          name: 'console-service',
-          component: ConsoleService
-        },
-        {
-          path: 'hermes',
-          name: 'console-hermes',
-          component: ConsoleHermes
-        },
-        {
-          path: 'account',
-          name: 'console-account',
-          component: ConsoleAccount
-        },
-        {
-          path: 'billing',
-          name: 'console-billing',
-          component: ConsoleBilling
-        },
-        {
-          path: 'notifications',
-          name: 'console-notifications',
-          component: ConsoleNotifications
-        }
-      ]
-    },
-    {
       path: '/status',
       beforeEnter: (to, from, next) => {
         window.location.href = 'https://uptime.brenon.cloud/status/services';
@@ -192,15 +137,6 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(i18n)
-
-router.beforeEach(async (to) => {
-  if (!to.path.startsWith('/console')) return true
-  const auth = useAuthStore()
-  if (!auth.ready) await auth.hydrate()
-  if (auth.isAuthenticated) return true
-  await auth.login(to.fullPath)
-  return false
-})
 
 useAuthStore().hydrate()
 
