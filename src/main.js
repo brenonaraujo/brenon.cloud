@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import { useAuthStore } from './stores/authStore'
+import { installAnalytics } from './analytics.js'
 import App from './App.vue'
 import './style.css'
 
@@ -139,6 +140,7 @@ app.use(pinia)
 app.use(i18n)
 
 useAuthStore().hydrate()
+installAnalytics(router)
 
 // Provide dependencies (Dependency Injection)
 app.provide('serviceService', serviceService)
