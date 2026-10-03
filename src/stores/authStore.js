@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { UserManager } from 'oidc-client-ts'
-import { ENROLLMENT_FLOW, oidcSettings, postLogoutRedirectUri } from '../config/auth'
+import { CONSOLE_CONTINUE, ENROLLMENT_FLOW, oidcSettings, postLogoutRedirectUri } from '../config/auth'
 import { useEntitlementStore } from './entitlementStore'
 
 let manager
@@ -49,9 +49,9 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login(returnTo = '/console') {
+  async function login(returnTo = '/') {
     if (loginStarted) return
-    const next = typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/console'
+    const next = typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/'
     loginStarted = true
     try {
       await getManager().signinRedirect({
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function signup() {
-    const next = encodeURIComponent(`${window.location.origin}/auth/continue`)
+    const next = encodeURIComponent(CONSOLE_CONTINUE)
     window.location.href = `${ENROLLMENT_FLOW}?next=${next}`
   }
 
@@ -73,7 +73,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = result
     ready.value = true
     const returnTo = result?.state?.returnTo
-    return typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/console'
+    return typeof returnTo === 'string' && returnTo.startsWith('/') ? returnTo : '/'
   }
 
   async function logout() {
