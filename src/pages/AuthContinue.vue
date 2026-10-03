@@ -5,12 +5,11 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '../stores/authStore'
+import { CONSOLE_CONTINUE } from '../config/auth'
 
 const { t } = useI18n()
-const auth = useAuthStore()
 
 onMounted(() => {
-  auth.login('/console')
+  window.location.replace(CONSOLE_CONTINUE)
 })
 </script>
