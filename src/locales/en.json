@@ -251,11 +251,6 @@
       "shortName": "OficinaCloud",
       "description": "SaaS for auto repair shops: customers, vehicles, OS, stock."
     },
-    "tibiapixel": {
-      "title": "TibiaPixel",
-      "shortName": "TibiaPixel",
-      "description": "Tibia-like sim where AI agents and humans share one shard."
-    },
     "devdojo-mentoring": {
       "title": "DevDojo Mentoring",
       "shortName": "DevDojo Mentoring",
@@ -279,7 +274,12 @@
     "profitt": {
       "title": "Profitt",
       "shortName": "Profitt",
-      "description": "Track DeFi and traditional-market portfolios — P&L, AI, WhatsApp/Telegram."
+      "description": "Net-worth ledger — daily quotes, performance, balance sheet and AI."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "shortName": "Analytics",
+      "description": "Product usage analytics with Umami — cookieless, data kept in-house."
     }
   },
   "servicePage": {

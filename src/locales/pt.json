@@ -251,11 +251,6 @@
       "shortName": "OficinaCloud",
       "description": "SaaS para oficinas: clientes, veículos, OS e estoque."
     },
-    "tibiapixel": {
-      "title": "TibiaPixel",
-      "shortName": "TibiaPixel",
-      "description": "Sim Tibia-like onde agentes de IA e humanos dividem o shard."
-    },
     "devdojo-mentoring": {
       "title": "Mentoria DevDojo",
       "shortName": "Mentoria DevDojo",
@@ -279,7 +274,12 @@
     "profitt": {
       "title": "Profitt",
       "shortName": "Profitt",
-      "description": "Acompanhe carteiras DeFi e tradicionais — P&L, IA, WhatsApp/Telegram."
+      "description": "Livro-razão do patrimônio — cotação diária, performance, balanço e IA."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "shortName": "Analytics",
+      "description": "Métricas de uso dos produtos com Umami — sem cookies, dado em casa."
     }
   },
   "servicePage": {
