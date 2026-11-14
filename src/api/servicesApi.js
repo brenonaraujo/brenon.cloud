@@ -1922,75 +1922,6 @@ graph TD
         demoUrl: 'https://oficina.brenon.cloud'
       },
       {
-        id: 'tibiapixel',
-        category: 'product',
-        title: {
-          en: 'TibiaPixel — live Tibia-like sim for agents & humans',
-          pt: 'TibiaPixel — simulação Tibia-like viva para agentes e humanos'
-        },
-        shortName: {
-          en: 'TibiaPixel',
-          pt: 'TibiaPixel'
-        },
-        description: {
-          en: 'An open-source Tibia-style survival/craft simulation where AI agents and humans share the same shard, rules, cities, and dungeons — built to train RL agents and open for humans to play.',
-          pt: 'Simulação open-source estilo Tibia com sobrevivência e craft, onde agentes de IA e humanos compartilham o mesmo shard, regras, cidades e dungeons — feita para treinar agentes RL e aberta para humanos jogarem.'
-        },
-        icon: 'cube',
-        color: 'green',
-        learnMoreUrl: '/service?service=tibiapixel',
-        image: 'https://tibiapixel.brenon.cloud/favicon.ico',
-        hostname: 'tibiapixel.brenon.cloud',
-        features: [
-          { en: 'Same rules for AI agents and humans', pt: 'Mesmas regras para agentes de IA e humanos' },
-          { en: 'Survival, craft, cities, and dungeons', pt: 'Sobrevivência, craft, cidades e dungeons' },
-          { en: 'Browser-based — no download', pt: 'No browser — sem download' },
-          { en: 'Open-source engine and agent CLI', pt: 'Engine open-source e CLI de agente' },
-          { en: 'Alpha with multi-server capacity', pt: 'Alpha com capacidade multi-servidor' },
-          { en: 'Designed for reinforcement learning research', pt: 'Desenhado para pesquisa de reinforcement learning' }
-        ],
-        useCases: [
-          {
-            title: { en: 'Train RL agents in a living world', pt: 'Treinar agentes RL num mundo vivo' },
-            description: {
-              en: 'Agents face the same economy, combat, and navigation constraints as human players — ideal for multi-agent and survival RL experiments.',
-              pt: 'Agentes enfrentam a mesma economia, combate e navegação que jogadores humanos — ideal para experimentos multi-agente e RL de sobrevivência.'
-            }
-          },
-          {
-            title: { en: 'Play beside the agents', pt: 'Jogar ao lado dos agentes' },
-            description: {
-              en: 'Humans join the same shard in the browser, explore cities, craft, and compete or cooperate with autonomous agents.',
-              pt: 'Humanos entram no mesmo shard pelo browser, exploram cidades, craftam e competem ou cooperam com agentes autônomos.'
-            }
-          }
-        ],
-        integrations: [
-          { name: 'Docker Swarm', description: { en: 'Game servers on the home cluster', pt: 'Game servers no cluster home' } },
-          { name: 'Cloudflare', description: { en: 'Public edge at tibiapixel.brenon.cloud', pt: 'Borda pública em tibiapixel.brenon.cloud' } },
-          { name: 'Agent CLI', description: { en: 'Headless agent clients against the shard', pt: 'Clientes headless de agente no shard' } }
-        ],
-        quickStart: [
-          { title: { en: 'Open TibiaPixel', pt: 'Abrir TibiaPixel' }, description: { en: 'Visit tibiapixel.brenon.cloud', pt: 'Acesse tibiapixel.brenon.cloud' } },
-          { title: { en: 'Join the alpha', pt: 'Entrar no alpha' }, description: { en: 'Create a character on a live server', pt: 'Crie um personagem num servidor ao vivo' } },
-          { title: { en: 'Or run an agent', pt: 'Ou rode um agente' }, description: { en: 'Use the agent CLI against the same shard', pt: 'Use a CLI de agente no mesmo shard' } }
-        ],
-        gettingStarted: {
-          en: 'TibiaPixel is a living Tibia-like world for agents and humans. <a href="https://tibiapixel.brenon.cloud" class="text-emerald-400 hover:underline" target="_blank" rel="noopener noreferrer">Enter the alpha</a>.',
-          pt: 'TibiaPixel é um mundo Tibia-like vivo para agentes e humanos. <a href="https://tibiapixel.brenon.cloud" class="text-emerald-400 hover:underline" target="_blank" rel="noopener noreferrer">Entre no alpha</a>.'
-        },
-        mermaidDiagram: `
-graph TD
-    A[Human Player] --> C[TibiaPixel Shard]
-    B[AI Agent CLI] --> C
-    C --> D[World / Cities]
-    C --> E[Survival + Craft]
-    C --> F[Brenon.Cloud Swarm]
-    style C fill:#10b981,stroke:#059669,color:#fff
-`,
-        demoUrl: 'https://tibiapixel.brenon.cloud'
-      },
-      {
         id: 'devdojo-mentoring',
         category: 'product',
         title: {
@@ -2203,73 +2134,142 @@ graph TD
         id: 'profitt',
         category: 'product',
         title: {
-          en: 'Profitt — track your investment portfolio',
-          pt: 'Profitt — acompanhe sua carteira de investimentos'
+          en: 'Profitt — your net worth in one ledger',
+          pt: 'Profitt — seu patrimônio num só livro-razão'
         },
         shortName: {
           en: 'Profitt',
           pt: 'Profitt'
         },
         description: {
-          en: 'Investment portfolio tracker we built and operate at profitt.app: DeFi and traditional markets in one dashboard, P&L, AI insights, multi-currency, and WhatsApp/Telegram alerts. Sign in with Google.',
-          pt: 'Acompanhamento de carteira que construímos e operamos em profitt.app: DeFi e mercados tradicionais num só dashboard, P&L, insights de IA, multi-moeda e alertas no WhatsApp/Telegram. Entre com Google.'
+          en: 'The net-worth ledger we built and operate at profitt.brenon.cloud: stocks, funds, crypto and fixed income with daily quotes, performance, balance sheet, CSV import and AI insights. Sign in with your Brenon.Cloud account.',
+          pt: 'O livro-razão do patrimônio que construímos e operamos em profitt.brenon.cloud: ações, fundos, cripto e renda fixa com cotação diária, performance, balanço, importação por CSV e insights de IA. Entre com sua conta Brenon.Cloud.'
         },
         icon: 'chart',
         color: 'green',
         learnMoreUrl: '/service?service=profitt',
-        image: 'https://profitt.app/favicon.ico',
-        hostname: 'profitt.app',
+        hostname: 'profitt.brenon.cloud',
         features: [
-          { en: 'Unified DeFi + traditional-market portfolio', pt: 'Carteira unificada: DeFi e mercados tradicionais' },
-          { en: 'P&L across operations, wherever they sit', pt: 'P&L das operações, não importa onde estejam' },
-          { en: 'AI insights — evaluate the book and buy/sell timing', pt: 'Insights de IA — avaliar a carteira e o momento de compra/venda' },
-          { en: 'Natural-language asset entry (e.g. “Comprei 0.5 BTC”)', pt: 'Entrada de ativo em linguagem natural (ex.: “Comprei 0.5 BTC”)' },
-          { en: 'WhatsApp and Telegram bots for live alerts', pt: 'Bots de WhatsApp e Telegram para alertas em tempo real' },
-          { en: 'Balance sheet, portfolio analysis, and compound-interest calculator', pt: 'Balanço patrimonial, análise de portfólio e calculadora de juros compostos' },
-          { en: 'Multi-currency display (BRL and others)', pt: 'Exibição multi-moeda (BRL e outras)' },
-          { en: 'Google login · Stripe Pro / Pro Max with a 30-day Pro trial', pt: 'Login com Google · Stripe Pro / Pro Max com trial Pro de 30 dias' }
+          { en: 'One ledger for stocks, funds, crypto and fixed income', pt: 'Um livro-razão para ações, fundos, cripto e renda fixa' },
+          { en: 'Daily closing quotes and a one-year price history', pt: 'Cotação de fechamento diária e histórico de um ano' },
+          { en: 'Dashboard with net worth, allocation, top movers and income', pt: 'Painel com patrimônio, alocação, maiores altas/baixas e proventos' },
+          { en: 'Performance over time and per position', pt: 'Performance no tempo e por posição' },
+          { en: 'Balance sheet: assets against liabilities', pt: 'Balanço patrimonial: ativos contra dívidas' },
+          { en: 'AI insights on the portfolio', pt: 'Insights de IA sobre a carteira' },
+          { en: 'CSV import and quick text entry (e.g. “Comprei 0.5 BTC”)', pt: 'Importação por CSV e entrada rápida por texto (ex.: “Comprei 0.5 BTC”)' },
+          { en: 'Display in BRL, USD or EUR · compound-interest calculator', pt: 'Exibição em BRL, USD ou EUR · calculadora de juros compostos' }
         ],
         useCases: [
           {
-            title: { en: 'One book for stocks, crypto, and ETFs', pt: 'Uma carteira para ações, cripto e ETFs' },
+            title: { en: 'One book for stocks, crypto, and funds', pt: 'Uma carteira para ações, cripto e fundos' },
             description: {
-              en: 'See total value, allocation, top movers, and P&L instead of spreading the same positions across broker apps and spreadsheets.',
-              pt: 'Veja valor total, alocação, maiores altas/baixas e P&L em vez de espalhar as mesmas posições entre corretoras e planilhas.'
+              en: 'See total value, allocation, top movers, and results instead of spreading the same positions across broker apps and spreadsheets.',
+              pt: 'Veja valor total, alocação, maiores altas/baixas e resultado em vez de espalhar as mesmas posições entre corretoras e planilhas.'
             }
           },
           {
-            title: { en: 'Ask the book in chat — and in WhatsApp/Telegram', pt: 'Perguntar à carteira no chat — e no WhatsApp/Telegram' },
+            title: { en: 'Know what you actually own', pt: 'Saber o que você realmente tem' },
             description: {
-              en: 'Add trades in natural language, run AI insights on the portfolio, and get notifications in the messenger you already use.',
-              pt: 'Lance operações em linguagem natural, rode insights de IA na carteira e receba notificações no messenger que você já usa.'
+              en: 'Set liabilities against assets in the balance sheet, follow dividends month by month, and ask the AI for a reading of the portfolio.',
+              pt: 'Ponha as dívidas ao lado dos ativos no balanço, acompanhe os proventos mês a mês e peça à IA uma leitura da carteira.'
             }
           }
         ],
         integrations: [
-          { name: 'Google', description: { en: 'Sign in with Google', pt: 'Entrar com Google' } },
-          { name: 'WhatsApp', description: { en: 'AI bots and live investment alerts', pt: 'Bots de IA e alertas de investimento em tempo real' } },
-          { name: 'Telegram', description: { en: 'AI bots and live investment alerts', pt: 'Bots de IA e alertas de investimento em tempo real' } },
-          { name: 'Stripe', description: { en: 'Pro and Pro Max subscriptions · 30-day Pro trial', pt: 'Assinaturas Pro e Pro Max · trial Pro de 30 dias' } }
+          { name: 'Authentik', description: { en: 'Sign in with your Brenon.Cloud account', pt: 'Entrar com sua conta Brenon.Cloud' } },
+          { name: 'Market data', description: { en: 'Daily closing quotes and exchange rates', pt: 'Cotações de fechamento e câmbio diários' } },
+          { name: 'Docker Swarm', description: { en: 'Go API, Nuxt web app and PostgreSQL on the home Swarm', pt: 'API em Go, web em Nuxt e PostgreSQL no Swarm home' } }
         ],
         quickStart: [
-          { title: { en: 'Open Profitt', pt: 'Abrir o Profitt' }, description: { en: 'Visit profitt.app', pt: 'Acesse profitt.app' } },
-          { title: { en: 'Sign in with Google', pt: 'Entrar com Google' }, description: { en: 'No extra account to create', pt: 'Sem criar conta extra' } },
-          { title: { en: 'Add the first asset', pt: 'Adicionar o primeiro ativo' }, description: { en: 'Type it, or describe the trade in natural language', pt: 'Cadastre, ou descreva a operação em linguagem natural' } }
+          { title: { en: 'Open Profitt', pt: 'Abrir o Profitt' }, description: { en: 'Visit profitt.brenon.cloud', pt: 'Acesse profitt.brenon.cloud' } },
+          { title: { en: 'Sign in with Brenon.Cloud', pt: 'Entrar com Brenon.Cloud' }, description: { en: 'The same account as the console', pt: 'A mesma conta do console' } },
+          { title: { en: 'Add the first position', pt: 'Adicionar a primeira posição' }, description: { en: 'Type it, describe the trade, or import a CSV', pt: 'Cadastre, descreva a operação ou importe um CSV' } }
         ],
         gettingStarted: {
-          en: 'Profitt is the portfolio tracker we built and operate — DeFi and traditional markets, AI insights, WhatsApp/Telegram. <a href="https://profitt.app" class="text-green-400 hover:underline" target="_blank" rel="noopener noreferrer">Open profitt.app</a>.',
-          pt: 'Profitt é o acompanhamento de carteira que construímos e operamos — DeFi e mercados tradicionais, insights de IA, WhatsApp/Telegram. <a href="https://profitt.app" class="text-green-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra profitt.app</a>.'
+          en: 'Profitt is the net-worth ledger we built and operate — positions with daily quotes, performance, balance sheet and AI insights. <a href="https://profitt.brenon.cloud" class="text-green-400 hover:underline" target="_blank" rel="noopener noreferrer">Open Profitt</a>.',
+          pt: 'Profitt é o livro-razão do patrimônio que construímos e operamos — posições com cotação diária, performance, balanço e insights de IA. <a href="https://profitt.brenon.cloud" class="text-green-400 hover:underline" target="_blank" rel="noopener noreferrer">Abra o Profitt</a>.'
         },
         mermaidDiagram: `
 graph TD
     A[Investor] --> B[Profitt]
-    B --> C[Portfolio + P&L]
-    B --> D[AI Insights]
-    B --> E[WhatsApp / Telegram]
-    B --> F[Calculator]
+    B --> C[Positions + daily quotes]
+    B --> D[Performance]
+    B --> E[Balance sheet]
+    B --> F[AI Insights]
     style B fill:#22c55e,stroke:#16a34a,color:#fff
 `,
-        demoUrl: 'https://profitt.app'
+        demoUrl: 'https://profitt.brenon.cloud'
+      },
+      {
+        id: 'analytics',
+        category: 'platform',
+        title: {
+          en: 'Analytics — Umami product analytics',
+          pt: 'Analytics — métricas de uso com Umami'
+        },
+        shortName: {
+          en: 'Analytics',
+          pt: 'Analytics'
+        },
+        description: {
+          en: 'A self-hosted Umami instance that measures how every product of the house is used — no cookies, no third parties, the data stays in our own PostgreSQL. The dashboard is staff-only, behind Authentik SSO.',
+          pt: 'Instância própria do Umami que mede o uso de cada produto da casa — sem cookies, sem terceiros, o dado fica no nosso PostgreSQL. O painel é só para a equipe, atrás do SSO Authentik.'
+        },
+        icon: 'chart',
+        color: 'purple',
+        learnMoreUrl: '/service?service=analytics',
+        image: 'https://avatars.githubusercontent.com/u/105618662?v=4',
+        hostname: 'analytics.brenon.cloud',
+        features: [
+          { en: 'Umami, self-hosted on the home Swarm', pt: 'Umami self-hosted no Swarm home' },
+          { en: 'Cookieless: no consent banner needed for measurement', pt: 'Sem cookies: a medição não pede banner de consentimento' },
+          { en: 'One instance, one website per product', pt: 'Uma instância, um website por produto' },
+          { en: 'Page views, referrers, devices and custom events', pt: 'Páginas vistas, origens, dispositivos e eventos próprios' },
+          { en: 'Data stays in our own PostgreSQL', pt: 'O dado fica no nosso PostgreSQL' },
+          { en: 'Staff-only dashboard behind Authentik SSO', pt: 'Painel só para a equipe, atrás do SSO Authentik' }
+        ],
+        useCases: [
+          {
+            title: { en: 'See what each product is used for', pt: 'Ver para que cada produto é usado' },
+            description: {
+              en: 'Which pages get read, where visitors come from and which features get clicked, per product, without sending anything to an ad network.',
+              pt: 'Quais páginas são lidas, de onde vêm as visitas e quais recursos são clicados, por produto, sem mandar nada para rede de anúncios.'
+            }
+          },
+          {
+            title: { en: 'Measure the blog that brings people in', pt: 'Medir o blog que traz gente' },
+            description: {
+              en: 'Follow which articles earn search traffic and which ones turn readers into sign-ups.',
+              pt: 'Acompanhe quais artigos ganham tráfego de busca e quais viram cadastro.'
+            }
+          }
+        ],
+        integrations: [
+          { name: 'Authentik', description: { en: 'SSO gate for the dashboard', pt: 'Portão SSO do painel' } },
+          { name: 'Profitt', description: { en: 'First product measured', pt: 'Primeiro produto medido' } },
+          { name: 'Docker Swarm', description: { en: 'Umami and PostgreSQL stack', pt: 'Stack Umami e PostgreSQL' } },
+          { name: 'Cloudflare', description: { en: 'Edge at analytics.brenon.cloud', pt: 'Borda em analytics.brenon.cloud' } }
+        ],
+        quickStart: [
+          { title: { en: 'Register the product', pt: 'Registrar o produto' }, description: { en: 'Add it as a website in the dashboard', pt: 'Adicione como website no painel' } },
+          { title: { en: 'Load the script', pt: 'Carregar o script' }, description: { en: 'One script tag with the website id', pt: 'Uma tag de script com o id do website' } },
+          { title: { en: 'Read the numbers', pt: 'Ler os números' }, description: { en: 'Open the dashboard with your staff account', pt: 'Abra o painel com sua conta de equipe' } }
+        ],
+        gettingStarted: {
+          en: 'Analytics is the Umami instance we operate on the home Swarm to measure our own products. The dashboard is restricted to Brenon.Cloud staff.',
+          pt: 'Analytics é a instância do Umami que operamos no Swarm home para medir os nossos produtos. O painel é restrito à equipe do Brenon.Cloud.'
+        },
+        mermaidDiagram: `
+graph LR
+    A[Visitor] --> B[Product page]
+    B --> C[analytics.brenon.cloud]
+    C --> D[Umami]
+    D --> E[PostgreSQL]
+    F[Staff] --> G[Authentik SSO]
+    G --> C
+    style C fill:#9333ea,stroke:#7c3aed,color:#fff
+`,
+        demoUrl: 'https://analytics.brenon.cloud'
       },
       {
         id: 'draw',
