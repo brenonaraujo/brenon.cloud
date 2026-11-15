@@ -49,20 +49,6 @@
   status = 301
   force = true
 
-# profitt.app is the old Profitt domain. It is attached to this site only
-# to answer TLS and send every path to the current app (v2).
-[[redirects]]
-  from = "https://profitt.app/*"
-  to = "https://profitt.brenon.cloud/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.profitt.app/*"
-  to = "https://profitt.brenon.cloud/:splat"
-  status = 301
-  force = true
-
 [[redirects]]
   from = "/*"
   to   = "/index.html"
