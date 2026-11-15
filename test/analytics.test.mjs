@@ -1,6 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { allowPath, applyOptOut, createTracker } from '../src/analytics.js'
+import {
+  allowPath,
+  applyOptOut,
+  cleanReferrer,
+  doNotTrackEnabled,
+  resolveAnalyticsConfig,
+  trackingDecision
+} from '../src/analytics.js'
 
 function mem() {
   const m = new Map()
@@ -27,37 +34,42 @@ test('opt out sticks until cleared', () => {
   assert.equal(applyOptOut('?nocount=0', storage), false)
 })
 
-test('start emits a view and beat adds visible time', () => {
-  const sent = []
-  let t = 1000
-  const tracker = createTracker({
-    storage: mem(),
-    sessionStorage: mem(),
-    send: (body) => sent.push(JSON.parse(body)),
-    now: () => t,
-    hidden: () => false
-  })
-  tracker.start('/blog/post-a')
-  assert.equal(sent.at(-1).path, '/blog/post-a')
-  assert.equal(sent.at(-1).visible_ms, 0)
-  t = 16000
-  tracker.beat()
-  assert.equal(sent.at(-1).visible_ms, 15000)
-  tracker.start('/console')
-  assert.equal(sent.at(-1).path, '/blog/post-a')
+test('config off unless url and website id are both set', () => {
+  assert.equal(resolveAnalyticsConfig('', 'db5485ed-47f0-433d-925e-342e60f8c477'), null)
+  assert.equal(resolveAnalyticsConfig('https://analytics.brenon.cloud', ''), null)
+  assert.equal(resolveAnalyticsConfig('not a url', 'id'), null)
+  assert.deepEqual(
+    resolveAnalyticsConfig('https://analytics.brenon.cloud/', 'db5485ed-47f0-433d-925e-342e60f8c477'),
+    {
+      scriptUrl: 'https://analytics.brenon.cloud/script.js',
+      websiteId: 'db5485ed-47f0-433d-925e-342e60f8c477'
+    }
+  )
 })
 
-test('opted out sends nothing', () => {
-  const storage = mem()
-  storage.setItem('brenon-analytics-off', '1')
-  const sent = []
-  const tracker = createTracker({
-    storage,
-    sessionStorage: mem(),
-    send: (body) => sent.push(body),
-    now: () => 1,
-    hidden: () => false
-  })
-  tracker.start('/')
-  assert.equal(sent.length, 0)
+test('decision is the path only, and only when allowed', () => {
+  assert.deepEqual(trackingDecision({ path: '/blog/post-a', host: 'brenon.cloud' }), { url: '/blog/post-a' })
+  assert.equal(trackingDecision({ path: '/console', host: 'brenon.cloud' }), null)
+  assert.equal(trackingDecision({ path: '/', optedOut: true, host: 'brenon.cloud' }), null)
+  assert.equal(trackingDecision({ path: '/', doNotTrack: true, host: 'brenon.cloud' }), null)
+  assert.equal(trackingDecision({ path: '/', host: 'localhost' }), null)
+  assert.equal(trackingDecision({ path: '/', host: '::1' }), null)
+})
+
+test('referrer drops query and fragment', () => {
+  assert.equal(cleanReferrer('https://news.example/a?utm=1#x'), 'https://news.example/a')
+  assert.equal(cleanReferrer(''), '')
+})
+
+test('same-origin referrer keeps only a public path', () => {
+  const origin = 'https://brenon.cloud'
+  assert.equal(cleanReferrer('https://brenon.cloud/blog/post-a?x=1', origin), '/blog/post-a')
+  assert.equal(cleanReferrer('https://brenon.cloud/auth/callback?code=1', origin), '')
+  assert.equal(cleanReferrer('https://news.example/a?utm=1', origin), 'https://news.example/a')
+})
+
+test('do not track is the browser signal 1', () => {
+  assert.equal(doNotTrackEnabled({ doNotTrack: '1' }), true)
+  assert.equal(doNotTrackEnabled({ doNotTrack: '0' }), false)
+  assert.equal(doNotTrackEnabled(null), false)
 })
