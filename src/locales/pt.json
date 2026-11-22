@@ -712,7 +712,11 @@
       "points": "pontos",
       "lines": "linhas",
       "ms": "milissegundos"
-    }
+    },
+    "playersOnline": "Multijogador online",
+    "loginRequired": "Exige login",
+    "openExternal": "Abrir o jogo",
+    "externalHint": "Este jogo roda em endereço próprio e abre em uma nova aba. Entre com sua conta brenon.cloud ou com o Google; batalhas, vitórias e ranking ficam salvos na sua conta."
   },
   "serviceCard": {
     "learnMore": "Saiba mais",
