@@ -712,7 +712,11 @@
       "points": "points",
       "lines": "lines",
       "ms": "milliseconds"
-    }
+    },
+    "playersOnline": "Online multiplayer",
+    "loginRequired": "Sign-in required",
+    "openExternal": "Open the game",
+    "externalHint": "This game runs on its own address and opens in a new tab. Sign in with your brenon.cloud account or with Google; battles, wins and ranking are saved to your account."
   },
   "serviceCard": {
     "learnMore": "Learn more",

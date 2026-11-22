@@ -38,10 +38,13 @@
     </div>
 
     <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <router-link
+      <component
+        :is="game.external ? 'a' : 'router-link'"
         v-for="game in games"
         :key="game.slug"
-        :to="`/games/${game.slug}`"
+        v-bind="game.external
+          ? { href: game.external, target: '_blank', rel: 'noopener' }
+          : { to: `/games/${game.slug}` }"
         class="group flex flex-col bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden hover:border-blue-500/60 hover:bg-gray-800/70 transition-all duration-200"
       >
         <!-- Preview tile: gradient background + glyph + category badge -->
@@ -56,6 +59,12 @@
           </div>
           <div class="absolute top-3 left-3 px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm text-xs text-white/80 uppercase tracking-wide border border-white/10">
             {{ t(`games.categories.${game.category}`, game.category) }}
+          </div>
+          <div
+            v-if="game.requiresLogin"
+            class="absolute bottom-3 left-3 px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 uppercase tracking-wide text-xs"
+          >
+            {{ t('games.loginRequired') }}
           </div>
           <div
             v-if="game.locale && game.locale !== locale"
@@ -74,13 +83,13 @@
             {{ game.description }}
           </p>
           <div class="mt-6 inline-flex items-center gap-2 text-blue-400 text-sm font-medium">
-            {{ t('games.play') }}
+            {{ game.external ? t('games.openExternal') : t('games.play') }}
             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
             </svg>
           </div>
         </div>
-      </router-link>
+      </component>
     </div>
   </div>
 </template>

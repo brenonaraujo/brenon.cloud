@@ -86,7 +86,8 @@ export class GamesService {
     // localeData may only override title/description; everything else comes
     // from the neutral manifest. We trust the neutral file for config.
     const merged = { ...neutralData, ...localeData }
-    if (!merged.iframe) return null  // a game without an iframe cannot run
+    // A game runs either embedded (iframe) or on its own host (external).
+    if (!merged.iframe && !merged.external) return null
     return {
       slug,
       locale: localeData && localeData !== neutralData
@@ -97,7 +98,9 @@ export class GamesService {
       category: merged.category || 'arcade',
       players: merged.players || 'single',
       scoreUnit: merged.scoreUnit || 'points',
-      iframe: merged.iframe,
+      iframe: merged.iframe || null,
+      external: merged.external || null,
+      requiresLogin: Boolean(merged.requiresLogin),
       width: Number(merged.width) || 1100,
       height: Number(merged.height) || 720,
       availableLocales: []

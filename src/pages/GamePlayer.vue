@@ -24,7 +24,7 @@
           {{ t(`games.categories.${game.category}`, game.category) }}
         </span>
         <span class="px-2.5 py-1 rounded-md bg-gray-700/40 text-gray-300 border border-gray-600/40 text-xs uppercase tracking-wide">
-          {{ game.players === 'multi' ? t('games.playersMulti') : t('games.playersSingle') }}
+          {{ game.players === 'online' ? t('games.playersOnline') : game.players === 'multi' ? t('games.playersMulti') : t('games.playersSingle') }}
         </span>
         <span
           v-if="game.locale && game.locale !== locale"
@@ -58,6 +58,25 @@
       </router-link>
     </div>
 
+    <!-- External game: it runs on its own host (login, websocket), so we
+         hand off with a launch card instead of embedding it. -->
+    <div v-else-if="game.external" class="flex justify-center">
+      <div class="w-full max-w-2xl rounded-2xl border border-gray-700/60 bg-gray-800/40 p-10 text-center">
+        <p class="text-gray-300 leading-relaxed mb-8">{{ t('games.externalHint') }}</p>
+        <a
+          :href="game.external"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium"
+        >
+          {{ t('games.openExternal') }}
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
     <!-- Iframe container. We center it and let the game dictate its
          own intrinsic size; the page background keeps the dark theme.
          max-height keeps very tall games from forcing the user to scroll
@@ -88,7 +107,7 @@
 
     <!-- Tips / footer about the game -->
     <p
-      v-if="game"
+      v-if="game && !game.external"
       class="mt-6 text-center text-xs text-gray-500"
     >
       {{ t('games.scoreStoredHint', { unit: t(`games.units.${game.scoreUnit}`, game.scoreUnit) }) }}

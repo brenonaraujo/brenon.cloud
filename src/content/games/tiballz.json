@@ -1,0 +1,9 @@
+{
+  "title": "Tiballz",
+  "description": "Online battle royale on a grid: Ki blasts, flight, transformations and the hunt for the 7 Star Spheres. Real players first, bots fill the arena. Career stats and ranking.",
+  "category": "action",
+  "players": "online",
+  "scoreUnit": "points",
+  "external": "https://tiballz.brenon.cloud",
+  "requiresLogin": true
+}
